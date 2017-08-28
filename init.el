@@ -65,7 +65,9 @@ values."
    ;; A list of packages that cannot be updated.
    dotspacemacs-frozen-packages '()
    ;; A list of packages that will not be installed and loaded.
-   dotspacemacs-excluded-packages '()
+   dotspacemacs-excluded-packages '(
+                                    org-bullets
+                                    )
    ;; Defines the behaviour of Spacemacs when installing packages.
    ;; Possible values are `used-only', `used-but-keep-unused' and `all'.
    ;; `used-only' installs only explicitly used packages and uninstall any
@@ -137,11 +139,11 @@ values."
    dotspacemacs-themes '(
                          ;;default
                          ;;sanityinc-solarized-dark
-                         ;zenburn
+                         ;;zenburn
                          ;;sanityinc-tomorrow-blue
-                         spacemacs-dark
+                         ;;spacemacs-dark
                          ;;sanityinc-tomorrow-eighties
-                        ;;sanityinc-tomorrow-bright
+                        sanityinc-tomorrow-bright
                          ;;spacemacs-light
                          )
    ;; If non nil the cursor color matches the state color in GUI Emacs.
@@ -733,7 +735,7 @@ you should place your code here."
 
 (setq python-shell-completion-native-enable nil)
 
-(elpy-enable)
+;;(elpy-enable)
 (elpy-use-ipython)
 
 
