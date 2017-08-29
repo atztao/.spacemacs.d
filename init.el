@@ -40,6 +40,7 @@ values."
      python
      helm
      html
+     latex
      auto-completion
      better-defaults
      emacs-lisp
@@ -59,13 +60,14 @@ values."
    ;; packages, then consider creating a layer. You can also put the
    ;; configuration in `dotspacemacs/user-config'.
    dotspacemacs-additional-packages '(
-                                      evil-mu4e
+                                      ;;evil-mu4e
                                       super-save
                                       )
    ;; A list of packages that cannot be updated.
    dotspacemacs-frozen-packages '()
    ;; A list of packages that will not be installed and loaded.
    dotspacemacs-excluded-packages '(
+                                    mu4e-maildirs-extension
                                     org-bullets
                                     )
    ;; Defines the behaviour of Spacemacs when installing packages.
@@ -73,12 +75,12 @@ values."
    ;; `used-only' installs only explicitly used packages and uninstall any
    ;; unused packages as well as their unused dependencies.
    ;; `used-but-keep-unused' installs only the used packages but won't uninstall
-   ;; them if they become unused. `all' installs *all* packages supported by
+   ;; them if they become unused. `all'(setq python-shell-interpreter-args "") installs *all* packages supported by
    ;; Spacemacs and never uninstall them. (default is `used-only')
    dotspacemacs-install-packages 'used-only))
 
 (defun dotspacemacs/init ()
-  "Initialization function.
+  "Initialimu4e-maildirs-extensionzation funcmu4e-maildirs-extensiontion.
 This function is called at thhi Function term=bold       ctermfg=White guifg=White                           
 e very startup of Spacemacs initialization
 before layers configuration.
@@ -141,17 +143,17 @@ values."
                          ;;sanityinc-solarized-dark
                          ;;zenburn
                          ;;sanityinc-tomorrow-blue
-                         ;;spacemacs-dark
                          ;;sanityinc-tomorrow-eighties
-                        sanityinc-tomorrow-bright
-                         ;;spacemacs-light
+                         sanityinc-tomorrow-bright
+                         ;;spacemacs-dark
+                         spacemacs-light
                          )
    ;; If non nil the cursor color matches the state color in GUI Emacs.
    dotspacemacs-colorize-cursor-according-to-state t
    ;; Default font, or prioritized list of fonts. `powerline-scale' allows to
    ;; quickly tweak the mode-line size to make separators look not too crappy.
    dotspacemacs-default-font '("Inconsolata"
-                               :size 18
+                               :size 16
                                :weight normal
                                :width normal
                                :powerline-scale 1.1)
@@ -318,6 +320,7 @@ executes.
  This function is mostly useful for variables that need to be set
 before packages are loaded. If you are unsure, you should try in setting them in
 `dotspacemacs/user-config' first."
+
   (setq configuration-layer--elpa-archives
         '(("melpa-cn" . "http://elpa.emacs-china.org/melpa/")
           ("org-cn"   . "http://elpa.emacs-china.org/org/")
@@ -335,13 +338,43 @@ This is the place where most of your configurations should be done. Unless it is
 explicitly specified that a variable should be set before a package is loaded,
 you should place your code here."
 
-(super-save-mode +1)
-;; ;; (setq auto-save-default nil)
-(setq super-save-auto-save-when-idle t)
+  (set-frame-parameter nil 'alpha '(90 . 100))
+
+
+  ;;flyspell-----------------------------------
+  ;;apt install aspell
+  (setq-default ispell-program-name "aspell")
+  (ispell-change-dictionary "american" t)  
+
+  ;;Backup-----------------------------------------
+  (setq auto-save-interval 20)
+  (setq auto-save-visited-file-name t)
+
+  ;; (setq auto-save-default nil)
+  ;; (setq make-backup-files nil)
+
+  (setq backup-directory-alist '(("" . "~/.backup")))
+  (setq make-backup-files t               ; backup of a file the first time it is saved.
+        backup-by-copying t               ; don't clobber symlinks
+        version-control t                 ; version numbers for backup files
+        delete-old-versions t             ; delete excess backp files silently
+        delete-by-moving-to-trash t
+        kept-old-versions 6               ; oldest versions to keep when a new numbered backup is made (default: 2)
+        kept-new-versions 9               ; newest versions to keep when a new numbered backup is made (default: 2)
+        auto-save-default t               ; auto-save every buffer that visits a file
+        auto-save-timeout 7              ; number of seconds idle time before auto-save (default: 30)
+        auto-save-interval 200            ; number of keystrokes between auto-saves (default: 300)
+        )
+
+  (super-save-mode +1)
+  ;; ;; (setq auto-save-default nil)
+  (setq super-save-auto-save-when-idle t)
+
 
   ;; (set-background-color "#000000")
   ;; (set-foreground-color "#32cd32")
   ;;Some Configuration For Face
+
   (setq frame-title-format
         (list ;;'(:eval (projectile-project-name)) 
          "(●—●) I'm Here @ "
@@ -473,7 +506,6 @@ you should place your code here."
 
   (add-hook 'org-mode-hook 'my/org-mode-hook)
 
-
   (setq org-list-description-max-indent 5)
   (setq org-adapt-indentation nil)
 
@@ -499,38 +531,9 @@ you should place your code here."
             (lambda () (setq truncate-lines nil)))  
 
 
-  ;;Archive All Done Tas
-  (setq org-archive-location (concat "archive/archive-" (format-time-string "%Y%m" (current-time)) ".org_archive::"))
-
-  (defun my-org-archive-done-tasks ()
-    (interactive)
-    (org-map-entries 'org-archive-subtree "/DONE" '~/Dropbox/Txt/archive/done.txt))
-
-  (defun channing/archive-when-done ()
-    "Archive current entry if it is marked as DONE (see `org-done-keywords')."
-    (when (org-entry-is-done-p)
-      (org-archive-subtree-default)))
-
-  ;; (add-hook 'org-mode-hook '(lambda () 
-  ;; (setq visual-line-fringe-indicators t) 
-  ;; (visual-line-mode) 
-  ;; (if visual-line-mode 
-  ;; (setq word-wrap nil)))) 
-
   ;;(add-hook 'org-mode-hook (lambda () (variable-pitch-mode t)))
   ;;org-mode display
   (setq org-fontify-done-headline t)
-  ;; (custom-set-faces
-  ;;  ;; custom-set-faces was added by Custom.
-  ;;  ;; If you edit it by hand, you could mess it up, so be careful.
-  ;;  ;; Your init file should contain only one such instance.
-  ;;  ;; If there is more than one, they won't work right.
-  ;;  '(org-agenda-done ((t (:foreground "Gray" :weight normal :strike-through t))))
-  ;;  ;; '(org-done ((t (:foreground "Gray" :weight normal :strike-through t))))
-  ;;  '(org-headline-done ((((class color) (min-colors 16) (background light)) (:foreground "Gray" :strike-through t))))
-
-  ;; ;;'(term ((t (:background "#ffffff" :foreground "#000000"))))
-  ;;  )
 
   ;;the mouse cursor from highlighting lines in the agenda
   (add-hook 'org-agenda-finalize-hook
@@ -628,23 +631,21 @@ you should place your code here."
   ;;(require 'notmuch)
   ;;the exact path may differ -- check it
   ;;store link to message if in header view, not to header query
-  (require 'evil-mu4e)
-  (setq org-mu4e-link-query-in-headers-mode nil)
+  ;;(require 'evil-mu4e)
 
   ;; default
-  (setq mu4e-maildir (expand-file-name "~/Maildir"))
-
-  (setq mu4e-drafts-folder "/[Gmail].Drafts")
-  (setq mu4e-sent-folder   "/[Gmail].Sent Mail")
-  (setq mu4e-trash-folder  "/[Gmail].Trash")
-  ;; don't save message to Sent Messages, GMail/IMAP will take care of this
+  (setq mu4e-maildir "~/Maildir"
+        mu4e-drafts-folder "/[Gmail].Drafts"
+        mu4e-sent-folder   "/[Gmail].Sent Mail"
+        mu4e-trash-folder  "/[Gmail].Trash")
+  ;; ;; don't save message to Sent Messages, GMail/IMAP will take care of this
   (setq mu4e-sent-messages-behavior 'delete)
 
   ;; setup some handy shortcuts
-  (setq mu4e-maildir-shortcuts
-        '(("/INBOX"             . ?i)
-          ("/[Gmail].Sent Mail" . ?s)
-          ("/[Gmail].Trash"     . ?t)))
+  ;; (setq mu4e-maildir-shortcuts
+  ;;       '(("/INBOX"             . ?i)
+  ;;         ("/[Gmail].Sent Mail" . ?s)
+  ;;         ("/[Gmail].Trash"     . ?t)))
 
   ;; allow for updating mail using 'U' in the main view:
   (setq mu4e-get-mail-command "offlineimap")
@@ -683,12 +684,6 @@ you should place your code here."
   ;; (setq mu4e-compose-signature "天行健，君子以自强不息。地势坤，君子以厚德载物。——《周易》")
   ;; (setq mu4e-compose-signature "")
 
-  ;; (setq mu4e-org-contacts-file "~/Dropbox/Txt/contacts.txt")
-  ;; (add-to-list 'mu4e-headers-actions
-  ;;              '("org-contact-add" . mu4e-action-add-org-contact) t)
-  ;; (add-to-list 'mu4e-view-actions
-  ;;              '("org-contact-add" . mu4e-action-add-org-contact) t)
-
 
   (setq
    message-send-mail-function 'smtpmail-send-it
@@ -712,86 +707,14 @@ you should place your code here."
   ;;------------------------------------------------}
 
 
-  ;;Python
-;;(setq py-python-command "/usr/bin/python2")
-(setq py-python-command "/usr/bin/python3")
-
-;;jupyter----------------------------------------------
-
-;;(setq ein:jupyter-default-server-command "/usr/local/bin/jupyter")
-(setq ein:jupyter-default-server-command "~/anaconda3/bin/jupyter")
-(setq ein:jupyter-server-args (list "--no-browser"))
-
-		  
-;; (add-hook 'python-mode-hook 'elpy-mode)
-;; (with-eval-after-load 'elpy
-;;   (remove-hook 'elpy-modules 'elpy-module-flymake)
-;;   (add-hook 'elpy-mode-hook 'elpy-rpc-python-command "python3")
-;;   (add-hook 'elpy-mode-hook 'flycheck-mode)
-;;   (add-hook 'elpy-mode-hook 'elpy-use-ipython)
-;;   (add-hook 'elpy-mode-hook 'py-autopep8-enable-on-save))
-
-(setq elpy-rpc-backend "jedi")
-
-(setq python-shell-completion-native-enable nil)
-
-;;(elpy-enable)
-(elpy-use-ipython)
-
-
-(with-eval-after-load 'python
-  (defun python-shell-completion-native-try ()
-    "Return non-nil if can trigger native completion."
-    (let ((python-shell-completion-native-enable t)
-	  (python-shell-completion-native-output-timeout
-           python-shell-completion-native-try-output-timeout))
-      (python-shell-completion-native-get-completions
-       (get-buffer-process (current-buffer))
-       nil "_"))))
-
-(require 'cl-lib)
-(defadvice save-buffers-kill-emacs (around no-query-kill-emacs activate)
-  "Prevent annoying \"Active processes exist\" query when you quit Emacs."
-  (cl-letf (((symbol-function #'process-list) (lambda ())))
-    ad-do-it))
-
-(when (require 'flycheck nil t)
-  (setq elpy-modules (delq 'elpy-module-flymake elpy-modules))
-  (add-hook 'elpy-mode-hook 'flycheck-mode))
-(add-hook 'after-init-hook #'global-flycheck-mode)
-
-(setq elpy-rpc-python-command "python3")
-(setq python-shell-interpreter "python3")
-;; (setq elpy-rpc-python-command "python2")
-;; (setq python-shell-interpreter "python2")
-;;(elpy-use-ipython "ipython3")
-
-
-;;apt-get install ipython then M-x edit-abbrevs
-;;(require 'ipython)
-;;(setq-default py-shell-name "ipython")
-
-;;pip install autopep8
-(require 'py-autopep8)
-(add-hook 'elpy-mode-hook 'py-autopep8-enable-on-save)
-
-;; (require 'tramp)
-;; (add-to-list 'Info-default-directory-list "~/.emacs.d/tramp/info/")
+  ;;Python SHOULD SET :export PATH=$HOME/anaconda3/bin:$PATH IN .zshenv
+  (setenv "WORKON_HOME" "/home/zhangtao/anaconda3/")
+  (setq python-shell--interpreter "/home/zhangtao/anaconda3/bin/python3")
+  (setq python-shell--interpreter-args "")
   )
 
 ;; Do not write anything past this comment. This is where Emacs will
 ;; auto-generate custom variable definitions.
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(org-agenda-files
-   (quote
-    ("~/Dropbox/Txt/inbox.txt" "~/Dropbox/Txt/todo.txt")))
- '(package-selected-packages
-   (quote
-    (super-save solorized-theme evil-mu4e yapfify xterm-color ws-butler winum which-key web-mode volatile-highlights vi-tilde-fringe uuidgen use-package unfill toc-org tagedit spaceline powerline smeargle slim-mode shell-pop scss-mode sass-mode restart-emacs rainbow-delimiters pyvenv pytest pyenv-mode py-isort pug-mode popwin pip-requirements persp-mode pcre2el paradox spinner orgit org-projectile org-category-capture org-present org-pomodoro org-plus-contrib org-download org-bullets open-junk-file neotree mwim multi-term mu4e-maildirs-extension mu4e-alert ht alert log4e gntp move-text mmm-mode markdown-toc markdown-mode magit-gitflow macrostep lorem-ipsum live-py-mode linum-relative link-hint less-css-mode info+ indent-guide hydra hy-mode hungry-delete htmlize hl-todo highlight-parentheses highlight-numbers parent-mode highlight-indentation hide-comnt help-fns+ helm-themes helm-swoop helm-pydoc helm-projectile helm-mode-manager helm-make projectile helm-gitignore helm-flx helm-descbinds helm-css-scss helm-company helm-c-yasnippet helm-ag haml-mode google-translate golden-ratio gnuplot gitignore-mode gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link git-gutter-fringe+ git-gutter-fringe fringe-helper git-gutter+ git-gutter gh-md fuzzy flycheck-pos-tip pos-tip flycheck pkg-info epl flx-ido flx fill-column-indicator fancy-battery eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-magit magit magit-popup git-commit with-editor evil-lisp-state smartparens evil-indent-plus evil-iedit-state iedit evil-exchange evil-escape evil-ediff evil-args evil-anzu anzu evil goto-chg undo-tree eval-sexp-fu highlight eshell-z eshell-prompt-extras esh-help emmet-mode elisp-slime-nav ein skewer-mode request-deferred websocket request deferred js2-mode simple-httpd dumb-jump diminish diff-hl define-word cython-mode company-web web-completion-data company-statistics company-anaconda company column-enforce-mode clean-aindent-mode bind-map bind-key auto-yasnippet yasnippet auto-highlight-symbol auto-compile packed anaconda-mode pythonic f dash s aggressive-indent adaptive-wrap ace-window ace-link ace-jump-helm-line helm avy helm-core async ac-ispell auto-complete popup color-theme-sanityinc-tomorrow))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -810,14 +733,15 @@ This function is called at the very end of Spacemacs initialization."
    ;; If there is more than one, they won't work right.
    '(org-agenda-files
      (quote
-      ("~/Dropbox/Txt/inbox.txt" "~/Dropbox/Txt/todo.txt")))
-   '(package-selected-packages
-     (quote
-      (org-brain evil-org symon string-inflection password-generator impatient-mode helm-purpose window-purpose imenu-list evil-lion editorconfig browse-at-remote evil-mu4e yapfify xterm-color ws-butler winum which-key web-mode volatile-highlights vi-tilde-fringe uuidgen use-package unfill toc-org tagedit spaceline powerline smeargle slim-mode shell-pop scss-mode sass-mode restart-emacs rainbow-delimiters pyvenv pytest pyenv-mode py-isort pug-mode popwin pip-requirements persp-mode pcre2el paradox spinner orgit org-projectile org-category-capture org-present org-pomodoro org-plus-contrib org-download org-bullets open-junk-file neotree mwim multi-term mu4e-maildirs-extension mu4e-alert ht alert log4e gntp move-text mmm-mode markdown-toc markdown-mode magit-gitflow macrostep lorem-ipsum live-py-mode linum-relative link-hint less-css-mode info+ indent-guide hydra hy-mode hungry-delete htmlize hl-todo highlight-parentheses highlight-numbers parent-mode highlight-indentation hide-comnt help-fns+ helm-themes helm-swoop helm-pydoc helm-projectile helm-mode-manager helm-make projectile helm-gitignore helm-flx helm-descbinds helm-css-scss helm-company helm-c-yasnippet helm-ag haml-mode google-translate golden-ratio gnuplot gitignore-mode gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link git-gutter-fringe+ git-gutter-fringe fringe-helper git-gutter+ git-gutter gh-md fuzzy flycheck-pos-tip pos-tip flycheck pkg-info epl flx-ido flx fill-column-indicator fancy-battery eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-magit magit magit-popup git-commit with-editor evil-lisp-state smartparens evil-indent-plus evil-iedit-state iedit evil-exchange evil-escape evil-ediff evil-args evil-anzu anzu evil goto-chg undo-tree eval-sexp-fu highlight eshell-z eshell-prompt-extras esh-help emmet-mode elisp-slime-nav ein skewer-mode request-deferred websocket request deferred js2-mode simple-httpd dumb-jump diminish diff-hl define-word cython-mode company-web web-completion-data company-statistics company-anaconda company column-enforce-mode clean-aindent-mode bind-map bind-key auto-yasnippet yasnippet auto-highlight-symbol auto-compile packed anaconda-mode pythonic f dash s aggressive-indent adaptive-wrap ace-window ace-link ace-jump-helm-line helm avy helm-core async ac-ispell auto-complete popup color-theme-sanityinc-tomorrow))))
-  (custom-set-faces
-   ;; custom-set-faces was added by Custom.
-   ;; If you edit it by hand, you could mess it up, so be careful.
-   ;; Your init file should contain only one such instance.
-   ;; If there is more than one, they won't work right.
-   )
-  )
+      ("~/Dropbox/Txt/inbox.txt" "~/Dropbox/Txt/todo.txt")))))
+
+
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(org-agenda-files (quote ("~/Dropbox/Txt/todo.txt")))
+ '(package-selected-packages
+   (quote
+    (company-auctex auctex-latexmk auctex helm-themes helm-swoop helm-pydoc helm-projectile helm-mode-manager helm-gitignore helm-flx helm-descbinds helm-css-scss helm-company helm-c-yasnippet helm-ag ace-jump-helm-line color-theme-sanityinc-tomorrow yapfify xterm-color ws-butler winum which-key wgrep web-mode volatile-highlights vi-tilde-fringe uuidgen use-package unfill toc-org tagedit super-save spaceline smex smeargle slim-mode shell-pop scss-mode sass-mode restart-emacs rainbow-delimiters pyvenv pytest pyenv-mode py-isort pug-mode popwin pip-requirements persp-mode pcre2el paradox orgit org-projectile org-present org-pomodoro org-download open-junk-file neotree mwim multi-term mu4e-maildirs-extension mu4e-alert move-text mmm-mode markdown-toc magit-gitflow macrostep lorem-ipsum live-py-mode linum-relative link-hint less-css-mode ivy-hydra info+ indent-guide hy-mode hungry-delete htmlize hl-todo highlight-parentheses highlight-numbers highlight-indentation hide-comnt help-fns+ helm-make google-translate golden-ratio gnuplot gitignore-mode gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link git-gutter-fringe git-gutter-fringe+ gh-md fuzzy flycheck-pos-tip flx-ido fill-column-indicator fancy-battery eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-magit evil-lisp-state evil-indent-plus evil-iedit-state evil-exchange evil-escape evil-ediff evil-args evil-anzu eval-sexp-fu eshell-z eshell-prompt-extras esh-help emmet-mode elisp-slime-nav ein dumb-jump diff-hl define-word cython-mode counsel-projectile company-web company-statistics company-anaconda column-enforce-mode clean-aindent-mode auto-yasnippet auto-highlight-symbol auto-compile aggressive-indent adaptive-wrap ace-window ace-link ac-ispell))))
