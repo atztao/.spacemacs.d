@@ -9,7 +9,7 @@ values."
   (setq-default
    ;; Base distribution to use. This is a layer contained in the directory
    ;; `+distribution'. For now available distributions are `spacemacs-base'
-   ;; or `spacemacs'. (default 'spacemacs)
+   ;; or `spacemacs'. (defaul奇异恩典t 'spacemacs)
    dotspacemacs-distribution 'spacemacs
    ;; Lazy installation of layers (i.e. layers are installed only when a file
    ;; with a supported type is opened). Possible values are `all', `unused'
@@ -47,6 +47,7 @@ values."
      git
      markdown
      org
+     ;;smex
      (shell :variables
             shell-default-height 30
             shell-default-position 'bottom)
@@ -142,17 +143,17 @@ values."
                          ;;default
                          ;;sanityinc-solarized-dark
                          ;;zenburn
-                         ;;sanityinc-tomorrow-blue
+                         ;;sanityinc-tomorrow-night
                          ;;sanityinc-tomorrow-eighties
                          sanityinc-tomorrow-bright
-                         ;;spacemacs-dark
+                         spacemacs-dark
                          spacemacs-light
                          )
    ;; If non nil the cursor color matches the state color in GUI Emacs.
    dotspacemacs-colorize-cursor-according-to-state t
    ;; Default font, or prioritized list of fonts. `powerline-scale' allows to
    ;; quickly tweak the mode-line size to make separators look not too crappy.
-   dotspacemacs-default-font '("Inconsolata"
+   dotspacemacs-default-font '("Monaco"
                                :size 16
                                :weight normal
                                :width normal
@@ -202,14 +203,14 @@ values."
    ;; Size (in MB) above which spacemacs will prompt to open the large file
    ;; literally to avoid performance issues. Opening a file literally means that
    ;; no major mode or minor modes are active. (default is 1)
-   dotspacemacs-large-file-size 1
+   dotspacemacs-large-file-size 10
    ;; Location where to auto-save files. Possible values are `original' to
    ;; auto-save the file in-place, `cache' to auto-save the file to another
    ;; file stored in the cache directory and `nil' to disable auto-saving.
    ;; (default 'cache)
    dotspacemacs-auto-save-file-location 'cache
    ;; Maximum number of rollback slots to keep in the cache. (default 5)
-   dotspacemacs-max-rollback-slots 5
+   dotspacemacs-max-rollback-slots 100
    ;; If non nil, `helm' will try to minimize the space it uses. (default nil)
    dotspacemacs-helm-resize nil
    ;; if non nil, the helm header is hidden when there is only one source.
@@ -338,8 +339,6 @@ This is the place where most of your configurations should be done. Unless it is
 explicitly specified that a variable should be set before a package is loaded,
 you should place your code here."
 
-  (set-frame-parameter nil 'alpha '(90 . 100))
-
 
   ;;flyspell-----------------------------------
   ;;apt install aspell
@@ -365,10 +364,6 @@ you should place your code here."
         auto-save-timeout 7              ; number of seconds idle time before auto-save (default: 30)
         auto-save-interval 200            ; number of keystrokes between auto-saves (default: 300)
         )
-
-  (super-save-mode +1)
-  ;; ;; (setq auto-save-default nil)
-  (setq super-save-auto-save-when-idle t)
 
 
   ;; (set-background-color "#000000")
@@ -437,40 +432,6 @@ you should place your code here."
   ;;  nil 0 nil "_NET_WM_STATE" 32
   ;;  '(2 "_NET_WM_STATE_FULLSCREEN" 0))
   ;; )
-
-  (defun switch-full-screen (&optional ii)
-    (interactive "p")
-    (if (> ii 0)
-        (shell-command "wmctrl -r :ACTIVE: -badd,fullscreen"))
-    (if (< ii 0)
-        (shell-command "wmctrl -r :ACTIVE: -bremove,fullscreen"))
-    (if (equal ii 0)
-        (shell-command "wmctrl -r :ACTIVE: -btoggle,fullscreen")))
-
-  ;; Use xsel to access the X clipboard apt install xsel
-  ;; From https://hugoheden.wordpress.com/2009/03/08/copypaste-with-emacs-in-terminal/
-  (unless window-system
-    (when (getenv "DISPLAY")
-      ;; Callback for when user cuts
-      (defun xsel-cut-function (text &optional push)
-        ;; Insert text to temp-buffer, and "send" content to xsel stdin
-        (with-temp-buffer
-          (insert text)
-          ;; Use primary the primary selection
-          ;; mouse-select/middle-button-click
-          (call-process-region (point-min) (point-max) "xsel" nil 0 nil "--primary" "--input")))
-      ;; Call back for when user pastes
-      (defun xsel-paste-function()
-        ;; Find out what is current selection by xsel. If it is different
-        ;; from the top of the kill-ring (car kill-ring), then return
-        ;; it. Else, nil is returned, so whatever is in the top of the
-        ;; kill-ring will be used.
-        (let ((xsel-output (shell-command-to-string "xsel --primary --output")))
-          (unless (string= (car kill-ring) xsel-output)
-            xsel-output)))
-      ;; Attach callbacks to hooks
-      (setq interprogram-cut-function 'xsel-cut-function)
-      (setq interprogram-paste-function 'xsel-paste-function)))
 
 
   ;;Setting For Vim Mode
@@ -742,6 +703,9 @@ This function is called at the very end of Spacemacs initialization."
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(org-agenda-files (quote ("~/Dropbox/Txt/todo.txt")))
+ '(org-agenda-done ((t (:foreground "Gray" :weight normal :strike-through t))))
+ '(org-done ((t (:foreground "Gray" :weight extra-bold :strike-through t))))
+ '(org-headline-done ((((class color) (min-colors 16) (background dark)) (:foreground "#999" :strike-through t))))
  '(package-selected-packages
    (quote
-    (company-auctex auctex-latexmk auctex helm-themes helm-swoop helm-pydoc helm-projectile helm-mode-manager helm-gitignore helm-flx helm-descbinds helm-css-scss helm-company helm-c-yasnippet helm-ag ace-jump-helm-line color-theme-sanityinc-tomorrow yapfify xterm-color ws-butler winum which-key wgrep web-mode volatile-highlights vi-tilde-fringe uuidgen use-package unfill toc-org tagedit super-save spaceline smex smeargle slim-mode shell-pop scss-mode sass-mode restart-emacs rainbow-delimiters pyvenv pytest pyenv-mode py-isort pug-mode popwin pip-requirements persp-mode pcre2el paradox orgit org-projectile org-present org-pomodoro org-download open-junk-file neotree mwim multi-term mu4e-maildirs-extension mu4e-alert move-text mmm-mode markdown-toc magit-gitflow macrostep lorem-ipsum live-py-mode linum-relative link-hint less-css-mode ivy-hydra info+ indent-guide hy-mode hungry-delete htmlize hl-todo highlight-parentheses highlight-numbers highlight-indentation hide-comnt help-fns+ helm-make google-translate golden-ratio gnuplot gitignore-mode gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link git-gutter-fringe git-gutter-fringe+ gh-md fuzzy flycheck-pos-tip flx-ido fill-column-indicator fancy-battery eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-magit evil-lisp-state evil-indent-plus evil-iedit-state evil-exchange evil-escape evil-ediff evil-args evil-anzu eval-sexp-fu eshell-z eshell-prompt-extras esh-help emmet-mode elisp-slime-nav ein dumb-jump diff-hl define-word cython-mode counsel-projectile company-web company-statistics company-anaconda column-enforce-mode clean-aindent-mode auto-yasnippet auto-highlight-symbol auto-compile aggressive-indent adaptive-wrap ace-window ace-link ac-ispell))))
+    (web-mode pug-mode persp-mode mu4e-alert move-text live-py-mode link-hint info+ hy-mode dash-functional highlight-numbers fill-column-indicator evil-surround evil-nerd-commenter evil-escape eshell-prompt-extras esh-help ein websocket deferred dumb-jump cython-mode ace-link iedit smartparens evil goto-chg flycheck yasnippet company helm helm-core markdown-mode projectile org-plus-contrib magit magit-popup git-commit async hydra s yapfify xterm-color ws-butler with-editor winum which-key volatile-highlights vi-tilde-fringe uuidgen use-package unfill undo-tree toc-org tagedit super-save spaceline smex smeargle slim-mode skewer-mode shell-pop scss-mode sass-mode restart-emacs request-deferred rainbow-delimiters pyvenv pytest pyenv-mode py-isort popwin pkg-info pip-requirements pcre2el parent-mode paradox orgit org-projectile org-present org-pomodoro org-download open-junk-file neotree mwim multi-term mmm-mode markdown-toc magit-gitflow macrostep lorem-ipsum linum-relative less-css-mode indent-guide hungry-delete htmlize ht hl-todo highlight-parentheses highlight-indentation hide-comnt help-fns+ helm-themes helm-swoop helm-pydoc helm-projectile helm-mode-manager helm-make helm-gitignore helm-flx helm-descbinds helm-css-scss helm-company helm-c-yasnippet helm-ag google-translate golden-ratio gnuplot gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link git-gutter-fringe git-gutter-fringe+ gh-md fuzzy flycheck-pos-tip flx-ido fancy-battery eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-search-highlight-persist evil-numbers evil-mc evil-matchit evil-magit evil-lisp-state evil-indent-plus evil-iedit-state evil-exchange evil-ediff evil-args evil-anzu eval-sexp-fu eshell-z emmet-mode elisp-slime-nav diff-hl define-word company-web company-statistics company-auctex company-anaconda column-enforce-mode color-theme-sanityinc-tomorrow clean-aindent-mode auto-yasnippet auto-highlight-symbol auto-compile auctex-latexmk aggressive-indent adaptive-wrap ace-window ace-jump-helm-line ac-ispell))))
