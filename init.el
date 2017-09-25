@@ -61,8 +61,8 @@ values."
    ;; packages, then consider creating a layer. You can also put the
    ;; configuration in `dotspacemacs/user-config'.
    dotspacemacs-additional-packages '(
-                                      ;;evil-mu4e
-                                      super-save
+                                      evil-mu4e
+                                      ;;super-save
                                       )
    ;; A list of packages that cannot be updated.
    dotspacemacs-frozen-packages '()
@@ -144,8 +144,8 @@ values."
                          ;;sanityinc-solarized-dark
                          ;;zenburn
                          ;;sanityinc-tomorrow-night
-                         ;;sanityinc-tomorrow-eighties
                          sanityinc-tomorrow-bright
+                         ;;sanityinc-tomorrow-eighties
                          spacemacs-dark
                          spacemacs-light
                          )
@@ -153,11 +153,11 @@ values."
    dotspacemacs-colorize-cursor-according-to-state t
    ;; Default font, or prioritized list of fonts. `powerline-scale' allows to
    ;; quickly tweak the mode-line size to make separators look not too crappy.
-   dotspacemacs-default-font '("Monaco"
+   dotspacemacs-default-font '("Menlo"
                                :size 16
                                :weight normal
                                :width normal
-                               :powerline-scale 1.1)
+                               :powerline-scale 1.0)
    ;; The leader key
    dotspacemacs-leader-key "SPC"
    ;; The key used for Emacs commands (M-x) (after pressing on the leader key).
@@ -338,7 +338,11 @@ layers configuration.
 This is the place where most of your configurations should be done. Unless it is
 explicitly specified that a variable should be set before a package is loaded,
 you should place your code here."
+  (setq powerline-default-separator nil)
+  (spaceline-compile)
 
+  (add-to-list 'load-path (expand-file-name "lisp" user-emacs-directory))
+  (require 'helm-bookmark)
 
   ;;flyspell-----------------------------------
   ;;apt install aspell
@@ -592,7 +596,7 @@ you should place your code here."
   ;;(require 'notmuch)
   ;;the exact path may differ -- check it
   ;;store link to message if in header view, not to header query
-  ;;(require 'evil-mu4e)
+  (require 'evil-mu4e)
 
   ;; default
   (setq mu4e-maildir "~/Maildir"
@@ -696,6 +700,8 @@ This function is called at the very end of Spacemacs initialization."
      (quote
       ("~/Dropbox/Txt/inbox.txt" "~/Dropbox/Txt/todo.txt")))))
 
+(setq custom-file "/dev/null")
+(load custom-file :noerror)
 
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
@@ -706,6 +712,4 @@ This function is called at the very end of Spacemacs initialization."
  '(org-agenda-done ((t (:foreground "Gray" :weight normal :strike-through t))))
  '(org-done ((t (:foreground "Gray" :weight extra-bold :strike-through t))))
  '(org-headline-done ((((class color) (min-colors 16) (background dark)) (:foreground "#999" :strike-through t))))
- '(package-selected-packages
-   (quote
-    (web-mode pug-mode persp-mode mu4e-alert move-text live-py-mode link-hint info+ hy-mode dash-functional highlight-numbers fill-column-indicator evil-surround evil-nerd-commenter evil-escape eshell-prompt-extras esh-help ein websocket deferred dumb-jump cython-mode ace-link iedit smartparens evil goto-chg flycheck yasnippet company helm helm-core markdown-mode projectile org-plus-contrib magit magit-popup git-commit async hydra s yapfify xterm-color ws-butler with-editor winum which-key volatile-highlights vi-tilde-fringe uuidgen use-package unfill undo-tree toc-org tagedit super-save spaceline smex smeargle slim-mode skewer-mode shell-pop scss-mode sass-mode restart-emacs request-deferred rainbow-delimiters pyvenv pytest pyenv-mode py-isort popwin pkg-info pip-requirements pcre2el parent-mode paradox orgit org-projectile org-present org-pomodoro org-download open-junk-file neotree mwim multi-term mmm-mode markdown-toc magit-gitflow macrostep lorem-ipsum linum-relative less-css-mode indent-guide hungry-delete htmlize ht hl-todo highlight-parentheses highlight-indentation hide-comnt help-fns+ helm-themes helm-swoop helm-pydoc helm-projectile helm-mode-manager helm-make helm-gitignore helm-flx helm-descbinds helm-css-scss helm-company helm-c-yasnippet helm-ag google-translate golden-ratio gnuplot gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link git-gutter-fringe git-gutter-fringe+ gh-md fuzzy flycheck-pos-tip flx-ido fancy-battery eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-search-highlight-persist evil-numbers evil-mc evil-matchit evil-magit evil-lisp-state evil-indent-plus evil-iedit-state evil-exchange evil-ediff evil-args evil-anzu eval-sexp-fu eshell-z emmet-mode elisp-slime-nav diff-hl define-word company-web company-statistics company-auctex company-anaconda column-enforce-mode color-theme-sanityinc-tomorrow clean-aindent-mode auto-yasnippet auto-highlight-symbol auto-compile auctex-latexmk aggressive-indent adaptive-wrap ace-window ace-jump-helm-line ac-ispell))))
+ )
