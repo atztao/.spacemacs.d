@@ -150,7 +150,7 @@ values."
                          spacemacs-light
                          )
    ;; If non nil the cursor color matches the state color in GUI Emacs.
-   dotspacemacs-colorize-cursor-according-to-state t
+   dotspacemacs-colorize-cursor-according-to-state nil
    ;; Default font, or prioritized list of fonts. `powerline-scale' allows to
    ;; quickly tweak the mode-line size to make separators look not too crappy.
    dotspacemacs-default-font '("Monaco"
@@ -338,8 +338,8 @@ layers configuration.
 This is the place where most of your configurations should be done. Unless it is
 explicitly specified that a variable should be set before a package is loaded,
 you should place your code here."
-  (setq powerline-default-separator nil)
-  (spaceline-compile)
+  ;; (setq powerline-default-separator nil)
+  ;; (spaceline-compile)
 
   (require 'helm-bookmark)
 
@@ -582,11 +582,23 @@ you should place your code here."
 
   ;;(set-face-attribute 'region nil :foreground "#000000":background "#F0E68C" ) ;;#EEE8D6 F0E68C
 
-  ;;(set-cursor-color "green")
+  (set-cursor-color "green")
   ;;(set-cursor-color "red")
   ;;------------------------------------------------}
 
 
+                                        ;----------------
+                                        ;yasnippet - A template system for Emacs
+                                        ;----------------
+
+  (yas-global-mode 1)
+  ;;(yas-reload-all)
+  ;;(add-hook 'prog-mode-hook #'yas-minor-mode)
+  (setq yas-snippet-dirs "~/.spacemacs.d/snippets/")
+  ;;(setq debug-on-error t)
+
+  (define-key yas-minor-mode-map (kbd "<tab>") nil)
+  (define-key yas-minor-mode-map (kbd "TAB") nil)
 
   ;;------------------------------------------------}
 
@@ -594,11 +606,13 @@ you should place your code here."
   (global-company-mode t)
 
 
-  ;;Python SHOULD SET :export PATH=$HOME/anaconda3/bin:$PATH IN .zshenv
+  ;;Python SHOULD SET :export PATH=$HOME/anaconda3/bin:$PATH IN .zshenv ~/.bash_profile
   ;;(setenv "WORKON_HOME" "/home/zhangtao/anaconda3/")
 
-  (setq python-shell-interpreter "python3"
+  (setq python-shell-interpreter "/home/zhangtao/anaconda3/bin/python3"
         python-shell-interpreter-args "-m IPython --simple-prompt -i")
+
+
 
   ;;-------------------------------END---------------------------------------
   )
