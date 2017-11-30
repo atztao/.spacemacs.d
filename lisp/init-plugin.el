@@ -58,44 +58,43 @@
 ;;   (mapc 'kill-buffer (buffer-list)))
 
 ;; ;;ido-mode--------------------------------
-(require 'ido)
-(ido-mode t)
-(ido-everywhere t)
-(setq ido-file-extensions-order '(".org" ".txt" ))
-(setq ido-use-filename-at-point 'guess)
-(setq ido-file-extensions-order '(".txt" ".org" ".py" ".emacs" ".xml" ".el" ".ini" ".cfg" ".cnf" "" t))
-(setq org-completion-use-ido t)
+;; (require 'ido)
+;; (ido-mode t)
+;; (ido-everywhere t)
+;; (setq ido-file-extensions-order '(".org" ".txt" ))
+;; (setq ido-use-filename-at-point 'guess)
+;; (setq ido-file-extensions-order '(".txt" ".org" ".py" ".emacs" ".xml" ".el" ".ini" ".cfg" ".cnf" "" t))
+;; (setq org-completion-use-ido t)
 
-(defun ido-bookmark-jump (bname)
-  "*Switch to bookmark interactively using `ido'."
-  (interactive (list (ido-completing-read "Bookmark: " (bookmark-all-names) nil t)))
-  (bookmark-jump bname))
-(global-set-key (kbd "C-x r l") 'ido-bookmark-jump)
-;;(global-set-key (kbd "C-x C-b") 'ido-switch-buffer)
+;; (defun ido-bookmark-jump (bname)
+;;   "*Switch to bookmark interactively using `ido'."
+;;   (interactive (list (ido-completing-read "Bookmark: " (bookmark-all-names) nil t)))
+;;   (bookmark-jump bname))
+;; (global-set-key (kbd "C-x r l") 'ido-bookmark-jump)
+;; ;;(global-set-key (kbd "C-x C-b") 'ido-switch-buffer)
 
-;;(setq ido-separator "\n")
-(setq ido-enable-flex-matching t)
-(setq ido-everywhere t)
-;;(setq max-mini-window-height 0.5)
+;; ;;(setq ido-separator "\n")
+;; (setq ido-enable-flex-matching t)
+;; (setq ido-everywhere t)
+;; ;;(setq max-mini-window-height 0.5)
 
-;;(setq ido-use-virtual-buffers t)
+;; ;;(setq ido-use-virtual-buffers t)
 
-(savehist-mode 1)
-
-
-;; ;;keep a list of recently opened files                                              
+;; ;; ;;keep a list of recently opened files                                              
 
 
-(defun ido-recentf-open ()
-  "Use `ido-completing-read' to find a recent file."
-  (interactive)
-  (if (find-file (ido-completing-read "Find recent file: " recentf-list))
-      (message "Opening file...")
-    (message "Aborting")))
+;; (defun ido-recentf-open ()
+;;   "Use `ido-completing-read' to find a recent file."
+;;   (interactive)
+;;   (if (find-file (ido-completing-read "Find recent file: " recentf-list))
+;;       (message "Opening file...")
+;;     (message "Aborting")))
 
-(global-set-key (kbd "C-x C-r") 'ido-recentf-open)
+;; (global-set-key (kbd "C-x C-r") 'ido-recentf-open)
 (setq recentf-max-saved-items 150)
 
+
+(savehist-mode 1)
 
 ;; ;; (require 'flx-ido)
 ;; ;; (flx-ido-mode 1)
@@ -198,7 +197,10 @@
 ;; (setq ad-redefinition-action 'accept)
 
 
+;;Save Recent File
 (require 'recentf)
+(setq recentf-max-saved-items 200
+      recentf-max-menu-items 10)
 (setq recentf-auto-cleanup 'never)
 (recentf-mode 1)
 (setq-default recent-save-file "~/.emacs.d/recentf")
@@ -207,7 +209,14 @@
 (require 'helm-config)
 (require 'helm)
 (helm-mode t)
-;;(helm-recent t)
+;;(helm-recentf t)
+
+(setq helm-mini-default-sources '(helm-source-buffers-list
+                                  helm-source-recentf
+                                  helm-source-bookmarks
+                                  helm-source-buffer-not-found))
+;;empty search words in swoop
+;;(setq helm-swoop-pre-input-function (lambda () ""))
 
 (defadvice helm-display-mode-line (after undisplay-header activate) (setq header-line-format nil))
 (defun helm-display-mode-line (source &optional force) (setq mode-line-format nil))
@@ -224,17 +233,21 @@
       helm-buffers-fuzzy-matching            t
       helm-ff-auto-update-initial-value      t)
 
-;; (global-set-key (kbd "C-x C-f")   #'helm-find-files) 
-;; (global-set-key (kbd "C-x C-r") 'helm-for-files)
-;; (global-set-key (kbd "C-x b") 'helm-mini)
-;; (global-set-key (kbd "C-x C-b") 'helm-mini)
-;; (global-set-key (kbd "C-s")   #'helm-swoop)
+(global-set-key (kbd "C-x C-f")   #'helm-find-files) 
+(global-set-key (kbd "C-x C-r") 'helm-recentf)
+(global-set-key (kbd "C-x b") 'helm-mini)
+(global-set-key (kbd "C-x C-b") 'helm-mini)
+(global-set-key (kbd "C-s")   #'helm-swoop)
 ;;(global-set-key (kbd "M-x")   #'helm-M-x)
 
-;;(global-set-key (kbd "M-y")     #'helm-show-kill-ring)
 
-;; (global-set-key (kbd "M-s /")   #'helm-multi-swoop)
-;; (global-set-key (kbd "M-s /") 'helm-multi-swoop-all)
+(define-key helm-map (kbd "<tab>") 'helm-execute-persistent-action)
+(define-key helm-map (kbd "C-z") 'helm-select-action)
+
+(global-set-key (kbd "M-y")     #'helm-show-kill-ring)
+
+(global-set-key (kbd "M-s /")   #'helm-multi-swoop)
+(global-set-key (kbd "M-s /") 'helm-multi-swoop-all)
 (global-set-key (kbd "M-s a")   #'helm-ag) ;;apt-get install silversearcher-ag
 
 
@@ -246,6 +259,13 @@
 ;; (define-key helm-map (kbd "C-j") 'helm-next-line)
 ;; (define-key helm-map (kbd "C-k") 'helm-previous-line)
 
+;;visual-regexp
+(add-to-list 'load-path "folder-in-which-visual-regexp-files-are-in/") ;; if the files are not already in the load path
+(require 'visual-regexp)
+(define-key global-map (kbd "C-c r") 'vr/replace)
+(define-key global-map (kbd "C-c q") 'vr/query-replace)
+;; if you use multiple-cursors, this is for you:
+(define-key global-map (kbd "C-c m") 'vr/mc-mark)
 ;;--------------------------multilple-cursors
 (require 'multiple-cursors)
 (global-set-key (kbd "C-S-c C-S-c") 'mc/edit-lines)
@@ -290,31 +310,39 @@
 (require 'yasnippet)
 (yas-global-mode 1)
 
-;; (yas-reload-all)
-;; (add-hook 'prog-mode-hook #'yas-minor-mode)
-
+;;(yas-reload-all)
+;;(add-hook 'prog-mode-hook #'yas-minor-mode)
 (setq yas-snippet-dirs "~/.emacs.d/snippets/")
 ;;(setq debug-on-error t)
+
+(define-key yas-minor-mode-map (kbd "<tab>") nil)
+(define-key yas-minor-mode-map (kbd "TAB") nil)
+
+;; Bind `SPC' to `yas-expand' when snippet expansion available (it
+;; will still call `self-insert-command' otherwise).
+(define-key yas-minor-mode-map (kbd "SPC") yas-maybe-expand)
+;; Bind `C-c y' to `yas-expand' ONLY.
+(define-key yas-minor-mode-map (kbd "C-c y") #'yas-expand)
 
 ;----------------
 ;auto-complete - An Intelligent auto-completion extension for Emacs
 ;----------------
-(require 'popup)
-(require 'auto-complete-config)
-(add-to-list 'ac-dictionary-directories "~/.emacs.d/elpa/auto-complete/dict")
-(ac-config-default)
+;; (require 'popup)
+;; (require 'auto-complete-config)
+;; (add-to-list 'ac-dictionary-directories "~/.emacs.d/elpa/auto-complete/dict")
+;; (ac-config-default)
 
-(defun my:ac-c-headers-init ()
-  (require 'auto-complete-c-headers)
-  (add-to-list 'ac-sources 'ac-source-c-headers))
+;; (defun my:ac-c-headers-init ()
+;;   (require 'auto-complete-c-headers)
+;;   (add-to-list 'ac-sources 'ac-source-c-headers))
 
-(add-hook 'c++-mode-hook 'my:ac-c-headers-init)
-(add-hook 'c-mode-hook 'my:ac-c-headers-init)
+;; (add-hook 'c++-mode-hook 'my:ac-c-headers-init)
+;; (add-hook 'c-mode-hook 'my:ac-c-headers-init)
 
-;; auto-completion with snippets
-(setq-default dotspacemacs-configuration-layers
-              '((auto-completion :variables
-                                 auto-completion-enable-snippets-in-popup t)))
+;; ;; auto-completion with snippets
+;; (setq-default dotspacemacs-configuration-layers
+;;               '((auto-completion :variables
+;; 				 auto-completion-enable-snippets-in-popup t)))
 
 ;;(add-to-list 'ac-modes 'org-mode)
 ;;(ac-set-trigger-key "TAB")
@@ -351,5 +379,12 @@
 ;;smartparens
 (require 'smartparens-config)
 (add-hook 'js-mode-hook #'smartparens-mode)
+
+(add-hook 'after-init-hook 'global-company-mode)
+
+;; (defun my/python-mode-hook ()
+;;   (add-to-list 'company-backends 'company-jedi))
+
+;; (add-hook 'python-mode-hook 'my/python-mode-hook)
 
 (provide 'init-plugin)

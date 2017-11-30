@@ -6,16 +6,19 @@
  '(org-agenda-done ((t (:foreground "Gray" :weight normal :strike-through t))))
  '(org-done ((t (:foreground "Gray" :weight extra-bold :strike-through t))))
  '(org-headline-done ((((class color) (min-colors 16) (background dark)) (:foreground "#999" :strike-through t))))
- ;; '(org-todo ((t (:foreground "Red" :weight extra-bold :strike-through nil))))
- ;; '(font-lock-keyword-face ((t (:foreground "#ff54ff" :weight extra-bold ))))
- ;; '(font-lock-comment-face ((t (:foreground "#969896" :weight normal ))))
+  '(org-todo ((t (:foreground "Red" :weight extra-bold :strike-through nil))))
+  ;;'(font-lock-keyword-face ((t (:foreground "#ff54ff" :weight extra-bold ))))
+  '(font-lock-comment-face ((t (:foreground "#969896" :weight normal ))))
  ;; '(font-lock-doc-face ((t (:foreground "#af5f00" :weight normal ))))
- ;; '(font-lock-string-face ((t (:foreground "#af5f00" :weight normal ))))
+  '(font-lock-string-face ((t (:foreground "#af5f00" :weight normal ))))
  ;; '(font-lock-variable-name-face ((t (:foreground "#af5f00" :weight normal ))))
 
  ;; '(minibuffer-prompt ((t (:foreground "Magenta" :weight extra-bold))))
 
  ;;'(term ((t (:foreground "#32cd32"))))
+
+
+  
  )
 
 

@@ -30,6 +30,7 @@
 ;; (require 'org)
 (setq org-list-description-max-indent 5)
 (setq org-adapt-indentation nil)
+;;(org-indent-mode 1)
 
 (setq org-latex-images-centered t)
 (setq org-startup-xindented t)
@@ -215,15 +216,15 @@ truncate-lines nil)))
 ;; (setq org-crypt-key nil)
 
 ;; use org-bullets-mode for utf8 symbols as org bullets
-;; (require 'org-bullets)
-;; ;; (setq org-ellipsis "+")
-;; (setq org-bullets-bullet-LIST '("•"))
+;;(require 'org-bullets)
+;; (setq org-ellipsis "+")
+;;(setq org-bullets-bullet-LIST '("•"))
 
 
 ;; ;; make available "org-bullet-face" such that I can control the font size individually
 ;; (setq org-bullets-face-name (quote org-bullet-face))
 ;; (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1)))
-;; (setq org-bullets-bullet-list '("•"))
+;; (setq org-bullets-bullet-list '(" "))
 
 
 (setq org-publish-project-alist

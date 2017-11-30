@@ -239,8 +239,8 @@
 ;; }}
 
 (require 'evil-mu4e)
-;; (define-key helm-map (kbd "C-j") 'helm-next-line)
-;; (define-key helm-map (kbd "C-k") 'helm-previous-line)
+(define-key helm-map (kbd "C-j") 'helm-next-line)
+(define-key helm-map (kbd "C-k") 'helm-previous-line)
 (loop for (mode . state) in '((el-get-package-menu-mode . emacs)
                               (dired-mode . emacs)
                               (wdired-mode . normal))

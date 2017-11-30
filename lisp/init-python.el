@@ -28,82 +28,11 @@
 ;----------------
 ;python+c languge
 ;----------------
-
-(elpy-enable)
-(elpy-use-ipython)
-
-;;(setq py-python-command "/usr/bin/python2")
-(setq py-python-command "/usr/bin/python3")
-;;we should install ipython
-(add-to-list 'load-path "~/.emacs.d/elpa/python-mode")
-(require 'python-mode)
-
-;; (add-hook 'python-mode-hook 'jedi:setup)
-;; (setq jedi:setup-keys t)                      ; optional
-;; (setq jedi:complete-on-dot t)                 ; optional
-
-;;jupyter----------------------------------------------
-(require 'ein)
-(require 'ein-loaddefs)
-(require 'ein-notebook)
-(require 'ein-subpackages)
-
-;;(setq ein:jupyter-default-server-command "/usr/local/bin/jupyter")
-(setq ein:jupyter-default-server-command "~/anaconda3/bin/jupyter")
-(setq ein:jupyter-server-args (list "--no-browser"))
-
-		  
-;; (add-hook 'python-mode-hook 'elpy-mode)
-;; (with-eval-after-load 'elpy
-;;   (remove-hook 'elpy-modules 'elpy-module-flymake)
-;;   (add-hook 'elpy-mode-hook 'elpy-rpc-python-command "python3")
-;;   (add-hook 'elpy-mode-hook 'flycheck-mode)
-;;   (add-hook 'elpy-mode-hook 'elpy-use-ipython)
-;;   (add-hook 'elpy-mode-hook 'py-autopep8-enable-on-save))
-
-(setq elpy-rpc-backend "jedi")
-
-(setq python-shell-completion-native-enable nil)
-
-(elpy-enable)
-(elpy-use-ipython)
-
-
-(with-eval-after-load 'python
-  (defun python-shell-completion-native-try ()
-    "Return non-nil if can trigger native completion."
-    (let ((python-shell-completion-native-enable t)
-	  (python-shell-completion-native-output-timeout
-           python-shell-completion-native-try-output-timeout))
-      (python-shell-completion-native-get-completions
-       (get-buffer-process (current-buffer))
-       nil "_"))))
-
 (require 'cl-lib)
 (defadvice save-buffers-kill-emacs (around no-query-kill-emacs activate)
   "Prevent annoying \"Active processes exist\" query when you quit Emacs."
   (cl-letf (((symbol-function #'process-list) (lambda ())))
     ad-do-it))
-
-(when (require 'flycheck nil t)
-  (setq elpy-modules (delq 'elpy-module-flymake elpy-modules))
-  (add-hook 'elpy-mode-hook 'flycheck-mode))
-(add-hook 'after-init-hook #'global-flycheck-mode)
-
-(setq elpy-rpc-python-command "python3")
-(setq python-shell-interpreter "python3")
-;; (setq elpy-rpc-python-command "python2")
-;; (setq python-shell-interpreter "python2")
-;;(elpy-use-ipython "ipython3")
-
-
-;;apt-get install ipython then M-x edit-abbrevs
-;;(require 'ipython)
-;;(setq-default py-shell-name "ipython")
-
-;;pip install autopep8
-(require 'py-autopep8)
-(add-hook 'elpy-mode-hook 'py-autopep8-enable-on-save)
 
 ;; (require 'tramp)
 ;; (add-to-list 'Info-default-directory-list "~/.emacs.d/tramp/info/")
