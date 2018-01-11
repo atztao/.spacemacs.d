@@ -37,6 +37,8 @@
 (add-to-list 'org-latex-packages-alist
              '("" "xcolor" t))
 (add-to-list 'org-latex-packages-alist
+             '("" "caption" t))
+(add-to-list 'org-latex-packages-alist
              '("" "fontspec" t))
 (add-to-list 'org-latex-packages-alist
              '("" "indentfirst" t))
@@ -179,6 +181,7 @@ rulesepcolor= \\color{ red!20!green!20!blue!20}
 \\usepackage[none]{hyphenat}
 \\usepackage[abs]{overpic}
 
+\\usepackage{caption}
 [NO-DEFAULT-PACKAGES]
 [PACKAGES]
 

@@ -1,15 +1,8 @@
-;; -*- mode: emacs-lisp -*-
-;; This file is loaded by Spacemacs at startup.
-;; It must be stored in your home directory.
-
-(defun dotspacemacs/layers ()
-  "Configuration Layers declaration.
-You should not put any user code in this function besides modifying the variable
-values."
+;; You should not put any user code in this function besides modifying the variable values."
   (setq-default
    ;; Base distribution to use. This is a layer contained in the directory
    ;; `+distribution'. For now available distributions are `spacemacs-base'
-   ;; or `spacemacs'. (defaul奇异恩典t 'spacemacs)
+   ;; or `spacemacs'. (default 'spacemacs)
    dotspacemacs-distribution 'spacemacs
    ;; Lazy installation of layers (i.e. layers are installed only when a file
    ;; with a supported type is opened). Possible values are `all', `unused'
@@ -31,6 +24,7 @@ values."
    ;; List of configuration layers to load.
    dotspacemacs-configuration-layers
    '(
+     lua
      ;; ----------------------------------------------------------------
      ;; Example of useful layers you may want to use right away.
      ;; Uncomment some layer names and press <SPC f e R> (Vim style) or
@@ -61,7 +55,8 @@ values."
    ;; packages, then consider creating a layer. You can also put the
    ;; configuration in `dotspacemacs/user-config'.
    dotspacemacs-additional-packages '(
-                                      evil-mu4e
+                                      ;;company-jedi
+                                      ;;evil-mu4e
                                       ;;super-save
                                       )
    ;; A list of packages that cannot be updated.
@@ -78,11 +73,11 @@ values."
    ;; `used-but-keep-unused' installs only the used packages but won't uninstall
    ;; them if they become unused. `all'(setq python-shell-interpreter-args "") installs *all* packages supported by
    ;; Spacemacs and never uninstall them. (default is `used-only')
-   dotspacemacs-install-packages 'used-only))
+   dotspacemacs-install-packages 'used-only)
 
 (defun dotspacemacs/init ()
   "Initialimu4e-maildirs-extensionzation funcmu4e-maildirs-extensiontion.
-This function is called at thhi Function term=bold       ctermfg=White guifg=White                           
+This function is called at thhi Function term=bold       ctermfg=White guifg=White
 e very startup of Spacemacs initialization
 before layers configuration.
 You should not put any user code in there besides modifying the variable
@@ -140,20 +135,16 @@ values."
    ;; Press <SPC> T n to cycle to the next theme in the list (works great
    ;; with 2 themes variants, one dark and one light)
    dotspacemacs-themes '(
-                         ;;default
-                         ;;sanityinc-solarized-dark
                          ;;zenburn
-                         ;;sanityinc-tomorrow-night
                          sanityinc-tomorrow-bright
-                         ;;sanityinc-tomorrow-eighties
+                         solarized-dark
                          spacemacs-dark
-                         spacemacs-light
                          )
    ;; If non nil the cursor color matches the state color in GUI Emacs.
-   dotspacemacs-colorize-cursor-according-to-state nil
+   dotspacemacs-colorize-cursor-according-to-state t
    ;; Default font, or prioritized list of fonts. `powerline-scale' allows to
    ;; quickly tweak the mode-line size to make separators look not too crappy.
-   dotspacemacs-default-font '("Monaco"
+   dotspacemacs-default-font '("Monaco For Powerline"
                                :size 16
                                :weight normal
                                :width normal
@@ -173,8 +164,7 @@ values."
    dotspacemacs-major-mode-leader-key ","
    ;; Major mode leader key accessible in `emacs state' and `insert state'.
    ;; (default "C-M-m")
-   dotspacemacs-major-mode-emacs-leader-key "C-M-m"
-   ;; These variables control whether separate commands are bound in the GUI to
+   ;;hether separate commands are bound in the GUI to
    ;; the key pairs C-i, TAB and C-m, RET.
    ;; Setting it to a non-nil value, allows for separate commands under <C-i>
    ;; and TAB or <C-m> and RET.
@@ -338,15 +328,17 @@ layers configuration.
 This is the place where most of your configurations should be done. Unless it is
 explicitly specified that a variable should be set before a package is loaded,
 you should place your code here."
-  ;; (setq powerline-default-separator nil)
-  ;; (spaceline-compile)
+  (setq ns-use-srgb-colorspace nil)
+
+  (setq powerline-default-separator nil)
+  (spaceline-compile)
 
   (require 'helm-bookmark)
-
+  
   ;;flyspell-----------------------------------
   ;;apt install aspell
   ;; (setq-default ispell-program-name "aspell")
-  ;; (ispell-change-dictionary "american" t)  
+  ;; (ispell-change-dictionary "american" t)
 
   ;;Backup-----------------------------------------
   (setq auto-save-interval 20)
@@ -369,12 +361,20 @@ you should place your code here."
         )
 
 
-  ;; (set-background-color "#000000")
-  ;; (set-foreground-color "#32cd32")
+  (set-background-color "#000000")
+  (set-foreground-color "#32cd32")
   ;;Some Configuration For Face
 
+  (make-face-bold 'isearch)
+  (make-face-bold 'lazy-highlight)
+  (set-face-foreground 'isearch "#000000")
+  (set-face-background 'isearch "#ffff99")
+  (set-face-foreground 'lazy-highlight "#000000")
+  (set-face-background 'lazy-highlight "#ffff99")
+
+
   (setq frame-title-format
-        (list ;;'(:eval (projectile-project-name)) 
+        (list ;;'(:eval (projectile-project-name))
          "(●—●) I'm Here @ "
          '(buffer-file-name "%f" (dired-directory dired-directory "%b"))))
 
@@ -382,8 +382,8 @@ you should place your code here."
 
   (setq shell-file-name "/bin/zsh")
 
-  ;;(set-face-attribute 'mode-line nil  :height 70)
-  ;;(set-face-attribute 'mode-line-inactive nil  :height 70)
+  (set-face-attribute 'mode-line nil :box nil :height 92)
+  (set-face-attribute 'mode-line-inactive nil :box nil  :height 92)
 
   ;;Chinese Fonts
   (set-fontset-font "fontset-default" 'han "Source Han Sans CN")
@@ -395,7 +395,7 @@ you should place your code here."
   sentence-end-double-space nil         ;;设置 sentence-end 可以识别中文标点。不用在 fill 时在句号后插入两个空格。
 
   ;;(setq default-directory "C:/Users/zhangtao/Dropbox/")
-  ;;(cd "~/emacs/home/")  
+  ;;(cd "~/emacs/home/")
   ;;(setq default-directory "~/Dropbox/")
 
   (add-hook 'text-mode-hook 'auto-fill-mode)
@@ -423,17 +423,7 @@ you should place your code here."
   (eval-after-load "linum"
     '(set-face-attribute 'linum nil :height 100))
 
-  (set-display-table-slot standard-display-table 'wrap ?\ ) 
-
-  ;;Fullscreen
-  ;; (global-set-key [f11] 'my-fullscreen) 
-  ;; (defun my-fullscreen ()
-  ;;   (interactive)
-  ;; (x-send-client-message
-  ;;  nil 0 nil "_NET_WM_STATE" 32
-  ;;  '(2 "_NET_WM_STATE_FULLSCREEN" 0))
-  ;; )
-
+  (set-display-table-slot standard-display-table 'wrap ?\ )
 
   ;;Setting For Vim Mode
   ;;{------------------------------------------------
@@ -443,127 +433,15 @@ you should place your code here."
   (setq evil-escape-excluded-major-modes '(dired-mode))
   (setq-default evil-escape-delay 0.2)
 
-  ;;Diffrent Color With Diffrent Mode
-  ;; (setq-default
-  ;;  evil-normal-state-tag (propertize "N" 'face '((:background "green" :foreground "black")))
-  ;;  evil-emacs-state-tag (propertize "E" 'face '((:background "orange" :foreground "black")))
-  ;;  evil-insert-state-tag (propertize "I" 'face '((:background "red")))
-  ;;  evil-motion-state-tag (propertize "M" 'face '((:background "blue")))
-  ;;  evil-visual-state-tag (propertize "V" 'face '((:background "grey80" :foreground "cyan")))
-  ;;  evil-operator-state-tag (propertize "O" 'face '((:background "purple"))))
-
   ;;-----------------------------------------------}
 
   ;;Org-Mode
   ;;{------------------------------------------------
 
-  (defun my/org-mode-hook ()
-    "Stop the org-level headers from increasing in height relative to the other text."
-    (dolist (face '(org-level-1
-                    org-level-2
-                    org-level-3
-                    org-level-4
-                    org-level-5))
-      (set-face-attribute face nil :weight 'semi-bold :height 1.0)))
+  (push "~/.spacemacs.d/lisp" load-path)
+  (require 'init-org)
+  (require 'init-org-pdf)
 
-  (add-hook 'org-mode-hook 'my/org-mode-hook)
-
-  (setq org-list-description-max-indent 5)
-  (setq org-adapt-indentation nil)
-
-  (setq org-latex-images-centered t)
-  (setq org-startup-xindented t)
-
-  (setq org-log-done 'time)
-  ;;(setq org-log-done 'note)
-  (setq org-agenda-skip-scheduled-if-done t)
-  (setq org-agenda-skip-deadline-if-done t)
-
-  (setq org-use-speed-commands t)
-
-  (setq org-todo-state-tags-triggers
-        '(("CANCELLED" ("ARCHIVE" . t)))) 
-  ;;export image width
-  (setq org-image-actual-width 100)
-  ;;Auto Fill
-  (add-hook 'text-mode-hook 'turn-on-auto-fill)
-
-  (add-hook 'hack-local-variables-hook (lambda () (setq truncate-lines nil)))
-  (add-hook 'org-mode-hook   
-            (lambda () (setq truncate-lines nil)))  
-
-
-  ;;(add-hook 'org-mode-hook (lambda () (variable-pitch-mode t)))
-  ;;org-mode display
-  (setq org-fontify-done-headline t)
-
-  ;;the mouse cursor from highlighting lines in the agenda
-  (add-hook 'org-agenda-finalize-hook
-            (lambda () (remove-text-properties
-                        (point-min) (point-max) '(mouse-face t))))
-
-  (setq org-startup-indented t)
-  (setq org-hide-leading-stars t)
-
-  (setq org-confirm-babel-evaluate nil)
-
-  ;;source code
-
-  (org-babel-do-load-languages
-   'org-babel-load-languages
-   '((lisp . t)))
-
-  (org-babel-do-load-languages
-   'org-babel-load-languages
-   '((python . t)))
-
-  (org-babel-do-load-languages
-   'org-babel-load-languages
-   '((latex . t)))
-
-  (setq org-src-fontify-natively t)
-  (setq org-src-tab-acts-natively t)
-
-  (setq org-export-babel-evaluate nil)
-
-  (setq org-use-speed-commands t)
-
-  (defun org-babel-tangle-block()
-    (interactive)
-    (let ((current-prefix-arg '(4)))
-      (call-interactively 'org-babel-tangle)
-      ))
-
-  (setq org-ascii-links-to-notes nil)
-  (setq org-ascii-headline-spacing (quote (1 . 1)))
-
-  ;;Text
-  ;; (add-to-list 'org-emphasis-alist
-  ;;              '("*" (:foreground "red")
-  ;;                ))
-  ;; (setq org-emphasis-alist
-  ;;       (cons '("*" '(:emphasis t :foreground "yellow"))
-  ;;             (delete* "*" org-emphasis-alist :key 'car :test 'equal)))
-  (setq org-hide-emphasis-markers t)
-  (add-to-list 'auto-mode-alist '("\\.txt\\'" . org-mode))
-
-  (define-key global-map "\C-cc" 'org-capture)
-  (setq org-capture-templates
-        ;; `(("t" "Todo" entry (file+headline "~/Dropbox/Txt/todo.txt" "Inbox")
-        ;;    "* TODO %? ")
-        `(("t" "Todo" entry (file+headline "~/Dropbox/Txt/todo.txt" "Inbox")
-           "* TODO  %? ")
-          ("n" "Note" entry (file+headline "~/Dropbox/Txt/inbox.txt" "Note")
-           "* %U\n%? ")
-          ;; ("l" "Link" entry (file+headline "~/Dropbox/Txt/inbox.txt" "Link")
-          ;;  "* %? \n%U\n")
-          ))
-
-  (global-set-key "\C-ca" 'org-agenda)
-  (setq org-export-coding-system 'utf-8)
-  (setq org-agenda-convert-date 'Chinese)
-  (setq diary-file "~/Dropbox/Txt/diary")
-  (setq org-agenda-include-diary t)
   ;;------------------------------------------------}
 
   (global-set-key [f8] 'neotree-toggle)
@@ -573,14 +451,14 @@ you should place your code here."
 
   ;;Some Color
   ;;{------------------------------------------------
-  ;;(make-face-bold 'isearch)
-  ;;(make-face-bold 'lazy-highlight)
-  ;;(set-face-foreground 'isearch "#000000")
-  ;;(set-face-background 'isearch "#ffff00")
-  ;;(set-face-foreground 'lazy-highlight "#000000")
-  ;;(set-face-background 'lazy-highlight "#ffff00")
+  (make-face-bold 'isearch)
+  (make-face-bold 'lazy-highlight)
+  ;; (set-face-foreground 'isearch "#000000")
+  ;; (set-face-background 'isearch "#ffff99")
+  ;; (set-face-foreground 'lazy-highlight "#000000")
+  ;; (set-face-background 'lazy-highlight "#ffff99")
 
-  ;;(set-face-attribute 'region nil :foreground "#000000":background "#F0E68C" ) ;;#EEE8D6 F0E68C
+  ;; (set-face-attribute 'region nil :foreground "#FFFFFF" :background "Grey20" ) ;;#EEE8D6 F0E68C
 
   (set-cursor-color "green")
   ;;(set-cursor-color "red")
@@ -590,28 +468,47 @@ you should place your code here."
                                         ;----------------
                                         ;yasnippet - A template system for Emacs
                                         ;----------------
-
+  (set-background-color "#000000")                                                
+  ;; ;;(set-background-color "ivory")                                             
+  (set-foreground-color "#32cd32")
   (yas-global-mode 1)
-  ;;(yas-reload-all)
-  ;;(add-hook 'prog-mode-hook #'yas-minor-mode)
+  (yas-reload-all)
+  (add-hook 'prog-mode-hook #'yas-minor-mode)
   (setq yas-snippet-dirs "~/.spacemacs.d/snippets/")
   ;;(setq debug-on-error t)
 
   (define-key yas-minor-mode-map (kbd "<tab>") nil)
   (define-key yas-minor-mode-map (kbd "TAB") nil)
 
+
+  ;; Bind `SPC' to `yas-expand' when snippet expansion available (it
+  ;; will still call `self-insert-command' otherwise).
+  (define-key yas-minor-mode-map (kbd "SPC") yas-maybe-expand)
+  ;; Bind `C-c y' to `yas-expand' ONLY.
+  (define-key yas-minor-mode-map (kbd "C-c y") #'yas-expand)
+
   ;;------------------------------------------------}
 
-  ;;Company mode completion in Spacemacs
-  (global-company-mode t)
+  (pyvenv-activate "/home/zhangtao/anaconda3/")
+  (setq ein:jupyter-default-server-command "~/anaconda3/bin/jupyter")
+  (setq ein:jupyter-server-args (list "--no-browser"))
 
+  ;;Company mode completion in Spacemacs
+  ;;(global-company-mode t)
+  ;;(setq  company-idle-delay 0)
+
+  (setq company-minimum-prefix-length 1)
+
+  ;; (defun my/python-mode-hook ()
+  ;;   (add-to-list 'company-backends 'company-jedi))
+
+  ;; (add-hook 'python-mode-hook 'my/python-mode-hook)
 
   ;;Python SHOULD SET :export PATH=$HOME/anaconda3/bin:$PATH IN .zshenv ~/.bash_profile
-  ;;(setenv "WORKON_HOME" "/home/zhangtao/anaconda3/")
+  ;;(setenv "WORKON_HOME" "/home/zato1991/anaconda3/")
 
   (setq python-shell-interpreter "/home/zhangtao/anaconda3/bin/python3"
         python-shell-interpreter-args "-m IPython --simple-prompt -i")
-
 
 
   ;;-------------------------------END---------------------------------------
@@ -645,8 +542,16 @@ This function is called at the very end of Spacemacs initialization."
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(org-agenda-files (quote ("~/Dropbox/Txt/todo.txt")))
  '(org-agenda-done ((t (:foreground "Gray" :weight normal :strike-through t))))
- '(org-done ((t (:foreground "Gray" :weight extra-bold :strike-through t))))
- '(org-headline-done ((((class color) (min-colors 16) (background dark)) (:foreground "#999" :strike-through t))))
- )
+ '(org-agenda-files (quote ("~/Dropbox/Txt/todo.txt")))
+ '(org-done
+   ((t
+     (:foreground "Gray" :weight extra-bold :strike-through t))))
+ '(org-headline-done
+   ((((class color)
+      (min-colors 16)
+      (background dark))
+     (:foreground "#999" :strike-through t))))
+ '(package-selected-packages
+   (quote
+    (powerline spinner org-category-capture alert log4e gntp org-plus-contrib markdown-mode hydra dash-functional parent-mode projectile haml-mode gitignore-mode fringe-helper git-gutter+ git-gutter pos-tip flycheck pkg-info epl flx magit magit-popup git-commit ghub let-alist with-editor smartparens iedit anzu evil goto-chg undo-tree highlight skewer-mode request-deferred websocket request deferred js2-mode simple-httpd diminish web-completion-data company bind-map bind-key yasnippet packed auctex anaconda-mode pythonic f dash s helm avy helm-core async auto-complete popup zenburn-theme yapfify xterm-color ws-butler winum which-key web-mode volatile-highlights vi-tilde-fringe uuidgen use-package unfill toc-org tagedit spaceline smeargle slim-mode shell-pop scss-mode sass-mode restart-emacs rainbow-delimiters pyvenv pytest pyenv-mode py-isort pug-mode popwin pip-requirements persp-mode pcre2el paradox orgit org-projectile org-present org-pomodoro org-download open-junk-file neotree mwim multi-term move-text mmm-mode markdown-toc magit-gitflow macrostep lua-mode lorem-ipsum live-py-mode linum-relative link-hint less-css-mode info+ indent-guide hy-mode hungry-delete htmlize hl-todo highlight-parentheses highlight-numbers highlight-indentation hide-comnt help-fns+ helm-themes helm-swoop helm-pydoc helm-projectile helm-mode-manager helm-make helm-gitignore helm-flx helm-descbinds helm-css-scss helm-company helm-c-yasnippet helm-ag google-translate golden-ratio gnuplot gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link git-gutter-fringe git-gutter-fringe+ gh-md fuzzy flycheck-pos-tip flx-ido fill-column-indicator fancy-battery eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-magit evil-lisp-state evil-indent-plus evil-iedit-state evil-exchange evil-escape evil-ediff evil-args evil-anzu eval-sexp-fu eshell-z eshell-prompt-extras esh-help emmet-mode elisp-slime-nav ein dumb-jump diff-hl define-word cython-mode company-web company-statistics company-auctex company-anaconda column-enforce-mode clean-aindent-mode auto-yasnippet auto-highlight-symbol auto-compile auctex-latexmk aggressive-indent adaptive-wrap ace-window ace-link ace-jump-helm-line ac-ispell))))

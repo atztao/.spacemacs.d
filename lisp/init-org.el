@@ -2,7 +2,6 @@
 ;org-mode
 ;-------------
 
-
 ;; (setq org-todo-keywords
 ;;       '((sequence "☐" "☑")))
 
