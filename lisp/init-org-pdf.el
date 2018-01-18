@@ -8,11 +8,8 @@
 ;; ;;org-mode source code setup in exporting to latex
 ;; (setq org-latex-listings 'minted)
 ;; (add-to-list 'org-latex-packages-alist '("" "minted"))
-;; (setq org-latex-minted-options
-;;       '(("frame" "lines")
 ;; 	("linenos=false")
 ;; 	;;("fontsize" "\\scriptsize")
-;; 	("fontsize" "\\footnotesize")
 ;; 	("xleftmargin" "\\parindent")
 ;; 	("xrightmargin" "0.5cm")
 ;;         ("xleftmargin"  "0.5cm")

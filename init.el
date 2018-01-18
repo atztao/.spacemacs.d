@@ -328,7 +328,10 @@ layers configuration.
 This is the place where most of your configurations should be done. Unless it is
 explicitly specified that a variable should be set before a package is loaded,
 you should place your code here."
-  (setq ns-use-srgb-colorspace nil)
+
+  (define-key evil-normal-state-map (kbd "TAB") 'org-cycle)
+
+  (setq ns-use-srgb-colorspace t)
 
   (setq powerline-default-separator nil)
   (spaceline-compile)
@@ -340,8 +343,34 @@ you should place your code here."
   ;; (setq-default ispell-program-name "aspell")
   ;; (ispell-change-dictionary "american" t)
 
-  ;;Backup-----------------------------------------
-  (setq auto-save-interval 20)
+  ;;Auto Save - Backup-----------------------------------------
+  (defun my-save-if-bufferfilename ()
+    (if (buffer-file-name)
+        (progn
+          (save-buffer)
+          )
+      (message "")
+      )
+    )
+
+  (add-hook 'evil-insert-state-exit-hook 'my-save-if-bufferfilename)
+
+  (defun full-auto-save ()
+    (interactive)
+    (save-excursion
+      (dolist (buf (buffer-list))
+        (set-buffer buf)
+        (if (and (buffer-file-name) (buffer-modified-p))
+            (basic-save-buffer)))))
+  (add-hook 'auto-save-hook 'full-auto-save)
+
+  (defun save-all ()
+    (interactive)
+    (save-some-buffers t))
+  
+  (add-hook 'focus-out-hook 'save-all) 
+
+  (setq auto-save-interval 1)
   (setq auto-save-visited-file-name t)
 
   ;; (setq auto-save-default nil)
@@ -371,6 +400,21 @@ you should place your code here."
   (set-face-background 'isearch "#ffff99")
   (set-face-foreground 'lazy-highlight "#000000")
   (set-face-background 'lazy-highlight "#ffff99")
+
+  (set-face-inverse-video-p 'vertical-border nil)
+
+  ;;(set-face-foreground 'vertical-border "gray")
+  ;; (set-face-background 'vertical-border "#FFFFFF")
+
+
+  (set-face-background 'vertical-border (face-background 'default))
+  (set-face-foreground 'vertical-border "gray37")
+
+  ;; (set-face-background 'vertical-border "#284b54")
+
+  (set-display-table-slot standard-display-table
+                          'vertical-border 
+                          (make-glyph-code ?│))
 
 
   (setq frame-title-format
@@ -447,7 +491,7 @@ you should place your code here."
   (global-set-key [f8] 'neotree-toggle)
   (setq-default neo-smart-open t)
   (setq neo-theme (if (display-graphic-p) 'ascii))
-  (setq-default neo-mode-line-format nil)
+  ;;(setq-default neo-mode-line-format nil)
 
   ;;Some Color
   ;;{------------------------------------------------
