@@ -55,14 +55,16 @@
    ;; packages, then consider creating a layer. You can also put the
    ;; configuration in `dotspacemacs/user-config'.
    dotspacemacs-additional-packages '(
-                                      ;;company-jedi
-                                      ;;evil-mu4e
+                                      company-jedi
+                                      evil-mu4e
                                       ;;super-save
                                       )
    ;; A list of packages that cannot be updated.
    dotspacemacs-frozen-packages '()
    ;; A list of packages that will not be installed and loaded.
    dotspacemacs-excluded-packages '(
+                                    org-projectile
+                                    auto-complete
                                     mu4e-maildirs-extension
                                     org-bullets
                                     )
@@ -110,7 +112,7 @@ values."
    ;; section of the documentation for details on available variables.
    ;; (default 'vim)
    dotspacemacs-editing-style 'vim
-   ;; If non nil output loading progress in `*Messages*' buffer. (default nil)
+   ;; If non nil output loading proress in `*Messages*' buffer. (default nil)
    dotspacemacs-verbose-loading nil
    ;; Specify the startup banner. Default value is `official', it displays
    ;; the official spacemacs logo. An integer value is the index of text
@@ -144,8 +146,8 @@ values."
    dotspacemacs-colorize-cursor-according-to-state t
    ;; Default font, or prioritized list of fonts. `powerline-scale' allows to
    ;; quickly tweak the mode-line size to make separators look not too crappy.
-   dotspacemacs-default-font '("Monaco For Powerline"
-                               :size 16
+   dotspacemacs-default-font '("Inconsolata For Powerline"
+                               :size 18
                                :weight normal
                                :width normal
                                :powerline-scale 1.0)
@@ -328,8 +330,9 @@ layers configuration.
 This is the place where most of your configurations should be done. Unless it is
 explicitly specified that a variable should be set before a package is loaded,
 you should place your code here."
+  (evil-define-key 'normal evil-jumper-mode-map (kbd "TAB") nil)
 
-  (define-key evil-normal-state-map (kbd "TAB") 'org-cycle)
+  ;; (define-key evil-normal-state-map (kbd "TAB") 'org-cycle)
 
   (setq ns-use-srgb-colorspace t)
 
@@ -392,15 +395,9 @@ you should place your code here."
 
   (set-background-color "#000000")
   (set-foreground-color "#32cd32")
+
+  ;;-----------------------------------------------}
   ;;Some Configuration For Face
-
-  (make-face-bold 'isearch)
-  (make-face-bold 'lazy-highlight)
-  (set-face-foreground 'isearch "#000000")
-  (set-face-background 'isearch "#ffff99")
-  (set-face-foreground 'lazy-highlight "#000000")
-  (set-face-background 'lazy-highlight "#ffff99")
-
   (set-face-inverse-video-p 'vertical-border nil)
 
   ;;(set-face-foreground 'vertical-border "gray")
@@ -469,6 +466,38 @@ you should place your code here."
 
   (set-display-table-slot standard-display-table 'wrap ?\ )
 
+  ;;-----------------------------------------------}
+  ;;Copy To System Clipboard apt install xel
+  (defun copy-to-clipboard ()
+    "Copies selection to x-clipboard."
+    (interactive)
+    (if (display-graphic-p)
+        (progn
+          (message "Yanked region to x-clipboard!")
+          (call-interactively 'clipboard-kill-ring-save)
+          )
+      (if (region-active-p)
+          (progn
+            (shell-command-on-region (region-beginning) (region-end) "xsel --clipboard --input")
+            (message "Yanked region to clipboard!")
+            (deactivate-mark))
+        (message "No region active; can't yank to clipboard!")))
+    )
+
+  (defun paste-from-clipboard ()
+    "Pastes from x-clipboard."
+    (interactive)
+    (if (display-graphic-p)
+        (progn
+          (clipboard-yank)
+          (message "graphics active")
+          )
+      (insert (shell-command-to-string "xsel --clipboard --output"))
+      )
+    )
+  (evil-leader/set-key "o y" 'copy-to-clipboard)
+  (evil-leader/set-key "o p" 'paste-from-clipboard)
+
   ;;Setting For Vim Mode
   ;;{------------------------------------------------
   ;;jk Escape All The Mode
@@ -479,12 +508,15 @@ you should place your code here."
 
   ;;-----------------------------------------------}
 
-  ;;Org-Mode
+ 
   ;;{------------------------------------------------
-
+  ;;Org-Mode
   (push "~/.spacemacs.d/lisp" load-path)
   (require 'init-org)
   (require 'init-org-pdf)
+
+  ;;Mu4e
+  ;; (require 'init-email)
 
   ;;------------------------------------------------}
 
@@ -497,10 +529,10 @@ you should place your code here."
   ;;{------------------------------------------------
   (make-face-bold 'isearch)
   (make-face-bold 'lazy-highlight)
-  ;; (set-face-foreground 'isearch "#000000")
-  ;; (set-face-background 'isearch "#ffff99")
-  ;; (set-face-foreground 'lazy-highlight "#000000")
-  ;; (set-face-background 'lazy-highlight "#ffff99")
+  (set-face-foreground 'isearch "#000000")
+  (set-face-background 'isearch "#ffff99")
+  (set-face-foreground 'lazy-highlight "#000000")
+  (set-face-background 'lazy-highlight "#ffff99")
 
   ;; (set-face-attribute 'region nil :foreground "#FFFFFF" :background "Grey20" ) ;;#EEE8D6 F0E68C
 
@@ -509,12 +541,20 @@ you should place your code here."
   ;;------------------------------------------------}
 
 
-                                        ;----------------
-                                        ;yasnippet - A template system for Emacs
-                                        ;----------------
+  (setq default-font-size-pt 10)
+
+  (set-frame-parameter nil 'alpha '(98 . 100))
+
+
   (set-background-color "#000000")                                                
   ;; ;;(set-background-color "ivory")                                             
   (set-foreground-color "#32cd32")
+
+
+  ;;----------------
+  ;;yasnippet - A template system for Emacs
+  ;;----------------
+
   (yas-global-mode 1)
   (yas-reload-all)
   (add-hook 'prog-mode-hook #'yas-minor-mode)
@@ -532,16 +572,21 @@ you should place your code here."
   (define-key yas-minor-mode-map (kbd "C-c y") #'yas-expand)
 
   ;;------------------------------------------------}
-
+  ;; Python Configuration
   (pyvenv-activate "/home/zhangtao/anaconda3/")
   (setq ein:jupyter-default-server-command "~/anaconda3/bin/jupyter")
   (setq ein:jupyter-server-args (list "--no-browser"))
 
   ;;Company mode completion in Spacemacs
-  ;;(global-company-mode t)
-  ;;(setq  company-idle-delay 0)
+  (global-company-mode t)
+  (setq  company-idle-delay 0)
 
+  (global-auto-complete-mode -1)
   (setq company-minimum-prefix-length 1)
+
+  (add-hook 'ein:notebook-mode-hook #'anaconda-mode)
+  (add-hook 'ein:notebook-mode-hook (lambda ()
+                                      (global-auto-complete-mode -1)))
 
   ;; (defun my/python-mode-hook ()
   ;;   (add-to-list 'company-backends 'company-jedi))
@@ -549,7 +594,7 @@ you should place your code here."
   ;; (add-hook 'python-mode-hook 'my/python-mode-hook)
 
   ;;Python SHOULD SET :export PATH=$HOME/anaconda3/bin:$PATH IN .zshenv ~/.bash_profile
-  ;;(setenv "WORKON_HOME" "/home/zato1991/anaconda3/")
+  ;;(setenv "WORKON_HOME" "/home/zato1991/anaconda3/")   And pip install yapf 
 
   (setq python-shell-interpreter "/home/zhangtao/anaconda3/bin/python3"
         python-shell-interpreter-args "-m IPython --simple-prompt -i")
@@ -598,4 +643,4 @@ This function is called at the very end of Spacemacs initialization."
      (:foreground "#999" :strike-through t))))
  '(package-selected-packages
    (quote
-    (powerline spinner org-category-capture alert log4e gntp org-plus-contrib markdown-mode hydra dash-functional parent-mode projectile haml-mode gitignore-mode fringe-helper git-gutter+ git-gutter pos-tip flycheck pkg-info epl flx magit magit-popup git-commit ghub let-alist with-editor smartparens iedit anzu evil goto-chg undo-tree highlight skewer-mode request-deferred websocket request deferred js2-mode simple-httpd diminish web-completion-data company bind-map bind-key yasnippet packed auctex anaconda-mode pythonic f dash s helm avy helm-core async auto-complete popup zenburn-theme yapfify xterm-color ws-butler winum which-key web-mode volatile-highlights vi-tilde-fringe uuidgen use-package unfill toc-org tagedit spaceline smeargle slim-mode shell-pop scss-mode sass-mode restart-emacs rainbow-delimiters pyvenv pytest pyenv-mode py-isort pug-mode popwin pip-requirements persp-mode pcre2el paradox orgit org-projectile org-present org-pomodoro org-download open-junk-file neotree mwim multi-term move-text mmm-mode markdown-toc magit-gitflow macrostep lua-mode lorem-ipsum live-py-mode linum-relative link-hint less-css-mode info+ indent-guide hy-mode hungry-delete htmlize hl-todo highlight-parentheses highlight-numbers highlight-indentation hide-comnt help-fns+ helm-themes helm-swoop helm-pydoc helm-projectile helm-mode-manager helm-make helm-gitignore helm-flx helm-descbinds helm-css-scss helm-company helm-c-yasnippet helm-ag google-translate golden-ratio gnuplot gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link git-gutter-fringe git-gutter-fringe+ gh-md fuzzy flycheck-pos-tip flx-ido fill-column-indicator fancy-battery eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-magit evil-lisp-state evil-indent-plus evil-iedit-state evil-exchange evil-escape evil-ediff evil-args evil-anzu eval-sexp-fu eshell-z eshell-prompt-extras esh-help emmet-mode elisp-slime-nav ein dumb-jump diff-hl define-word cython-mode company-web company-statistics company-auctex company-anaconda column-enforce-mode clean-aindent-mode auto-yasnippet auto-highlight-symbol auto-compile auctex-latexmk aggressive-indent adaptive-wrap ace-window ace-link ace-jump-helm-line ac-ispell))))
+    (mu4e-maildirs-extension evil-mu4e mu4e-alert ht company-jedi jedi-core python-environment epc ctable concurrent powerline spinner org-category-capture alert log4e gntp org-plus-contrib markdown-mode hydra dash-functional parent-mode projectile haml-mode gitignore-mode fringe-helper git-gutter+ git-gutter pos-tip flycheck pkg-info epl flx magit magit-popup git-commit ghub let-alist with-editor smartparens iedit anzu evil goto-chg undo-tree highlight skewer-mode request-deferred websocket request deferred js2-mode simple-httpd diminish web-completion-data company bind-map bind-key yasnippet packed auctex anaconda-mode pythonic f dash s helm avy helm-core async auto-complete popup zenburn-theme yapfify xterm-color ws-butler winum which-key web-mode volatile-highlights vi-tilde-fringe uuidgen use-package unfill toc-org tagedit spaceline smeargle slim-mode shell-pop scss-mode sass-mode restart-emacs rainbow-delimiters pyvenv pytest pyenv-mode py-isort pug-mode popwin pip-requirements persp-mode pcre2el paradox orgit org-projectile org-present org-pomodoro org-download open-junk-file neotree mwim multi-term move-text mmm-mode markdown-toc magit-gitflow macrostep lua-mode lorem-ipsum live-py-mode linum-relative link-hint less-css-mode info+ indent-guide hy-mode hungry-delete htmlize hl-todo highlight-parentheses highlight-numbers highlight-indentation hide-comnt help-fns+ helm-themes helm-swoop helm-pydoc helm-projectile helm-mode-manager helm-make helm-gitignore helm-flx helm-descbinds helm-css-scss helm-company helm-c-yasnippet helm-ag google-translate golden-ratio gnuplot gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link git-gutter-fringe git-gutter-fringe+ gh-md fuzzy flycheck-pos-tip flx-ido fill-column-indicator fancy-battery eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-magit evil-lisp-state evil-indent-plus evil-iedit-state evil-exchange evil-escape evil-ediff evil-args evil-anzu eval-sexp-fu eshell-z eshell-prompt-extras esh-help emmet-mode elisp-slime-nav ein dumb-jump diff-hl define-word cython-mode company-web company-statistics company-auctex company-anaconda column-enforce-mode clean-aindent-mode auto-yasnippet auto-highlight-symbol auto-compile auctex-latexmk aggressive-indent adaptive-wrap ace-window ace-link ace-jump-helm-line ac-ispell))))
