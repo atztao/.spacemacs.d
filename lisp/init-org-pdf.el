@@ -4,37 +4,43 @@
 
 (require 'ox-latex) ;;sudo pip install pygmentize https://emacs-china.org/t/spacemacs-org-mode-pdf/1577/15
 
+(setq org-src-fontify-natively t)
+(setq org-src-preserve-indentation t)
 
+;; (setq org-export-latex-listings t)
 ;; ;;org-mode source code setup in exporting to latex
-;; (setq org-latex-listings 'minted)
-;; (add-to-list 'org-latex-packages-alist '("" "minted"))
+(add-to-list 'org-latex-packages-alist '("" "minted")) ;;pip install pygments
+(setq org-latex-listings 'minted) 
+;; (setq org-latex-minted-options
+;;       '(("frame" "lines")
 ;; 	("linenos=false")
 ;; 	;;("fontsize" "\\scriptsize")
+;; 	("fontsize" "\\footnotesize")
 ;; 	("xleftmargin" "\\parindent")
 ;; 	("xrightmargin" "0.5cm")
 ;;         ("xleftmargin"  "0.5cm")
 ;; 	))
 
-;; ;; (setq org-latex-custom-lang-environments
-;; ;;            '(
-;; ;;             (emacs-lisp "common-lispcode")
-;; ;;              ))
-;; ;; (setq org-latex-minted-options
-;; ;;            '(("frame" "")
-;; ;;              ("fontsize" "\\scriptsize")
-;; ;;              ("linenos=false" "")))
+;; (setq org-latex-custom-lang-environments
+;;            '(
+;;             (emacs-lisp "common-lispcode")
+;;              ))
+;; (setq org-latex-minted-options
+;;            '(("frame" "")
+;;              ("fontsize" "\\scriptsize")
+;;              ("linenos=false" "")))
 
-(setq org-export-latex-listings t)
-(add-to-list 'org-latex-listings
-             '("" "listings"))
-(add-to-list 'org-latex-packages-alist
-             '("" "listings" t))
-(add-to-list 'org-latex-listings
-  	     '("" "color"))
+(setq org-latex-minted-options
+      '(("fontsize" "\\footnotesize")("bgcolor" "black")("obeytabs" "true")))
+
+;; (add-to-list 'org-latex-listings
+;;              '("" "listings"))
+;; (add-to-list 'org-latex-packages-alist
+;;              '("" "listings" t))
+;; (add-to-list 'org-latex-listings
+;;   	     '("" "color"))
 (add-to-list 'org-latex-packages-alist
              '("" "xcolor" t))
-(add-to-list 'org-latex-packages-alist
-             '("" "caption" t))
 (add-to-list 'org-latex-packages-alist
              '("" "fontspec" t))
 (add-to-list 'org-latex-packages-alist
@@ -104,14 +110,14 @@
 \\XeTeXlinebreaklocale \"zh\"
 \\XeTeXlinebreakskip = 0pt plus 1pt minus 0.1pt
 
-% 代码设置
-\\lstset{numbers=left,
-numberstyle= \\tiny,
-keywordstyle= \\color{ blue!70},commentstyle=\\color{red!50!green!50!blue!50},
-frame=shadowbox,
-breaklines=true,
-rulesepcolor= \\color{ red!20!green!20!blue!20}
-}
+%% 代码设置
+%\\lstset{numbers=left,
+%numberstyle= \\tiny,
+%keywordstyle= \\color{ blue!70},commentstyle=\\color{red!50!green!50!blue!50},
+%frame=shadowbox,
+%breaklines=true,
+%rulesepcolor= \\color{ red!20!green!20!blue!20}
+%}
 
 [EXTRA]
 "
@@ -174,11 +180,14 @@ rulesepcolor= \\color{ red!20!green!20!blue!20}
                '("org-beamer"
                  "\\documentclass{beamer}
 \\usepackage[SlantFont, BoldFont]{xeCJK}
+\\usetheme{Madrid}
+
 % beamer set
 \\usepackage[none]{hyphenat}
 \\usepackage[abs]{overpic}
-
 \\usepackage{caption}
+\\usepackage{caption}
+\\usepackage{subfigure}
 [NO-DEFAULT-PACKAGES]
 [PACKAGES]
 
@@ -190,6 +199,7 @@ rulesepcolor= \\color{ red!20!green!20!blue!20}
 \\setCJKsansfont{Microsoft YaHei} 
 \\setCJKmonofont{FZYTK.ttf} 
 
+\\usemintedstyle{monokai}
 %如果没有它，会有一些 tex 特殊字符无法正常使用，比如连字符。
 \\defaultfontfeatures{Mapping=tex-text}
 
@@ -197,14 +207,14 @@ rulesepcolor= \\color{ red!20!green!20!blue!20}
 \\XeTeXlinebreaklocale \"zh\"
 \\XeTeXlinebreakskip = 0pt plus 1pt minus 0.1pt
 
-% 代码设置
-\\lstset{numbers=left,
-numberstyle= \\tiny,
-keywordstyle= \\color{ blue!70},commentstyle=\\color{red!50!green!50!blue!50},
-frame=shadowbox,
-breaklines=true,
-rulesepcolor= \\color{ red!20!green!20!blue!20}
-}
+%% 代码设置
+%\\lstset{numbers=left,
+%numberstyle= \\tiny,
+%keywordstyle= \\color{ blue!70},commentstyle=\\color{red!50!green!50!blue!50},
+%frame=shadowbox,
+%breaklines=true,
+%rulesepcolor= \\color{ red!20!green!20!blue!20}
+%}
 
 [EXTRA]
 "
@@ -229,7 +239,7 @@ rulesepcolor= \\color{ red!20!green!20!blue!20}
                               "xelatex -shell-escape -interaction nonstopmode %f"))
 
 
-;;(setq org-latex-tables-booktabs t)
+(setq org-latex-tables-booktabs t)
 (setq org-latex-table-caption-above nil)
 (setq org-export-latex-tables-centered nil)
 

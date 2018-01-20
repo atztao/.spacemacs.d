@@ -2,15 +2,14 @@
 # name: beamer-ppt
 # key: ppt
 # --
-#+LATEX_CLASS: beamer
+#+LATEX_CLASS: org-beamer
 #+LATEX_CLASS_OPTIONS: [bigger]
 #+COLUMNS: %45ITEM %10BEAMER_ENV(Env) %10BEAMER_ACT(Act) %4BEAMER_COL(Col) %8BEAMER_OPT(Opt)
 
 #+LATEX_HEADER: \usepackage{graphicx}
 #+LATEX_HEADER: \usebackgroundtemplate{\includegraphics[width=\paperwidth,height=\paperheight]{/home/zhangtao/Dropbox/Template/background-ppt.png}}
 
-#+LaTeX_HEADER: \usepackage{minted}
-#+LaTeX_HEADER: \usemintedstyle{vs}
 #+TITLE: $1
+#+SUBTITLE: $2
 #+AUTHOR: zhangtao \\ ztao1991@gmail.com 
 #+OPTIONS: H:1 toc:nil num:t

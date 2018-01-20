@@ -143,11 +143,11 @@ values."
                          spacemacs-dark
                          )
    ;; If non nil the cursor color matches the state color in GUI Emacs.
-   dotspacemacs-colorize-cursor-according-to-state t
+   dotspacemacs-colorize-cursor-according-to-state nil
    ;; Default font, or prioritized list of fonts. `powerline-scale' allows to
    ;; quickly tweak the mode-line size to make separators look not too crappy.
-   dotspacemacs-default-font '("Inconsolata For Powerline"
-                               :size 18
+   dotspacemacs-default-font '("Monaco For Powerline"
+                               :size 16
                                :weight normal
                                :width normal
                                :powerline-scale 1.0)
@@ -334,7 +334,7 @@ you should place your code here."
 
   ;; (define-key evil-normal-state-map (kbd "TAB") 'org-cycle)
 
-  (setq ns-use-srgb-colorspace t)
+  ;; (setq ns-use-srgb-colorspace t)
 
   (setq powerline-default-separator nil)
   (spaceline-compile)
@@ -573,20 +573,26 @@ you should place your code here."
 
   ;;------------------------------------------------}
   ;; Python Configuration
+
+  (add-hook 'prog-mode-hook #'fci-mode)    ;; Indicate fill column.
+  (setq fci-rule-width 8)
+  (setq fci-rule-color "darkred")
+
   (pyvenv-activate "/home/zhangtao/anaconda3/")
   (setq ein:jupyter-default-server-command "~/anaconda3/bin/jupyter")
   (setq ein:jupyter-server-args (list "--no-browser"))
-
+  (setq ein:use-auto-complete t)
   ;;Company mode completion in Spacemacs
-  (global-company-mode t)
-  (setq  company-idle-delay 0)
+  ;; (global-company-mode t)
+  ;; (setq  company-idle-delay 0)
 
-  (global-auto-complete-mode -1)
-  (setq company-minimum-prefix-length 1)
+  ;; (setq company-minimum-prefix-length 1)
 
-  (add-hook 'ein:notebook-mode-hook #'anaconda-mode)
-  (add-hook 'ein:notebook-mode-hook (lambda ()
-                                      (global-auto-complete-mode -1)))
+
+  ;; (add-hook 'ein:notebook-mode-hook #'anaconda-mode)
+  ;; (add-hook 'ein:notebook-mode-hook #'company-mode)
+  ;; (add-hook 'ein:notebook-mode-hook (lambda ()
+  ;;                                     (global-auto-complete-mode -1)))
 
   ;; (defun my/python-mode-hook ()
   ;;   (add-to-list 'company-backends 'company-jedi))
@@ -596,7 +602,7 @@ you should place your code here."
   ;;Python SHOULD SET :export PATH=$HOME/anaconda3/bin:$PATH IN .zshenv ~/.bash_profile
   ;;(setenv "WORKON_HOME" "/home/zato1991/anaconda3/")   And pip install yapf 
 
-  (setq python-shell-interpreter "/home/zhangtao/anaconda3/bin/python3"
+  (setq python-shell-interpreter "/home/zhangtao/anaconda3/bin/python"
         python-shell-interpreter-args "-m IPython --simple-prompt -i")
 
 
