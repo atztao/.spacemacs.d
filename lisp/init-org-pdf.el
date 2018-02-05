@@ -3,6 +3,7 @@
 ;;-------------------------------------------------------
 
 (require 'ox-latex) ;;sudo pip install pygmentize https://emacs-china.org/t/spacemacs-org-mode-pdf/1577/15
+;; (require 'ox-latex-subfigure)
 
 (setq org-src-fontify-natively t)
 (setq org-src-preserve-indentation t)

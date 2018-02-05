@@ -4,6 +4,13 @@
 
 ;; (setq org-todo-keywords
 ;;       '((sequence "☐" "☑")))
+(setq org-file-apps
+        '((auto-mode . emacs)
+          ("\\.x?html?\\'" . "firefox %s")
+          ("\\.pdf\\'" . "okular \"%s\"")
+          ("\\.pdf::\\([0-9]+\\)\\'" . "okular \"%s\" -p %1")
+          ("\\.pdf.xoj" . "xournal %s")))
+
 
 (defun my/org-mode-hook ()
   "Stop the org-level headers from increasing in height relative to the other text."

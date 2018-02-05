@@ -2,13 +2,7 @@
 ;auctex+XeCJK
 ;----------------------
 
-(add-to-list 'load-path "~/.emacs.d/elpa/auctex-11.89/")
-(load "auctex.el" nil t t)
-(load "preview.el" nil t t)
-(require 'tex-mik)
-(require 'tex)
-
-(TeX-global-PDF-mode t)
+;; (TeX-global-PDF-mode t)
 (setq preview-image-type 'svg)
 ;; only start server for okular comms when in latex mode
 ;;(add-hook 'LaTeX-mode-hook 'server-start)

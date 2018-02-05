@@ -35,8 +35,10 @@
      helm
      html
      latex
-     auto-completion
      better-defaults
+     (auto-completion
+      :variables
+      auto-completion-enable-snippets-in-popup t)
      emacs-lisp
      git
      markdown
@@ -111,7 +113,7 @@ values."
    ;; with `:variables' keyword (similar to layers). Check the editing styles
    ;; section of the documentation for details on available variables.
    ;; (default 'vim)
-   dotspacemacs-editing-style 'vim
+   dotspacemacs-editing-style 'emacs
    ;; If non nil output loading proress in `*Messages*' buffer. (default nil)
    dotspacemacs-verbose-loading nil
    ;; Specify the startup banner. Default value is `official', it displays
@@ -138,16 +140,17 @@ values."
    ;; with 2 themes variants, one dark and one light)
    dotspacemacs-themes '(
                          ;;zenburn
+                         ;; dracula
                          sanityinc-tomorrow-bright
-                         solarized-dark
                          spacemacs-dark
+                         solarized-dark
                          )
    ;; If non nil the cursor color matches the state color in GUI Emacs.
    dotspacemacs-colorize-cursor-according-to-state nil
    ;; Default font, or prioritized list of fonts. `powerline-scale' allows to
    ;; quickly tweak the mode-line size to make separators look not too crappy.
-   dotspacemacs-default-font '("Monaco For Powerline"
-                               :size 16
+   dotspacemacs-default-font '("Source Code Pro For Powerline"
+                               :size 18
                                :weight normal
                                :width normal
                                :powerline-scale 1.0)
@@ -345,6 +348,7 @@ you should place your code here."
   ;;apt install aspell
   ;; (setq-default ispell-program-name "aspell")
   ;; (ispell-change-dictionary "american" t)
+  (save-place-mode 1) 
 
   ;;Auto Save - Backup-----------------------------------------
   (defun my-save-if-bufferfilename ()
@@ -358,23 +362,24 @@ you should place your code here."
 
   (add-hook 'evil-insert-state-exit-hook 'my-save-if-bufferfilename)
 
-  (defun full-auto-save ()
-    (interactive)
-    (save-excursion
-      (dolist (buf (buffer-list))
-        (set-buffer buf)
-        (if (and (buffer-file-name) (buffer-modified-p))
-            (basic-save-buffer)))))
-  (add-hook 'auto-save-hook 'full-auto-save)
+  ;; (defun full-auto-save ()
+  ;;   (interactive)
+  ;;   (save-excursion
+  ;;     (dolist (buf (buffer-list))
+  ;;       (set-buffer buf)
+  ;;       (if (and (buffer-file-name) (buffer-modified-p))
+  ;;           (basic-save-buffer)))))
+  ;; (add-hook 'auto-save-hook 'full-auto-save)
 
-  (defun save-all ()
-    (interactive)
-    (save-some-buffers t))
+  ;; (defun save-all ()
+  ;;   (interactive)
+  ;;   (save-some-buffers t))
   
-  (add-hook 'focus-out-hook 'save-all) 
+  ;; (add-hook 'focus-out-hook 'save-all) 
 
   (setq auto-save-interval 1)
   (setq auto-save-visited-file-name t)
+  (setq auto-save-timeout 10)
 
   ;; (setq auto-save-default nil)
   ;; (setq make-backup-files nil)
@@ -393,26 +398,47 @@ you should place your code here."
         )
 
 
-  (set-background-color "#000000")
-  (set-foreground-color "#32cd32")
+
+  ;; Helm
+  (global-set-key (kbd "C-x C-f")   #'helm-find-files) 
+  (global-set-key (kbd "C-x C-r") 'helm-recentf)
+  (global-set-key (kbd "C-x b") 'helm-mini)
+  (global-set-key (kbd "C-x C-b") 'helm-mini)
+  (global-set-key (kbd "C-r")   #'helm-swoop)
+  (global-set-key (kbd "M-x")   #'helm-M-x)
+  (global-set-key (kbd "C-x C-m") 'helm-M-x)
+  (global-set-key (kbd "C-c C-m") 'helm-M-x)
+
+
+
+  (define-key helm-map (kbd "<tab>") 'helm-execute-persistent-action)
+  (define-key helm-map (kbd "C-z") 'helm-select-action)
+
+  (global-set-key (kbd "M-y")     #'helm-show-kill-ring)
+
+  (global-set-key (kbd "M-s /")   #'helm-multi-swoop)
+  (global-set-key (kbd "M-s /") 'helm-multi-swoop-all)
+  (global-set-key (kbd "M-s a")   #'helm-ag) ;;apt-get install silversearcher-ag
+
+
+  ;;Some Configuration For Face
+  ;;{------------------------------------------------
+  ;; (set-face-inverse-video-p 'vertical-border nil)
+
+  ;; ;;(set-face-foreground 'vertical-border "gray")
+  ;; ;; (set-face-background 'vertical-border "#FFFFFF")
+
+
+  ;; (set-face-background 'vertical-border (face-background 'default))
+  ;; (set-face-foreground 'vertical-border "gray37")
+
+  ;; ;; (set-face-background 'vertical-border "#284b54")
+
+  ;; (set-display-table-slot standard-display-table
+  ;;                         'vertical-border 
+  ;;                         (make-glyph-code ?│))
 
   ;;-----------------------------------------------}
-  ;;Some Configuration For Face
-  (set-face-inverse-video-p 'vertical-border nil)
-
-  ;;(set-face-foreground 'vertical-border "gray")
-  ;; (set-face-background 'vertical-border "#FFFFFF")
-
-
-  (set-face-background 'vertical-border (face-background 'default))
-  (set-face-foreground 'vertical-border "gray37")
-
-  ;; (set-face-background 'vertical-border "#284b54")
-
-  (set-display-table-slot standard-display-table
-                          'vertical-border 
-                          (make-glyph-code ?│))
-
 
   (setq frame-title-format
         (list ;;'(:eval (projectile-project-name))
@@ -423,8 +449,8 @@ you should place your code here."
 
   (setq shell-file-name "/bin/zsh")
 
-  (set-face-attribute 'mode-line nil :box nil :height 92)
-  (set-face-attribute 'mode-line-inactive nil :box nil  :height 92)
+  (set-face-attribute 'mode-line nil :box nil :height 82)
+  (set-face-attribute 'mode-line-inactive nil :box nil  :height 82)
 
   ;;Chinese Fonts
   (set-fontset-font "fontset-default" 'han "Source Han Sans CN")
@@ -437,10 +463,10 @@ you should place your code here."
 
   ;;(setq default-directory "C:/Users/zhangtao/Dropbox/")
   ;;(cd "~/emacs/home/")
-  ;;(setq default-directory "~/Dropbox/")
+  (setq default-directory "~/Dropbox/")
 
   (add-hook 'text-mode-hook 'auto-fill-mode)
-  ;;(setq-default fill-column 80)
+  (setq-default fill-column 80)
 
   ;;eshell
   ;;(setq shell-file-name "cmdproxy");; Copyright (c) 2010-2017 Dennis Ogbe
@@ -456,9 +482,9 @@ you should place your code here."
         browse-url-generic-program "google-chrome"
         browse-url-browser-function gnus-button-url)
 
-  ;;(setq line-spacing '0.20)
+  (setq line-spacing '0.20)
   ;; (setq-default line-spacing 2)
-  (setq-default line-spacing 0)
+  ;; (setq-default line-spacing 0)
 
   ;;(setq-default major-mode 'org-mode)
   (eval-after-load "linum"
@@ -512,6 +538,7 @@ you should place your code here."
   ;;{------------------------------------------------
   ;;Org-Mode
   (push "~/.spacemacs.d/lisp" load-path)
+  (require 'init-latex)
   (require 'init-org)
   (require 'init-org-pdf)
 
@@ -536,9 +563,15 @@ you should place your code here."
 
   ;; (set-face-attribute 'region nil :foreground "#FFFFFF" :background "Grey20" ) ;;#EEE8D6 F0E68C
 
-  (set-cursor-color "green")
-  ;;(set-cursor-color "red")
+  ;; (set-cursor-color "green")
+  (set-cursor-color "red")
   ;;------------------------------------------------}
+
+  ;;google-translate
+  ;; (set-face-attribute 'google-translate-translation-face nil :height 1.4)
+
+  (setq-default google-translate-default-source-language "en")  
+  (setq-default google-translate-default-target-language "zh-CN")  
 
 
   (setq default-font-size-pt 10)
@@ -546,9 +579,9 @@ you should place your code here."
   (set-frame-parameter nil 'alpha '(98 . 100))
 
 
-  (set-background-color "#000000")                                                
-  ;; ;;(set-background-color "ivory")                                             
-  (set-foreground-color "#32cd32")
+  ;; (set-background-color "#000000")                                                
+  ;; ;; ;;(set-background-color "ivory")                                             
+  ;; (set-foreground-color "#32cd32")
 
 
   ;;----------------
@@ -567,16 +600,19 @@ you should place your code here."
 
   ;; Bind `SPC' to `yas-expand' when snippet expansion available (it
   ;; will still call `self-insert-command' otherwise).
-  (define-key yas-minor-mode-map (kbd "SPC") yas-maybe-expand)
-  ;; Bind `C-c y' to `yas-expand' ONLY.
-  (define-key yas-minor-mode-map (kbd "C-c y") #'yas-expand)
+  ;; (define-key yas-minor-mode-map (kbd "SPC") yas-maybe-expand)
+  ;; ;; Bind `C-c y' to `yas-expand' ONLY.
+  ;; (define-key yas-minor-mode-map (kbd "C-c y") #'yas-expand)
 
   ;;------------------------------------------------}
   ;; Python Configuration
 
-  (add-hook 'prog-mode-hook #'fci-mode)    ;; Indicate fill column.
-  (setq fci-rule-width 8)
-  (setq fci-rule-color "darkred")
+  ;; (add-hook 'prog-mode-hook #'fci-mode)    ;; Indicate fill column.
+  ;; (setq fci-rule-width 8)
+  ;; (setq fci-rule-color "darkred")
+
+  
+  (setq python-shell-completion-native-enable nil)
 
   (pyvenv-activate "/home/zhangtao/anaconda3/")
   (setq ein:jupyter-default-server-command "~/anaconda3/bin/jupyter")
@@ -637,6 +673,8 @@ This function is called at the very end of Spacemacs initialization."
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(ansi-color-names-vector
+   ["#080808" "#d70000" "#67b11d" "#875f00" "#268bd2" "#af00df" "#00ffff" "#b2b2b2"])
  '(org-agenda-done ((t (:foreground "Gray" :weight normal :strike-through t))))
  '(org-agenda-files (quote ("~/Dropbox/Txt/todo.txt")))
  '(org-done
@@ -649,4 +687,4 @@ This function is called at the very end of Spacemacs initialization."
      (:foreground "#999" :strike-through t))))
  '(package-selected-packages
    (quote
-    (mu4e-maildirs-extension evil-mu4e mu4e-alert ht company-jedi jedi-core python-environment epc ctable concurrent powerline spinner org-category-capture alert log4e gntp org-plus-contrib markdown-mode hydra dash-functional parent-mode projectile haml-mode gitignore-mode fringe-helper git-gutter+ git-gutter pos-tip flycheck pkg-info epl flx magit magit-popup git-commit ghub let-alist with-editor smartparens iedit anzu evil goto-chg undo-tree highlight skewer-mode request-deferred websocket request deferred js2-mode simple-httpd diminish web-completion-data company bind-map bind-key yasnippet packed auctex anaconda-mode pythonic f dash s helm avy helm-core async auto-complete popup zenburn-theme yapfify xterm-color ws-butler winum which-key web-mode volatile-highlights vi-tilde-fringe uuidgen use-package unfill toc-org tagedit spaceline smeargle slim-mode shell-pop scss-mode sass-mode restart-emacs rainbow-delimiters pyvenv pytest pyenv-mode py-isort pug-mode popwin pip-requirements persp-mode pcre2el paradox orgit org-projectile org-present org-pomodoro org-download open-junk-file neotree mwim multi-term move-text mmm-mode markdown-toc magit-gitflow macrostep lua-mode lorem-ipsum live-py-mode linum-relative link-hint less-css-mode info+ indent-guide hy-mode hungry-delete htmlize hl-todo highlight-parentheses highlight-numbers highlight-indentation hide-comnt help-fns+ helm-themes helm-swoop helm-pydoc helm-projectile helm-mode-manager helm-make helm-gitignore helm-flx helm-descbinds helm-css-scss helm-company helm-c-yasnippet helm-ag google-translate golden-ratio gnuplot gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link git-gutter-fringe git-gutter-fringe+ gh-md fuzzy flycheck-pos-tip flx-ido fill-column-indicator fancy-battery eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-magit evil-lisp-state evil-indent-plus evil-iedit-state evil-exchange evil-escape evil-ediff evil-args evil-anzu eval-sexp-fu eshell-z eshell-prompt-extras esh-help emmet-mode elisp-slime-nav ein dumb-jump diff-hl define-word cython-mode company-web company-statistics company-auctex company-anaconda column-enforce-mode clean-aindent-mode auto-yasnippet auto-highlight-symbol auto-compile auctex-latexmk aggressive-indent adaptive-wrap ace-window ace-link ace-jump-helm-line ac-ispell))))
+    (phpunit phpcbf php-extras php-auto-yasnippets drupal-mode mu4e-maildirs-extension evil-mu4e mu4e-alert ht company-jedi jedi-core python-environment epc ctable concurrent powerline spinner org-category-capture alert log4e gntp org-plus-contrib markdown-mode hydra dash-functional parent-mode projectile haml-mode gitignore-mode fringe-helper git-gutter+ git-gutter pos-tip flycheck pkg-info epl flx magit magit-popup git-commit ghub let-alist with-editor smartparens iedit anzu evil goto-chg undo-tree highlight skewer-mode request-deferred websocket request deferred js2-mode simple-httpd diminish web-completion-data company bind-map bind-key yasnippet packed auctex anaconda-mode pythonic f dash s helm avy helm-core async auto-complete popup zenburn-theme yapfify xterm-color ws-butler winum which-key web-mode volatile-highlights vi-tilde-fringe uuidgen use-package unfill toc-org tagedit spaceline smeargle slim-mode shell-pop scss-mode sass-mode restart-emacs rainbow-delimiters pyvenv pytest pyenv-mode py-isort pug-mode popwin pip-requirements persp-mode pcre2el paradox orgit org-projectile org-present org-pomodoro org-download open-junk-file neotree mwim multi-term move-text mmm-mode markdown-toc magit-gitflow macrostep lua-mode lorem-ipsum live-py-mode linum-relative link-hint less-css-mode info+ indent-guide hy-mode hungry-delete htmlize hl-todo highlight-parentheses highlight-numbers highlight-indentation hide-comnt help-fns+ helm-themes helm-swoop helm-pydoc helm-projectile helm-mode-manager helm-make helm-gitignore helm-flx helm-descbinds helm-css-scss helm-company helm-c-yasnippet helm-ag google-translate golden-ratio gnuplot gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link git-gutter-fringe git-gutter-fringe+ gh-md fuzzy flycheck-pos-tip flx-ido fill-column-indicator fancy-battery eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-magit evil-lisp-state evil-indent-plus evil-iedit-state evil-exchange evil-escape evil-ediff evil-args evil-anzu eval-sexp-fu eshell-z eshell-prompt-extras esh-help emmet-mode elisp-slime-nav ein dumb-jump diff-hl define-word cython-mode company-web company-statistics company-auctex company-anaconda column-enforce-mode clean-aindent-mode auto-yasnippet auto-highlight-symbol auto-compile auctex-latexmk aggressive-indent adaptive-wrap ace-window ace-link ace-jump-helm-line ac-ispell))))
