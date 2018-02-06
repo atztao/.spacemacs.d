@@ -112,9 +112,7 @@ values."
    ;; `hybrid state' with `emacs' key bindings. The value can also be a list
    ;; with `:variables' keyword (similar to layers). Check the editing styles
    ;; section of the documentation for details on available variables.
-   ;; (default 'vim)
-   dotspacemacs-editing-style 'emacs
-   ;; If non nil output loading proress in `*Messages*' buffer. (default nil)
+   ;; (default 'vim)proress in `*Messages*' buffer. (default nil)
    dotspacemacs-verbose-loading nil
    ;; Specify the startup banner. Default value is `official', it displays
    ;; the official spacemacs logo. An integer value is the index of text
@@ -333,8 +331,6 @@ layers configuration.
 This is the place where most of your configurations should be done. Unless it is
 explicitly specified that a variable should be set before a package is loaded,
 you should place your code here."
-  (evil-define-key 'normal evil-jumper-mode-map (kbd "TAB") nil)
-
   ;; (define-key evil-normal-state-map (kbd "TAB") 'org-cycle)
 
   ;; (setq ns-use-srgb-colorspace t)
@@ -348,34 +344,10 @@ you should place your code here."
   ;;apt install aspell
   ;; (setq-default ispell-program-name "aspell")
   ;; (ispell-change-dictionary "american" t)
+  
   (save-place-mode 1) 
 
   ;;Auto Save - Backup-----------------------------------------
-  (defun my-save-if-bufferfilename ()
-    (if (buffer-file-name)
-        (progn
-          (save-buffer)
-          )
-      (message "")
-      )
-    )
-
-  (add-hook 'evil-insert-state-exit-hook 'my-save-if-bufferfilename)
-
-  ;; (defun full-auto-save ()
-  ;;   (interactive)
-  ;;   (save-excursion
-  ;;     (dolist (buf (buffer-list))
-  ;;       (set-buffer buf)
-  ;;       (if (and (buffer-file-name) (buffer-modified-p))
-  ;;           (basic-save-buffer)))))
-  ;; (add-hook 'auto-save-hook 'full-auto-save)
-
-  ;; (defun save-all ()
-  ;;   (interactive)
-  ;;   (save-some-buffers t))
-  
-  ;; (add-hook 'focus-out-hook 'save-all) 
 
   (setq auto-save-interval 1)
   (setq auto-save-visited-file-name t)
@@ -398,8 +370,14 @@ you should place your code here."
         )
 
 
+  ;;---------------------------
+  ;;KEYBINGDING
+  ;;---------------------------
+  ;; (global-set-key (kbd "C-w") 'backward-kill-word)
+  ;; (global-set-key (kbd "C-x C-k") 'kill-region)
+  ;; (global-set-key (kbd "C-c C-k") 'kill-region)
 
-  ;; Helm
+  ;;For Helm
   (global-set-key (kbd "C-x C-f")   #'helm-find-files) 
   (global-set-key (kbd "C-x C-r") 'helm-recentf)
   (global-set-key (kbd "C-x b") 'helm-mini)
@@ -408,38 +386,14 @@ you should place your code here."
   (global-set-key (kbd "M-x")   #'helm-M-x)
   (global-set-key (kbd "C-x C-m") 'helm-M-x)
   (global-set-key (kbd "C-c C-m") 'helm-M-x)
-
-
-
   (define-key helm-map (kbd "<tab>") 'helm-execute-persistent-action)
   (define-key helm-map (kbd "C-z") 'helm-select-action)
-
   (global-set-key (kbd "M-y")     #'helm-show-kill-ring)
-
   (global-set-key (kbd "M-s /")   #'helm-multi-swoop)
   (global-set-key (kbd "M-s /") 'helm-multi-swoop-all)
   (global-set-key (kbd "M-s a")   #'helm-ag) ;;apt-get install silversearcher-ag
 
-
-  ;;Some Configuration For Face
-  ;;{------------------------------------------------
-  ;; (set-face-inverse-video-p 'vertical-border nil)
-
-  ;; ;;(set-face-foreground 'vertical-border "gray")
-  ;; ;; (set-face-background 'vertical-border "#FFFFFF")
-
-
-  ;; (set-face-background 'vertical-border (face-background 'default))
-  ;; (set-face-foreground 'vertical-border "gray37")
-
-  ;; ;; (set-face-background 'vertical-border "#284b54")
-
-  ;; (set-display-table-slot standard-display-table
-  ;;                         'vertical-border 
-  ;;                         (make-glyph-code ?│))
-
-  ;;-----------------------------------------------}
-
+  
   (setq frame-title-format
         (list ;;'(:eval (projectile-project-name))
          "(●—●) I'm Here @ "
@@ -447,12 +401,20 @@ you should place your code here."
 
   (setq x-select-enable-clipboard t)
 
+  
+  ;;Set Shell
+;;(setq shell-file-name "cmdproxy");; Copyright (c) 2010-2017 Dennis Ogbe
   (setq shell-file-name "/bin/zsh")
 
   (set-face-attribute 'mode-line nil :box nil :height 82)
   (set-face-attribute 'mode-line-inactive nil :box nil  :height 82)
 
   ;;Chinese Fonts
+  ;; (dolist (charset '(kana han symbol cjk-misc bopomofo))
+  ;;   (set-fontset-font (frame-parameter nil 'font)
+  ;;                     charset (font-spec :family "Microsoft Yahei" :size 16)))
+
+  ;; (set-fontset-font "fontset-default" 'han "WenQuanYi Micro Hei Mono")
   (set-fontset-font "fontset-default" 'han "Source Han Sans CN")
 
   ;;(add-to-list 'default-frame-alist '(height . 20))
@@ -468,10 +430,7 @@ you should place your code here."
   (add-hook 'text-mode-hook 'auto-fill-mode)
   (setq-default fill-column 80)
 
-  ;;eshell
-  ;;(setq shell-file-name "cmdproxy");; Copyright (c) 2010-2017 Dennis Ogbe
-
-  ;; (setq tramp-ssh-controlmaster-options
+    ;; (setq tramp-ssh-controlmaster-options
   ;;       "-o ControlMaster=auto -o ControlPath='tramp.%%C' -o ControlPersist=no")
 
   ;; -*- mode: org -*-
@@ -536,6 +495,7 @@ you should place your code here."
 
  
   ;;{------------------------------------------------
+  ;;Import Some Init File
   ;;Org-Mode
   (push "~/.spacemacs.d/lisp" load-path)
   (require 'init-latex)
@@ -552,7 +512,7 @@ you should place your code here."
   (setq neo-theme (if (display-graphic-p) 'ascii))
   ;;(setq-default neo-mode-line-format nil)
 
-  ;;Some Color
+  ;;Some Color Face
   ;;{------------------------------------------------
   (make-face-bold 'isearch)
   (make-face-bold 'lazy-highlight)
@@ -565,6 +525,15 @@ you should place your code here."
 
   ;; (set-cursor-color "green")
   (set-cursor-color "red")
+
+  (setq default-font-size-pt 10)
+
+  (set-frame-parameter nil 'alpha '(98 . 100))
+
+  ;; (set-background-color "#000000")                                                
+  ;; ;; ;;(set-background-color "ivory")                                             
+  ;; (set-foreground-color "#32cd32")
+
   ;;------------------------------------------------}
 
   ;;google-translate
@@ -572,16 +541,6 @@ you should place your code here."
 
   (setq-default google-translate-default-source-language "en")  
   (setq-default google-translate-default-target-language "zh-CN")  
-
-
-  (setq default-font-size-pt 10)
-
-  (set-frame-parameter nil 'alpha '(98 . 100))
-
-
-  ;; (set-background-color "#000000")                                                
-  ;; ;; ;;(set-background-color "ivory")                                             
-  ;; (set-foreground-color "#32cd32")
 
 
   ;;----------------
@@ -618,29 +577,9 @@ you should place your code here."
   (setq ein:jupyter-default-server-command "~/anaconda3/bin/jupyter")
   (setq ein:jupyter-server-args (list "--no-browser"))
   (setq ein:use-auto-complete t)
-  ;;Company mode completion in Spacemacs
-  ;; (global-company-mode t)
-  ;; (setq  company-idle-delay 0)
-
-  ;; (setq company-minimum-prefix-length 1)
-
-
-  ;; (add-hook 'ein:notebook-mode-hook #'anaconda-mode)
-  ;; (add-hook 'ein:notebook-mode-hook #'company-mode)
-  ;; (add-hook 'ein:notebook-mode-hook (lambda ()
-  ;;                                     (global-auto-complete-mode -1)))
-
-  ;; (defun my/python-mode-hook ()
-  ;;   (add-to-list 'company-backends 'company-jedi))
-
-  ;; (add-hook 'python-mode-hook 'my/python-mode-hook)
-
-  ;;Python SHOULD SET :export PATH=$HOME/anaconda3/bin:$PATH IN .zshenv ~/.bash_profile
-  ;;(setenv "WORKON_HOME" "/home/zato1991/anaconda3/")   And pip install yapf 
 
   (setq python-shell-interpreter "/home/zhangtao/anaconda3/bin/python"
         python-shell-interpreter-args "-m IPython --simple-prompt -i")
-
 
   ;;-------------------------------END---------------------------------------
   )
