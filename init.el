@@ -1,83 +1,83 @@
-;; You should not put any user code in this function besides modifying the variable values."
-  (setq-default
-   ;; Base distribution to use. This is a layer contained in the directory
-   ;; `+distribution'. For now available distributions are `spacemacs-base'
-   ;; or `spacemacs'. (default 'spacemacs)
-   dotspacemacs-distribution 'spacemacs
-   ;; Lazy installation of layers (i.e. layers are installed only when a file
-   ;; with a supported type is opened). Possible values are `all', `unused'
-   ;; and `nil'. `unused' will lazy install only unused layers (i.e. layers
-   ;; not listed in variable `dotspacemacs-configuration-layers'), `all' will
-   ;; lazy install any layer that support lazy installation even the layers
-   ;; listed in `dotspacemacs-configuration-layers'. `nil' disable the lazy
-   ;; installation feature and you have to explicitly list a layer in the
-   ;; variable `dotspacemacs-configuration-layers' to install it.
-   ;; (default 'unused)
-   dotspacemacs-enable-lazy-installation 'unused
-   ;; If non-nil then Spacemacs will ask for confirmation before installing
-   ;; a layer lazily. (default t)
-   dotspacemacs-ask-for-lazy-installation t
-   ;; If non-nil layers with lazy install support are lazy installed.
-   ;; List of additional paths where to look for configuration layers.
-   ;; Paths must have a trailing slash (i.e. `~/.mycontribs/')
-   dotspacemacs-configuration-layer-path '()
-   ;; List of configuration layers to load.
-   dotspacemacs-configuration-layers
-   '(
-     lua
-     ;; ----------------------------------------------------------------
-     ;; Example of useful layers you may want to use right away.
-     ;; Uncomment some layer names and press <SPC f e R> (Vim style) or
-     ;; <M-m f e R> (Emacs style) to install them.
-     ;; ----------------------------------------------------------------
-     ipython-notebook
-     python
-     helm
-     html
-     latex
-     better-defaults
-     (auto-completion
-      :variables
-      auto-completion-enable-snippets-in-popup t)
-     emacs-lisp
-     git
-     markdown
-     org
-     ;;smex
-     (shell :variables
-            shell-default-height 30
-            shell-default-position 'bottom)
-     ;;spell-checking
-     syntax-checking
-     version-control
-     ;;mu4e
-     )
-   ;; List of additional packages that will be installed without being
-   ;; wrapped in a layer. If you need some configuration for these
-   ;; packages, then consider creating a layer. You can also put the
-   ;; configuration in `dotspacemacs/user-config'.
-   dotspacemacs-additional-packages '(
-                                      company-jedi
-                                      evil-mu4e
-                                      ;;super-save
-                                      )
-   ;; A list of packages that cannot be updated.
-   dotspacemacs-frozen-packages '()
-   ;; A list of packages that will not be installed and loaded.
-   dotspacemacs-excluded-packages '(
-                                    org-projectile
-                                    auto-complete
-                                    mu4e-maildirs-extension
-                                    org-bullets
+﻿;; You should not put any user code in this function besides modifying the variable values."
+(setq-default
+ ;; Base distribution to use. This is a layer contained in the directory
+ ;; `+distribution'. For now available distributions are `spacemacs-base'
+ ;; or `spacemacs'. (default 'spacemacs)
+ dotspacemacs-distribution 'spacemacs
+ ;; Lazy installation of layers (i.e. layers are installed only when a file
+ ;; with a supported type is opened). Possible values are `all', `unused'
+ ;; and `nil'. `unused' will lazy install only unused layers (i.e. layers
+ ;; not listed in variable `dotspacemacs-configuration-layers'), `all' will
+ ;; lazy install any layer that support lazy installation even the layers
+ ;; listed in `dotspacemacs-configuration-layers'. `nil' disable the lazy
+ ;; installation feature and you have to explicitly list a layer in the
+ ;; variable `dotspacemacs-configuration-layers' to install it.
+ ;; (default 'unused)
+ dotspacemacs-enable-lazy-installation 'unused
+ ;; If non-nil then Spacemacs will ask for confirmation before installing
+ ;; a layer lazily. (default t)
+ dotspacemacs-ask-for-lazy-installation t
+ ;; If non-nil layers with lazy install support are lazy installed.
+ ;; List of additional paths where to look for configuration layers.
+ ;; Paths must have a trailing slash (i.e. `~/.mycontribs/')
+ dotspacemacs-configuration-layer-path '()
+ ;; List of configuration layers to load.
+ dotspacemacs-configuration-layers
+ '(
+   lua
+   ;; ----------------------------------------------------------------
+   ;; Example of useful layers you may want to use right away.
+   ;; Uncomment some layer names and press <SPC f e R> (Vim style) or
+   ;; <M-m f e R> (Emacs style) to install them.
+   ;; ----------------------------------------------------------------
+   ipython-notebook
+   python
+   helm
+   html
+   latex
+   better-defaults
+   (auto-completion
+    :variables
+    auto-completion-enable-snippets-in-popup t)
+   emacs-lisp
+   git
+   markdown
+   org
+   ;;smex
+   (shell :variables
+          shell-default-height 30
+          shell-default-position 'bottom)
+   ;;spell-checking
+   syntax-checking
+   version-control
+   ;;mu4e
+   )
+ ;; List of additional packages that will be installed without being
+ ;; wrapped in a layer. If you need some configuration for these
+ ;; packages, then consider creating a layer. You can also put the
+ ;; configuration in `dotspacemacs/user-config'.
+ dotspacemacs-additional-packages '(
+                                    company-jedi
+                                    evil-mu4e
+                                    super-save
                                     )
-   ;; Defines the behaviour of Spacemacs when installing packages.
-   ;; Possible values are `used-only', `used-but-keep-unused' and `all'.
-   ;; `used-only' installs only explicitly used packages and uninstall any
-   ;; unused packages as well as their unused dependencies.
-   ;; `used-but-keep-unused' installs only the used packages but won't uninstall
-   ;; them if they become unused. `all'(setq python-shell-interpreter-args "") installs *all* packages supported by
-   ;; Spacemacs and never uninstall them. (default is `used-only')
-   dotspacemacs-install-packages 'used-only)
+ ;; A list of packages that cannot be updated.
+ dotspacemacs-frozen-packages '()
+ ;; A list of packages that will not be installed and loaded.
+ dotspacemacs-excluded-packages '(
+                                  org-projectile
+                                  ;; auto-complete
+                                  mu4e-maildirs-extension
+                                  org-bullets
+                                  )
+ ;; Defines the behaviour of Spacemacs when installing packages.
+ ;; Possible values are `used-only', `used-but-keep-unused' and `all'.
+ ;; `used-only' installs only explicitly used packages and uninstall any
+ ;; unused packages as well as their unused dependencies.
+ ;; `used-but-keep-unused' installs only the used packages but won't uninstall
+ ;; them if they become unused. `all'(setq python-shell-interpreter-args "") installs *all* packages supported by
+ ;; Spacemacs and never uninstall them. (default is `used-only')
+ dotspacemacs-install-packages 'used-only)
 
 (defun dotspacemacs/init ()
   "Initialimu4e-maildirs-extensionzation funcmu4e-maildirs-extensiontion.
@@ -97,7 +97,7 @@ values."
    ;; (default t)
    dotspacemacs-elpa-https t
    ;; Maximum allowed time in seconds to contact an ELPA repository.
-   dotspacemacs-elpa-timeout 5
+   dotspacemacs-elpa-timeout 300
    ;; If non nil then spacemacs will check for updates at startup
    ;; when the current branch is not `develop'. Note that checking for
    ;; new versions works via git commands, thus it calls GitHub services
@@ -147,8 +147,8 @@ values."
    dotspacemacs-colorize-cursor-according-to-state nil
    ;; Default font, or prioritized list of fonts. `powerline-scale' allows to
    ;; quickly tweak the mode-line size to make separators look not too crappy.
-   dotspacemacs-default-font '("Source Code Pro For Powerline"
-                               :size 18
+   dotspacemacs-default-font '("Inconsolatag For Powerline"
+                               :size 16
                                :weight normal
                                :width normal
                                :powerline-scale 1.0)
@@ -339,15 +339,16 @@ you should place your code here."
   (spaceline-compile)
 
   (require 'helm-bookmark)
-  
+
   ;;flyspell-----------------------------------
   ;;apt install aspell
   ;; (setq-default ispell-program-name "aspell")
   ;; (ispell-change-dictionary "american" t)
-  
-  (save-place-mode 1) 
+
+  (save-place-mode 1)
 
   ;;Auto Save - Backup-----------------------------------------
+  (super-save-mode +1)
 
   (setq auto-save-interval 1)
   (setq auto-save-visited-file-name t)
@@ -369,6 +370,16 @@ you should place your code here."
         auto-save-interval 200            ; number of keystrokes between auto-saves (default: 300)
         )
 
+  (defun my-save-if-bufferfilename ()
+    (if (buffer-file-name)
+        (progn
+          (save-buffer)
+          )
+      (message "no file is associated to this buffer: do nothing")
+      )
+    )
+
+  (add-hook 'evil-insert-state-exit-hook 'my-save-if-bufferfilename)
 
   ;;---------------------------
   ;;KEYBINGDING
@@ -377,8 +388,8 @@ you should place your code here."
   ;; (global-set-key (kbd "C-x C-k") 'kill-region)
   ;; (global-set-key (kbd "C-c C-k") 'kill-region)
 
-  ;;For Helm
-  (global-set-key (kbd "C-x C-f")   #'helm-find-files) 
+  ;;For Helm With Emacs
+  (global-set-key (kbd "C-x C-f")   #'helm-find-files)
   (global-set-key (kbd "C-x C-r") 'helm-recentf)
   (global-set-key (kbd "C-x b") 'helm-mini)
   (global-set-key (kbd "C-x C-b") 'helm-mini)
@@ -393,7 +404,7 @@ you should place your code here."
   (global-set-key (kbd "M-s /") 'helm-multi-swoop-all)
   (global-set-key (kbd "M-s a")   #'helm-ag) ;;apt-get install silversearcher-ag
 
-  
+  ;;Window Title
   (setq frame-title-format
         (list ;;'(:eval (projectile-project-name))
          "(●—●) I'm Here @ "
@@ -401,36 +412,65 @@ you should place your code here."
 
   (setq x-select-enable-clipboard t)
 
-  
+
   ;;Set Shell
-;;(setq shell-file-name "cmdproxy");; Copyright (c) 2010-2017 Dennis Ogbe
+  ;; (setq shell-file-name "cmdproxy");; Copyright (c) 2010-2017 Dennis Ogbe
   (setq shell-file-name "/bin/zsh")
 
   (set-face-attribute 'mode-line nil :box nil :height 82)
   (set-face-attribute 'mode-line-inactive nil :box nil  :height 82)
 
+  ;;Some Color Face
+  ;;{------------------------------------------------
+  (make-face-bold 'isearch)
+  (make-face-bold 'lazy-highlight)
+  (set-face-foreground 'isearch "#000000")
+  (set-face-background 'isearch "#ffff99")
+  (set-face-foreground 'lazy-highlight "#000000")
+  (set-face-background 'lazy-highlight "#ffff99")
+
+  ;; (set-face-attribute 'region nil :foreground "#FFFFFF" :background "Grey20" ) ;;#EEE8D6 F0E68C
+
+  ;; (set-cursor-color "green")
+  (set-cursor-color "red")
+
+  (setq default-font-size-pt 10)
+
+  (set-frame-parameter nil 'alpha '(98 . 100))
+
+  ;; (set-background-color "#000000")
+  ;; ;; ;;(set-background-color "ivory")
+  ;; (set-foreground-color "#32cd32")
+
+  ;;------------------------------------------------}
   ;;Chinese Fonts
   ;; (dolist (charset '(kana han symbol cjk-misc bopomofo))
   ;;   (set-fontset-font (frame-parameter nil 'font)
   ;;                     charset (font-spec :family "Microsoft Yahei" :size 16)))
 
-  ;; (set-fontset-font "fontset-default" 'han "WenQuanYi Micro Hei Mono")
-  (set-fontset-font "fontset-default" 'han "Source Han Sans CN")
+  ;; (set-fontset-font "fontset-default" 'chinese-gbk "Microsoft Yahei")
+  (set-fontset-font "fontset-default" 'han "WenQuanYi Micro Hei Mono")
+  ;; (set-fontset-font "fontset-default" 'han "Source Han Sans CN")
 
   ;;(add-to-list 'default-frame-alist '(height . 20))
   ;;(add-to-list 'default-frame-alist '(width . 52))
 
-  sentence-end "\\([。！？]\\|……\\|[.?!][]\"')}]*\\($\\|[ \t]\\)\\)[ \t\n]*"
-  sentence-end-double-space nil         ;;设置 sentence-end 可以识别中文标点。不用在 fill 时在句号后插入两个空格。
 
+  ;;Set Default Home Dir
   ;;(setq default-directory "C:/Users/zhangtao/Dropbox/")
   ;;(cd "~/emacs/home/")
-  (setq default-directory "~/Dropbox/")
 
+  (setq default-directory "~/Dropbox/")
+  ;; (setq default-directory "c:/Users/张宏")
+
+  ;;Fill Mode
   (add-hook 'text-mode-hook 'auto-fill-mode)
   (setq-default fill-column 80)
 
-    ;; (setq tramp-ssh-controlmaster-options
+  sentence-end "\\([。！？]\\|……\\|[.?!][]\"')}]*\\($\\|[ \t]\\)\\)[ \t\n]*"
+  sentence-end-double-space nil         ;;设置 sentence-end 可以识别中文标点。不用在 fill 时在句号后插入两个空格。
+
+  ;; (setq tramp-ssh-controlmaster-options
   ;;       "-o ControlMaster=auto -o ControlPath='tramp.%%C' -o ControlPersist=no")
 
   ;; -*- mode: org -*-
@@ -486,6 +526,10 @@ you should place your code here."
   ;;Setting For Vim Mode
   ;;{------------------------------------------------
   ;;jk Escape All The Mode
+  ;; (setq key-chord-two-keys-delay 0.5)
+  ;; (key-chord-define evil-insert-state-map "jk" 'evil-normal-state)
+  ;; (key-chord-mode 1)
+
   (evil-escape-mode 1)
   (setq-default evil-escape-key-sequence "jk")
   (setq evil-escape-excluded-major-modes '(dired-mode))
@@ -493,7 +537,7 @@ you should place your code here."
 
   ;;-----------------------------------------------}
 
- 
+
   ;;{------------------------------------------------
   ;;Import Some Init File
   ;;Org-Mode
@@ -512,35 +556,12 @@ you should place your code here."
   (setq neo-theme (if (display-graphic-p) 'ascii))
   ;;(setq-default neo-mode-line-format nil)
 
-  ;;Some Color Face
-  ;;{------------------------------------------------
-  (make-face-bold 'isearch)
-  (make-face-bold 'lazy-highlight)
-  (set-face-foreground 'isearch "#000000")
-  (set-face-background 'isearch "#ffff99")
-  (set-face-foreground 'lazy-highlight "#000000")
-  (set-face-background 'lazy-highlight "#ffff99")
-
-  ;; (set-face-attribute 'region nil :foreground "#FFFFFF" :background "Grey20" ) ;;#EEE8D6 F0E68C
-
-  ;; (set-cursor-color "green")
-  (set-cursor-color "red")
-
-  (setq default-font-size-pt 10)
-
-  (set-frame-parameter nil 'alpha '(98 . 100))
-
-  ;; (set-background-color "#000000")                                                
-  ;; ;; ;;(set-background-color "ivory")                                             
-  ;; (set-foreground-color "#32cd32")
-
-  ;;------------------------------------------------}
 
   ;;google-translate
   ;; (set-face-attribute 'google-translate-translation-face nil :height 1.4)
 
-  (setq-default google-translate-default-source-language "en")  
-  (setq-default google-translate-default-target-language "zh-CN")  
+  (setq-default google-translate-default-source-language "en")
+  (setq-default google-translate-default-target-language "zh-CN")
 
 
   ;;----------------
@@ -570,7 +591,7 @@ you should place your code here."
   ;; (setq fci-rule-width 8)
   ;; (setq fci-rule-color "darkred")
 
-  
+
   (setq python-shell-completion-native-enable nil)
 
   (pyvenv-activate "/home/zhangtao/anaconda3/")
@@ -612,18 +633,6 @@ This function is called at the very end of Spacemacs initialization."
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(ansi-color-names-vector
-   ["#080808" "#d70000" "#67b11d" "#875f00" "#268bd2" "#af00df" "#00ffff" "#b2b2b2"])
- '(org-agenda-done ((t (:foreground "Gray" :weight normal :strike-through t))))
- '(org-agenda-files (quote ("~/Dropbox/Txt/todo.txt")))
- '(org-done
-   ((t
-     (:foreground "Gray" :weight extra-bold :strike-through t))))
- '(org-headline-done
-   ((((class color)
-      (min-colors 16)
-      (background dark))
-     (:foreground "#999" :strike-through t))))
  '(package-selected-packages
    (quote
-    (phpunit phpcbf php-extras php-auto-yasnippets drupal-mode mu4e-maildirs-extension evil-mu4e mu4e-alert ht company-jedi jedi-core python-environment epc ctable concurrent powerline spinner org-category-capture alert log4e gntp org-plus-contrib markdown-mode hydra dash-functional parent-mode projectile haml-mode gitignore-mode fringe-helper git-gutter+ git-gutter pos-tip flycheck pkg-info epl flx magit magit-popup git-commit ghub let-alist with-editor smartparens iedit anzu evil goto-chg undo-tree highlight skewer-mode request-deferred websocket request deferred js2-mode simple-httpd diminish web-completion-data company bind-map bind-key yasnippet packed auctex anaconda-mode pythonic f dash s helm avy helm-core async auto-complete popup zenburn-theme yapfify xterm-color ws-butler winum which-key web-mode volatile-highlights vi-tilde-fringe uuidgen use-package unfill toc-org tagedit spaceline smeargle slim-mode shell-pop scss-mode sass-mode restart-emacs rainbow-delimiters pyvenv pytest pyenv-mode py-isort pug-mode popwin pip-requirements persp-mode pcre2el paradox orgit org-projectile org-present org-pomodoro org-download open-junk-file neotree mwim multi-term move-text mmm-mode markdown-toc magit-gitflow macrostep lua-mode lorem-ipsum live-py-mode linum-relative link-hint less-css-mode info+ indent-guide hy-mode hungry-delete htmlize hl-todo highlight-parentheses highlight-numbers highlight-indentation hide-comnt help-fns+ helm-themes helm-swoop helm-pydoc helm-projectile helm-mode-manager helm-make helm-gitignore helm-flx helm-descbinds helm-css-scss helm-company helm-c-yasnippet helm-ag google-translate golden-ratio gnuplot gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link git-gutter-fringe git-gutter-fringe+ gh-md fuzzy flycheck-pos-tip flx-ido fill-column-indicator fancy-battery eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-magit evil-lisp-state evil-indent-plus evil-iedit-state evil-exchange evil-escape evil-ediff evil-args evil-anzu eval-sexp-fu eshell-z eshell-prompt-extras esh-help emmet-mode elisp-slime-nav ein dumb-jump diff-hl define-word cython-mode company-web company-statistics company-auctex company-anaconda column-enforce-mode clean-aindent-mode auto-yasnippet auto-highlight-symbol auto-compile auctex-latexmk aggressive-indent adaptive-wrap ace-window ace-link ace-jump-helm-line ac-ispell))))
+    (super-save yapfify xterm-color ws-butler winum which-key web-mode volatile-highlights vi-tilde-fringe uuidgen use-package unfill toc-org tagedit spaceline solarized-theme smeargle slim-mode shell-pop scss-mode sass-mode restart-emacs rainbow-delimiters pyvenv pytest pyenv-mode py-isort pug-mode popwin pip-requirements persp-mode pcre2el paradox orgit org-present org-pomodoro org-download open-junk-file neotree mwim multi-term move-text mmm-mode markdown-toc magit-gitflow macrostep lua-mode lorem-ipsum live-py-mode linum-relative link-hint less-css-mode info+ indent-guide hy-mode hungry-delete htmlize hl-todo highlight-parentheses highlight-numbers highlight-indentation hide-comnt help-fns+ helm-themes helm-swoop helm-pydoc helm-projectile helm-mode-manager helm-make helm-gitignore helm-flx helm-descbinds helm-css-scss helm-company helm-c-yasnippet helm-ag google-translate golden-ratio gnuplot gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link git-gutter-fringe git-gutter-fringe+ gh-md fuzzy flycheck-pos-tip flx-ido fill-column-indicator fancy-battery eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist evil-numbers evil-nerd-commenter evil-mu4e evil-mc evil-matchit evil-magit evil-lisp-state evil-indent-plus evil-iedit-state evil-exchange evil-escape evil-ediff evil-args evil-anzu eval-sexp-fu eshell-z eshell-prompt-extras esh-help emmet-mode elisp-slime-nav ein dumb-jump diminish diff-hl define-word cython-mode company-web company-statistics company-jedi company-auctex company-anaconda column-enforce-mode color-theme-sanityinc-tomorrow clean-aindent-mode auto-yasnippet auto-highlight-symbol auto-compile auctex-latexmk aggressive-indent adaptive-wrap ace-window ace-link ace-jump-helm-line ac-ispell))))
