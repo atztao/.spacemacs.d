@@ -57,7 +57,8 @@
  ;; packages, then consider creating a layer. You can also put the
  ;; configuration in `dotspacemacs/user-config'.
  dotspacemacs-additional-packages '(
-                                    company-jedi
+                                    cal-china-x
+                                    ;; company-jedi
                                     evil-mu4e
                                     super-save
                                     )
@@ -537,6 +538,19 @@ you should place your code here."
 
   ;;-----------------------------------------------}
 
+  ;;-----------------
+  ;;Calendar
+  ;;-----------------
+  (require 'cal-china-x)
+  (setq mark-holidays-in-calendar t)
+  (setq cal-china-x-important-holidays cal-china-x-chinese-holidays)
+  (setq calendar-holidays cal-china-x-important-holidays)
+  (setq my-holidays '((holiday-fixed 2 14 "情人节") (holiday-fixed 9 10 "教师节") (holiday-float 6 0 3 "父亲节")
+                      (holiday-lunar 1 1 "春节" 0) (holiday-lunar 1 15 "元宵节" 0) (holiday-solar-term "清明" "清明节") (holiday-lunar 5 5 "端午节" 0) (holiday-lunar 7 7 "七夕情人节" 0) (holiday-lunar 8 15 "中秋节" 0)
+                      (holiday-lunar 12 23 "妈妈生日" 0) (holiday-lunar 5 9 "爸爸生日" 0) (holiday-lunar 10 17 "姐姐生日" 0) (holiday-lunar 10 18 "姐夫生日" 0) (holiday-fixed 10 29 "宝宝生日") ))
+  (setq calendar-holidays my-holidays)
+  ;;(holiday-lunar 9 17 "宝宝生日" 0)
+
 
   ;;{------------------------------------------------
   ;;Import Some Init File
@@ -547,7 +561,7 @@ you should place your code here."
   (require 'init-org-pdf)
 
   ;;Mu4e
-  ;; (require 'init-email)
+  (require 'init-email)
 
   ;;------------------------------------------------}
 
@@ -574,8 +588,8 @@ you should place your code here."
   (setq yas-snippet-dirs "~/.spacemacs.d/snippets/")
   ;;(setq debug-on-error t)
 
-  (define-key yas-minor-mode-map (kbd "<tab>") nil)
-  (define-key yas-minor-mode-map (kbd "TAB") nil)
+  ;; (define-key yas-minor-mode-map (kbd "<tab>") nil)
+  ;; (define-key yas-minor-mode-map (kbd "TAB") nil)
 
 
   ;; Bind `SPC' to `yas-expand' when snippet expansion available (it
@@ -635,4 +649,4 @@ This function is called at the very end of Spacemacs initialization."
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
    (quote
-    (super-save yapfify xterm-color ws-butler winum which-key web-mode volatile-highlights vi-tilde-fringe uuidgen use-package unfill toc-org tagedit spaceline solarized-theme smeargle slim-mode shell-pop scss-mode sass-mode restart-emacs rainbow-delimiters pyvenv pytest pyenv-mode py-isort pug-mode popwin pip-requirements persp-mode pcre2el paradox orgit org-present org-pomodoro org-download open-junk-file neotree mwim multi-term move-text mmm-mode markdown-toc magit-gitflow macrostep lua-mode lorem-ipsum live-py-mode linum-relative link-hint less-css-mode info+ indent-guide hy-mode hungry-delete htmlize hl-todo highlight-parentheses highlight-numbers highlight-indentation hide-comnt help-fns+ helm-themes helm-swoop helm-pydoc helm-projectile helm-mode-manager helm-make helm-gitignore helm-flx helm-descbinds helm-css-scss helm-company helm-c-yasnippet helm-ag google-translate golden-ratio gnuplot gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link git-gutter-fringe git-gutter-fringe+ gh-md fuzzy flycheck-pos-tip flx-ido fill-column-indicator fancy-battery eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist evil-numbers evil-nerd-commenter evil-mu4e evil-mc evil-matchit evil-magit evil-lisp-state evil-indent-plus evil-iedit-state evil-exchange evil-escape evil-ediff evil-args evil-anzu eval-sexp-fu eshell-z eshell-prompt-extras esh-help emmet-mode elisp-slime-nav ein dumb-jump diminish diff-hl define-word cython-mode company-web company-statistics company-jedi company-auctex company-anaconda column-enforce-mode color-theme-sanityinc-tomorrow clean-aindent-mode auto-yasnippet auto-highlight-symbol auto-compile auctex-latexmk aggressive-indent adaptive-wrap ace-window ace-link ace-jump-helm-line ac-ispell))))
+    (cal-china-x super-save yapfify xterm-color ws-butler winum which-key web-mode volatile-highlights vi-tilde-fringe uuidgen use-package unfill toc-org tagedit spaceline solarized-theme smeargle slim-mode shell-pop scss-mode sass-mode restart-emacs rainbow-delimiters pyvenv pytest pyenv-mode py-isort pug-mode popwin pip-requirements persp-mode pcre2el paradox orgit org-present org-pomodoro org-download open-junk-file neotree mwim multi-term move-text mmm-mode markdown-toc magit-gitflow macrostep lua-mode lorem-ipsum live-py-mode linum-relative link-hint less-css-mode info+ indent-guide hy-mode hungry-delete htmlize hl-todo highlight-parentheses highlight-numbers highlight-indentation hide-comnt help-fns+ helm-themes helm-swoop helm-pydoc helm-projectile helm-mode-manager helm-make helm-gitignore helm-flx helm-descbinds helm-css-scss helm-company helm-c-yasnippet helm-ag google-translate golden-ratio gnuplot gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link git-gutter-fringe git-gutter-fringe+ gh-md fuzzy flycheck-pos-tip flx-ido fill-column-indicator fancy-battery eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist evil-numbers evil-nerd-commenter evil-mu4e evil-mc evil-matchit evil-magit evil-lisp-state evil-indent-plus evil-iedit-state evil-exchange evil-escape evil-ediff evil-args evil-anzu eval-sexp-fu eshell-z eshell-prompt-extras esh-help emmet-mode elisp-slime-nav ein dumb-jump diminish diff-hl define-word cython-mode company-web company-statistics company-jedi company-auctex company-anaconda column-enforce-mode color-theme-sanityinc-tomorrow clean-aindent-mode auto-yasnippet auto-highlight-symbol auto-compile auctex-latexmk aggressive-indent adaptive-wrap ace-window ace-link ace-jump-helm-line ac-ispell))))

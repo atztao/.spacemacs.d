@@ -252,9 +252,6 @@
 ;;       '("pdflatex -shell-escape -interaction nonstopmode -output-directory %o %f"
 ;;         "pdflatex -shell-escape -interaction nonstopmode -output-directory %o %f"))
 
-;; (require 'server)
-;; (server-force-delete)  ;; WARNING: Kills any existing edit server
-
 (setq org-format-latex-options (plist-put org-format-latex-options :scale 2.0))
 
 
@@ -273,8 +270,8 @@
                                 :help "Run pdflatex with output in /tmp")
                               TeX-command-list)))
 
-;;(setq org-latex-logfiles-extensions (quote ("lof" "lot" "tex~" "aux" "idx" "log" "out" "toc" "nav" "snm" "vrb" "dvi" "fdb_latexmk" "blg" "brf" "fls" "entoc" "ps" "spl" "bbl" "pyg")))
-;; (setq org-latex-remove-logfiles t)
+(setq org-latex-logfiles-extensions (quote ("lof" "lot" "tex~" "aux" "idx" "log" "out" "toc" "nav" "snm" "vrb" "dvi" "fdb_latexmk" "blg" "brf" "fls" "entoc" "ps" "spl" "bbl" "pyg")))
+(setq org-latex-remove-logfiles t)
 
 ;; (setq org-latex-logfiles-extensions (quote ("lof" "lot" "aux" "idx" "log" "out" "toc" "nav" "snm" "vrb" "dvi" "fdb_latexmk" "blg" "brf" "fls" "entoc" "ps" "spl" "bbl" "pyg")))
 
