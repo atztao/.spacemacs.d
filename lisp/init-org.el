@@ -7,8 +7,8 @@
 (setq org-file-apps
         '((auto-mode . emacs)
           ("\\.x?html?\\'" . "firefox %s")
-          ("\\.pdf\\'" . "okular \"%s\"")
-          ("\\.pdf::\\([0-9]+\\)\\'" . "okular \"%s\" -p %1")
+          ("\\.pdf\\'" . "zathura \"%s\"")
+          ("\\.pdf::\\([0-9]+\\)\\'" . "zathura \"%s\" -p %1")
           ("\\.pdf.xoj" . "xournal %s")))
 
 
@@ -244,5 +244,15 @@ truncate-lines nil)))
      ;; :base-extension "org"
      :publishing-directory "~/Dropbox/export"
      :publishing-function org-publish-org-to-pdf)))
+
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(org-agenda-done ((t (:foreground "Gray" :weight normal :strike-through t))))
+ '(org-done ((t (:foreground "Gray" :weight extra-bold :strike-through t))))
+ '(org-headline-done ((((class color) (min-colors 16) (background dark)) (:foreground "#999" :strike-through t))))
+ '(org-todo ((t (:foreground "Red" :weight extra-bold :strike-through nil)))))
 
 (provide 'init-org)

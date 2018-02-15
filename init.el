@@ -33,6 +33,7 @@
    ipython-notebook
    python
    helm
+   ;; ivy
    html
    latex
    better-defaults
@@ -50,7 +51,7 @@
    ;;spell-checking
    syntax-checking
    version-control
-   ;;mu4e
+   mu4e
    )
  ;; List of additional packages that will be installed without being
  ;; wrapped in a layer. If you need some configuration for these
@@ -62,13 +63,13 @@
                                     evil-mu4e
                                     super-save
                                     )
- ;; A list of packages that cannot be updated.
+ ;; A list of packages that cannot be updaERR_SOCKET_NOT_CONNECTEDted.
  dotspacemacs-frozen-packages '()
  ;; A list of packages that will not be installed and loaded.
  dotspacemacs-excluded-packages '(
                                   org-projectile
                                   ;; auto-complete
-                                  mu4e-maildirs-extension
+                                  ;; mu4e-maildirs-extension
                                   org-bullets
                                   )
  ;; Defines the behaviour of Spacemacs when installing packages.
@@ -113,7 +114,9 @@ values."
    ;; `hybrid state' with `emacs' key bindings. The value can also be a list
    ;; with `:variables' keyword (similar to layers). Check the editing styles
    ;; section of the documentation for details on available variables.
-   ;; (default 'vim)proress in `*Messages*' buffer. (default nil)
+   ;; (default 'vim)
+   dotspacemacs-editing-style 'vim
+   ;; If non nil output loading progress in `*Messages*' buffer. (default nil)
    dotspacemacs-verbose-loading nil
    ;; Specify the startup banner. Default value is `official', it displays
    ;; the official spacemacs logo. An integer value is the index of text
@@ -140,12 +143,13 @@ values."
    dotspacemacs-themes '(
                          ;;zenburn
                          ;; dracula
-                         sanityinc-tomorrow-bright
                          spacemacs-dark
+                         sanityinc-tomorrow-bright
+                         monokai
                          solarized-dark
                          )
    ;; If non nil the cursor color matches the state color in GUI Emacs.
-   dotspacemacs-colorize-cursor-according-to-state nil
+   dotspacemacs-colorize-cursor-according-to-state t
    ;; Default font, or prioritized list of fonts. `powerline-scale' allows to
    ;; quickly tweak the mode-line size to make separators look not too crappy.
    dotspacemacs-default-font '("Inconsolatag For Powerline"
@@ -315,11 +319,16 @@ executes.
  This function is mostly useful for variables that need to be set
 before packages are loaded. If you are unsure, you should try in setting them in
 `dotspacemacs/user-config' first."
-
-  (setq configuration-layer--elpa-archives
-        '(("melpa-cn" . "http://elpa.emacs-china.org/melpa/")
-          ("org-cn"   . "http://elpa.emacs-china.org/org/")
-          ("gnu-cn"   . "http://elpa.emacs-china.org/gnu/")))
+;;Releas
+(setq configuration-layer--elpa-archives
+      '(("melpa-cn" . "http://elpa.emacs-china.org/melpa/")
+	("org-cn"   . "http://elpa.emacs-china.org/org/")
+	("gnu-cn"   . "http://elpa.emacs-china.org/gnu/")))
+;;Develop
+(setq configuration-layer-elpa-archives
+      '(("melpa-cn" . "http://elpa.emacs-china.org/melpa/")
+	("org-cn"   . "http://elpa.emacs-china.org/org/")
+	("gnu-cn"   . "http://elpa.emacs-china.org/gnu/")))
 
   ;; https://github.com/syl20bnr/spacemacs/issues/2705
   (setq tramp-ssh-controlmaster-options "-o ControlMaster=auto -o ControlPath='tramp.%%C' -o ControlPersist=no")
@@ -382,32 +391,37 @@ you should place your code here."
 
   (add-hook 'evil-insert-state-exit-hook 'my-save-if-bufferfilename)
 
-  ;;---------------------------
-  ;;KEYBINGDING
-  ;;---------------------------
+  ;;{------------------------------------------------
+  ;;Keybingding For Emacs
+  
   ;; (global-set-key (kbd "C-w") 'backward-kill-word)
   ;; (global-set-key (kbd "C-x C-k") 'kill-region)
   ;; (global-set-key (kbd "C-c C-k") 'kill-region)
 
-  ;;For Helm With Emacs
-  (global-set-key (kbd "C-x C-f")   #'helm-find-files)
-  (global-set-key (kbd "C-x C-r") 'helm-recentf)
-  (global-set-key (kbd "C-x b") 'helm-mini)
-  (global-set-key (kbd "C-x C-b") 'helm-mini)
-  (global-set-key (kbd "C-r")   #'helm-swoop)
-  (global-set-key (kbd "M-x")   #'helm-M-x)
-  (global-set-key (kbd "C-x C-m") 'helm-M-x)
-  (global-set-key (kbd "C-c C-m") 'helm-M-x)
-  (define-key helm-map (kbd "<tab>") 'helm-execute-persistent-action)
-  (define-key helm-map (kbd "C-z") 'helm-select-action)
-  (global-set-key (kbd "M-y")     #'helm-show-kill-ring)
-  (global-set-key (kbd "M-s /")   #'helm-multi-swoop)
-  (global-set-key (kbd "M-s /") 'helm-multi-swoop-all)
-  (global-set-key (kbd "M-s a")   #'helm-ag) ;;apt-get install silversearcher-ag
 
+  (setq ivy-use-virtual-buffers t)
+
+  ;;For Helm With Emacs
+  ;; (global-set-key (kbd "C-x C-f")   #'helm-find-files)
+  ;; (global-set-key (kbd "C-x C-r") 'helm-recentf)
+  ;; (global-set-key (kbd "C-x b") 'helm-mini)
+  ;; (global-set-key (kbd "C-x C-b") 'helm-mini)
+  ;; (global-set-key (kbd "C-r")   #'helm-swoop)
+  ;; ;; (global-set-key (kbd "M-x")   #'helm-M-x)
+  ;; (global-set-key (kbd "C-x C-m") 'helm-M-x)
+  ;; (global-set-key (kbd "C-c C-m") 'helm-M-x)
+  ;; (define-key helm-map (kbd "<tab>") 'helm-execute-persistent-action)
+  ;; (define-key helm-map (kbd "C-z") 'helm-select-action)
+  ;; (global-set-key (kbd "M-y")     #'helm-show-kill-ring)
+  ;; (global-set-key (kbd "M-s /")   #'helm-multi-swoop)
+  ;; (global-set-key (kbd "M-s /") 'helm-multi-swoop-all)
+  ;; (global-set-key (kbd "M-s a")   #'helm-ag) ;;apt-get install silversearcher-ag
+
+  ;;------------------------------------------------}
   ;;Window Title
   (setq frame-title-format
-        (list ;;'(:eval (projectile-project-name))
+        (list
+         ;;'(:eval (projectile-project-name))
          "(●—●) I'm Here @ "
          '(buffer-file-name "%f" (dired-directory dired-directory "%b"))))
 
@@ -418,22 +432,28 @@ you should place your code here."
   ;; (setq shell-file-name "cmdproxy");; Copyright (c) 2010-2017 Dennis Ogbe
   (setq shell-file-name "/bin/zsh")
 
-  (set-face-attribute 'mode-line nil :box nil :height 82)
-  (set-face-attribute 'mode-line-inactive nil :box nil  :height 82)
+  (set-face-attribute 'mode-line nil :box nil :height 92)
+  (set-face-attribute 'mode-line-inactive nil :box nil  :height 92)
 
   ;;Some Color Face
   ;;{------------------------------------------------
   (make-face-bold 'isearch)
   (make-face-bold 'lazy-highlight)
-  (set-face-foreground 'isearch "#000000")
-  (set-face-background 'isearch "#ffff99")
-  (set-face-foreground 'lazy-highlight "#000000")
-  (set-face-background 'lazy-highlight "#ffff99")
+  ;; (set-face-foreground 'isearch "#000000")
+  ;; (set-face-background 'isearch "#ffff99")
+  ;; (set-face-foreground 'lazy-highlight "#000000")
+  ;; (set-face-background 'lazy-highlight "#ffff99")
 
   ;; (set-face-attribute 'region nil :foreground "#FFFFFF" :background "Grey20" ) ;;#EEE8D6 F0E68C
 
-  ;; (set-cursor-color "green")
-  (set-cursor-color "red")
+  ;; (setq evil-default-cursor (quote (t "#32cd32"))
+  ;;       evil-visual-state-cursor '("#880000" box)
+  ;;       evil-normal-state-cursor '("#32cd32" box)
+  ;;       evil-insert-state-cursor '("red" bar)
+  ;;       )
+
+  (set-cursor-color "green")
+  ;; (set-cursor-color "red")
 
   (setq default-font-size-pt 10)
 
@@ -449,8 +469,8 @@ you should place your code here."
   ;;   (set-fontset-font (frame-parameter nil 'font)
   ;;                     charset (font-spec :family "Microsoft Yahei" :size 16)))
 
-  ;; (set-fontset-font "fontset-default" 'chinese-gbk "Microsoft Yahei")
-  (set-fontset-font "fontset-default" 'han "WenQuanYi Micro Hei Mono")
+  (set-fontset-font "fontset-default" 'chinese-gbk "Microsoft Yahei")
+  ;; (set-fontset-font "fontset-default" 'han "WenQuanYi Micro Hei Mono")
   ;; (set-fontset-font "fontset-default" 'han "Source Han Sans CN")
 
   ;;(add-to-list 'default-frame-alist '(height . 20))
@@ -485,6 +505,10 @@ you should place your code here."
   (setq line-spacing '0.20)
   ;; (setq-default line-spacing 2)
   ;; (setq-default line-spacing 0)
+
+
+  ;;(set-face-background 'fringe "#809088")
+
 
   ;;(setq-default major-mode 'org-mode)
   (eval-after-load "linum"
@@ -561,6 +585,7 @@ you should place your code here."
   (require 'init-org-pdf)
 
   ;;Mu4e
+  (require 'evil-mu4e)
   (require 'init-email)
 
   ;;------------------------------------------------}
@@ -582,9 +607,6 @@ you should place your code here."
   ;;yasnippet - A template system for Emacs
   ;;----------------
 
-  (yas-global-mode 1)
-  (yas-reload-all)
-  (add-hook 'prog-mode-hook #'yas-minor-mode)
   (setq yas-snippet-dirs "~/.spacemacs.d/snippets/")
   ;;(setq debug-on-error t)
 
@@ -600,6 +622,7 @@ you should place your code here."
 
   ;;------------------------------------------------}
   ;; Python Configuration
+  ;;Ok, thanks! SPC m = is ok, didn't know about it, and couldn't find it because, well, py-yapf-buffer wasn't very descriptive function name. smiley
 
   ;; (add-hook 'prog-mode-hook #'fci-mode)    ;; Indicate fill column.
   ;; (setq fci-rule-width 8)
@@ -614,7 +637,9 @@ you should place your code here."
   (setq ein:use-auto-complete t)
 
   (setq python-shell-interpreter "/home/zhangtao/anaconda3/bin/python"
-        python-shell-interpreter-args "-m IPython --simple-prompt -i")
+        python-shell-interpreter-args "-m IPython --simple-prompt -i"
+        )
+
 
   ;;-------------------------------END---------------------------------------
   )
@@ -627,21 +652,6 @@ you should place your code here."
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  )
-(defun dotspacemacs/emacs-custom-settings ()
-  "Emacs custom settings.
-This is an auto-generated function, do not modify its content directly, use
-Emacs customize menu instead.
-This function is called at the very end of Spacemacs initialization."
-  (custom-set-variables
-   ;; custom-set-variables was added by Custom.
-   ;; If you edit it by hand, you could mess it up, so be careful.
-   ;; Your init file should contain only one such instance.
-   ;; If there is more than one, they won't work right.
-   '(org-agenda-files
-     (quote
-      ("~/Dropbox/Txt/inbox.txt" "~/Dropbox/Txt/todo.txt")))))
-
-
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -649,4 +659,4 @@ This function is called at the very end of Spacemacs initialization."
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
    (quote
-    (cal-china-x super-save yapfify xterm-color ws-butler winum which-key web-mode volatile-highlights vi-tilde-fringe uuidgen use-package unfill toc-org tagedit spaceline solarized-theme smeargle slim-mode shell-pop scss-mode sass-mode restart-emacs rainbow-delimiters pyvenv pytest pyenv-mode py-isort pug-mode popwin pip-requirements persp-mode pcre2el paradox orgit org-present org-pomodoro org-download open-junk-file neotree mwim multi-term move-text mmm-mode markdown-toc magit-gitflow macrostep lua-mode lorem-ipsum live-py-mode linum-relative link-hint less-css-mode info+ indent-guide hy-mode hungry-delete htmlize hl-todo highlight-parentheses highlight-numbers highlight-indentation hide-comnt help-fns+ helm-themes helm-swoop helm-pydoc helm-projectile helm-mode-manager helm-make helm-gitignore helm-flx helm-descbinds helm-css-scss helm-company helm-c-yasnippet helm-ag google-translate golden-ratio gnuplot gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link git-gutter-fringe git-gutter-fringe+ gh-md fuzzy flycheck-pos-tip flx-ido fill-column-indicator fancy-battery eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist evil-numbers evil-nerd-commenter evil-mu4e evil-mc evil-matchit evil-magit evil-lisp-state evil-indent-plus evil-iedit-state evil-exchange evil-escape evil-ediff evil-args evil-anzu eval-sexp-fu eshell-z eshell-prompt-extras esh-help emmet-mode elisp-slime-nav ein dumb-jump diminish diff-hl define-word cython-mode company-web company-statistics company-jedi company-auctex company-anaconda column-enforce-mode color-theme-sanityinc-tomorrow clean-aindent-mode auto-yasnippet auto-highlight-symbol auto-compile auctex-latexmk aggressive-indent adaptive-wrap ace-window ace-link ace-jump-helm-line ac-ispell))))
+    (Monokai-theme wgrep smex ivy-hydra counsel-projectile counsel swiper ivy yapfify xterm-color ws-butler winum which-key web-mode volatile-highlights vi-tilde-fringe uuidgen use-package unfill toc-org tagedit super-save spaceline smeargle slim-mode shell-pop scss-mode sass-mode restart-emacs rainbow-delimiters pyvenv pytest pyenv-mode py-isort pug-mode popwin pip-requirements persp-mode pcre2el paradox orgit org-present org-pomodoro org-mime org-download open-junk-file neotree mwim multi-term mu4e-maildirs-extension mu4e-alert move-text mmm-mode markdown-toc magit-gitflow macrostep lua-mode lorem-ipsum live-py-mode linum-relative link-hint less-css-mode indent-guide hy-mode hungry-delete htmlize hl-todo highlight-parentheses highlight-numbers highlight-indentation helm-themes helm-swoop helm-pydoc helm-projectile helm-mode-manager helm-make helm-gitignore helm-flx helm-descbinds helm-css-scss helm-company helm-c-yasnippet helm-ag google-translate golden-ratio gnuplot gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link git-gutter-fringe git-gutter-fringe+ gh-md fuzzy flycheck-pos-tip flx-ido fill-column-indicator fancy-battery eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist evil-numbers evil-nerd-commenter evil-mu4e evil-mc evil-matchit evil-magit evil-lisp-state evil-indent-plus evil-iedit-state evil-exchange evil-escape evil-ediff evil-args evil-anzu eval-sexp-fu eshell-z eshell-prompt-extras esh-help emmet-mode elisp-slime-nav ein dumb-jump diminish diff-hl define-word cython-mode company-web company-statistics company-auctex company-anaconda column-enforce-mode color-theme-sanityinc-tomorrow clean-aindent-mode cal-china-x auto-yasnippet auto-highlight-symbol auto-compile auctex-latexmk aggressive-indent adaptive-wrap ace-window ace-link ace-jump-helm-line ac-ispell))))
