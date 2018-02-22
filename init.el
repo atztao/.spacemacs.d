@@ -32,8 +32,8 @@
    ;; ----------------------------------------------------------------
    ipython-notebook
    python
-   helm
-   ;; ivy
+   ;; helm
+   ivy
    html
    latex
    better-defaults
@@ -58,7 +58,9 @@
  ;; packages, then consider creating a layer. You can also put the
  ;; configuration in `dotspacemacs/user-config'.
  dotspacemacs-additional-packages '(
+                                    google-this
                                     cal-china-x
+                                    ;; helm-google
                                     ;; company-jedi
                                     evil-mu4e
                                     super-save
@@ -115,7 +117,7 @@ values."
    ;; with `:variables' keyword (similar to layers). Check the editing styles
    ;; section of the documentation for details on available variables.
    ;; (default 'vim)
-   dotspacemacs-editing-style 'vim
+   dotspacemacs-editing-style 'emacs
    ;; If non nil output loading progress in `*Messages*' buffer. (default nil)
    dotspacemacs-verbose-loading nil
    ;; Specify the startup banner. Default value is `official', it displays
@@ -319,16 +321,16 @@ executes.
  This function is mostly useful for variables that need to be set
 before packages are loaded. If you are unsure, you should try in setting them in
 `dotspacemacs/user-config' first."
-;;Releas
-(setq configuration-layer--elpa-archives
-      '(("melpa-cn" . "http://elpa.emacs-china.org/melpa/")
-	("org-cn"   . "http://elpa.emacs-china.org/org/")
-	("gnu-cn"   . "http://elpa.emacs-china.org/gnu/")))
-;;Develop
-(setq configuration-layer-elpa-archives
-      '(("melpa-cn" . "http://elpa.emacs-china.org/melpa/")
-	("org-cn"   . "http://elpa.emacs-china.org/org/")
-	("gnu-cn"   . "http://elpa.emacs-china.org/gnu/")))
+  ;;Releas
+  (setq configuration-layer--elpa-archives
+        '(("melpa-cn" . "http://elpa.emacs-china.org/melpa/")
+          ("org-cn"   . "http://elpa.emacs-china.org/org/")
+          ("gnu-cn"   . "http://elpa.emacs-china.org/gnu/")))
+  ;;Develop
+  (setq configuration-layer-elpa-archives
+        '(("melpa-cn" . "http://elpa.emacs-china.org/melpa/")
+          ("org-cn"   . "http://elpa.emacs-china.org/org/")
+          ("gnu-cn"   . "http://elpa.emacs-china.org/gnu/")))
 
   ;; https://github.com/syl20bnr/spacemacs/issues/2705
   (setq tramp-ssh-controlmaster-options "-o ControlMaster=auto -o ControlPath='tramp.%%C' -o ControlPersist=no")
@@ -393,7 +395,7 @@ you should place your code here."
 
   ;;{------------------------------------------------
   ;;Keybingding For Emacs
-  
+
   ;; (global-set-key (kbd "C-w") 'backward-kill-word)
   ;; (global-set-key (kbd "C-x C-k") 'kill-region)
   ;; (global-set-key (kbd "C-c C-k") 'kill-region)
@@ -432,8 +434,8 @@ you should place your code here."
   ;; (setq shell-file-name "cmdproxy");; Copyright (c) 2010-2017 Dennis Ogbe
   (setq shell-file-name "/bin/zsh")
 
-  (set-face-attribute 'mode-line nil :box nil :height 92)
-  (set-face-attribute 'mode-line-inactive nil :box nil  :height 92)
+  (set-face-attribute 'mode-line nil :box nil :height 82)
+  (set-face-attribute 'mode-line-inactive nil :box nil  :height 82)
 
   ;;Some Color Face
   ;;{------------------------------------------------
@@ -575,7 +577,6 @@ you should place your code here."
   (setq calendar-holidays my-holidays)
   ;;(holiday-lunar 9 17 "宝宝生日" 0)
 
-
   ;;{------------------------------------------------
   ;;Import Some Init File
   ;;Org-Mode
@@ -596,8 +597,18 @@ you should place your code here."
   ;;(setq-default neo-mode-line-format nil)
 
 
+  ;;Use Shadowsocks To Google
+  ;; (setq url-gateway-method 'socks)
+  ;; (setq socks-server '("Default server" "127.0.0.1" 1080 5))
+
   ;;google-translate
   ;; (set-face-attribute 'google-translate-translation-face nil :height 1.4)
+
+  (eval-after-load 'google-translate-core
+    '(setq google-translate-base-url "http://translate.google.cn/translate_a/single"
+           google-translate-listen-url "http://translate.google.cn/translate_tts"))
+  (eval-after-load 'google-translate-tk
+    '(setq google-translate--tkk-url "http://translate.google.cn/"))
 
   (setq-default google-translate-default-source-language "en")
   (setq-default google-translate-default-target-language "zh-CN")
@@ -659,4 +670,4 @@ you should place your code here."
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
    (quote
-    (Monokai-theme wgrep smex ivy-hydra counsel-projectile counsel swiper ivy yapfify xterm-color ws-butler winum which-key web-mode volatile-highlights vi-tilde-fringe uuidgen use-package unfill toc-org tagedit super-save spaceline smeargle slim-mode shell-pop scss-mode sass-mode restart-emacs rainbow-delimiters pyvenv pytest pyenv-mode py-isort pug-mode popwin pip-requirements persp-mode pcre2el paradox orgit org-present org-pomodoro org-mime org-download open-junk-file neotree mwim multi-term mu4e-maildirs-extension mu4e-alert move-text mmm-mode markdown-toc magit-gitflow macrostep lua-mode lorem-ipsum live-py-mode linum-relative link-hint less-css-mode indent-guide hy-mode hungry-delete htmlize hl-todo highlight-parentheses highlight-numbers highlight-indentation helm-themes helm-swoop helm-pydoc helm-projectile helm-mode-manager helm-make helm-gitignore helm-flx helm-descbinds helm-css-scss helm-company helm-c-yasnippet helm-ag google-translate golden-ratio gnuplot gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link git-gutter-fringe git-gutter-fringe+ gh-md fuzzy flycheck-pos-tip flx-ido fill-column-indicator fancy-battery eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist evil-numbers evil-nerd-commenter evil-mu4e evil-mc evil-matchit evil-magit evil-lisp-state evil-indent-plus evil-iedit-state evil-exchange evil-escape evil-ediff evil-args evil-anzu eval-sexp-fu eshell-z eshell-prompt-extras esh-help emmet-mode elisp-slime-nav ein dumb-jump diminish diff-hl define-word cython-mode company-web company-statistics company-auctex company-anaconda column-enforce-mode color-theme-sanityinc-tomorrow clean-aindent-mode cal-china-x auto-yasnippet auto-highlight-symbol auto-compile auctex-latexmk aggressive-indent adaptive-wrap ace-window ace-link ace-jump-helm-line ac-ispell))))
+    (helm-google google-this Monokai-theme wgrep smex ivy-hydra counsel-projectile counsel swiper ivy yapfify xterm-color ws-butler winum which-key web-mode volatile-highlights vi-tilde-fringe uuidgen use-package unfill toc-org tagedit super-save spaceline smeargle slim-mode shell-pop scss-mode sass-mode restart-emacs rainbow-delimiters pyvenv pytest pyenv-mode py-isort pug-mode popwin pip-requirements persp-mode pcre2el paradox orgit org-present org-pomodoro org-mime org-download open-junk-file neotree mwim multi-term mu4e-maildirs-extension mu4e-alert move-text mmm-mode markdown-toc magit-gitflow macrostep lua-mode lorem-ipsum live-py-mode linum-relative link-hint less-css-mode indent-guide hy-mode hungry-delete htmlize hl-todo highlight-parentheses highlight-numbers highlight-indentation helm-themes helm-swoop helm-pydoc helm-projectile helm-mode-manager helm-make helm-gitignore helm-flx helm-descbinds helm-css-scss helm-company helm-c-yasnippet helm-ag google-translate golden-ratio gnuplot gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link git-gutter-fringe git-gutter-fringe+ gh-md fuzzy flycheck-pos-tip flx-ido fill-column-indicator fancy-battery eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist evil-numbers evil-nerd-commenter evil-mu4e evil-mc evil-matchit evil-magit evil-lisp-state evil-indent-plus evil-iedit-state evil-exchange evil-escape evil-ediff evil-args evil-anzu eval-sexp-fu eshell-z eshell-prompt-extras esh-help emmet-mode elisp-slime-nav ein dumb-jump diminish diff-hl define-word cython-mode company-web company-statistics company-auctex company-anaconda column-enforce-mode color-theme-sanityinc-tomorrow clean-aindent-mode cal-china-x auto-yasnippet auto-highlight-symbol auto-compile auctex-latexmk aggressive-indent adaptive-wrap ace-window ace-link ace-jump-helm-line ac-ispell))))
