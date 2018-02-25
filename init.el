@@ -117,7 +117,7 @@ values."
    ;; with `:variables' keyword (similar to layers). Check the editing styles
    ;; section of the documentation for details on available variables.
    ;; (default 'vim)
-   dotspacemacs-editing-style 'emacs
+   dotspacemacs-editing-style 'vim
    ;; If non nil output loading progress in `*Messages*' buffer. (default nil)
    dotspacemacs-verbose-loading nil
    ;; Specify the startup banner. Default value is `official', it displays
@@ -145,8 +145,8 @@ values."
    dotspacemacs-themes '(
                          ;;zenburn
                          ;; dracula
-                         spacemacs-dark
                          sanityinc-tomorrow-bright
+                         spacemacs-dark
                          monokai
                          solarized-dark
                          )
@@ -347,6 +347,10 @@ you should place your code here."
 
   ;; (setq ns-use-srgb-colorspace t)
 
+  ;; (setq inhibit-startup-screen nil)
+  ;; (setq initial-buffer-choice t)
+  (setq evil-toggle-key "")   ; remove default evil-toggle-key C-z, manually setup later
+  
   (setq powerline-default-separator nil)
   (spaceline-compile)
 
@@ -395,15 +399,17 @@ you should place your code here."
 
   ;;{------------------------------------------------
   ;;Keybingding For Emacs
-
-  ;; (global-set-key (kbd "C-w") 'backward-kill-word)
-  ;; (global-set-key (kbd "C-x C-k") 'kill-region)
-  ;; (global-set-key (kbd "C-c C-k") 'kill-region)
-
-
   (setq ivy-use-virtual-buffers t)
+  (add-hook 'python-mode-hook 'yapf-mode)
 
-  ;;For Helm With Emacs
+  (global-set-key (kbd "C-w") 'backward-kill-word)
+  (global-set-key (kbd "C-x C-k") 'kill-region)
+  (global-set-key (kbd "C-c C-k") 'kill-region)
+  (global-set-key (kbd "C-x b") 'ivy-switch-buffer)
+  (global-set-key (kbd "C-x C-b") 'ivy-switch-buffer)
+  (global-set-key (kbd "C-x C-r") 'counsel-recentf)
+  
+  ;; ;; For Helm With Emacs
   ;; (global-set-key (kbd "C-x C-f")   #'helm-find-files)
   ;; (global-set-key (kbd "C-x C-r") 'helm-recentf)
   ;; (global-set-key (kbd "C-x b") 'helm-mini)
@@ -414,10 +420,12 @@ you should place your code here."
   ;; (global-set-key (kbd "C-c C-m") 'helm-M-x)
   ;; (define-key helm-map (kbd "<tab>") 'helm-execute-persistent-action)
   ;; (define-key helm-map (kbd "C-z") 'helm-select-action)
-  ;; (global-set-key (kbd "M-y")     #'helm-show-kill-ring)
-  ;; (global-set-key (kbd "M-s /")   #'helm-multi-swoop)
-  ;; (global-set-key (kbd "M-s /") 'helm-multi-swoop-all)
-  ;; (global-set-key (kbd "M-s a")   #'helm-ag) ;;apt-get install silversearcher-ag
+  
+  ;;Some For Evil Mode
+  (define-key evil-ex-map "e" 'counsel-find-file)
+  ;; (evil-set-initial-state 'neotree 'normal)
+  (define-key evil-normal-state-map (kbd "j") 'evil-next-visual-line)
+  (define-key evil-normal-state-map (kbd "k") 'evil-previous-visual-line)
 
   ;;------------------------------------------------}
   ;;Window Title
@@ -454,7 +462,7 @@ you should place your code here."
   ;;       evil-insert-state-cursor '("red" bar)
   ;;       )
 
-  (set-cursor-color "green")
+  ;; (set-cursor-color "green")
   ;; (set-cursor-color "red")
 
   (setq default-font-size-pt 10)
@@ -635,9 +643,10 @@ you should place your code here."
   ;; Python Configuration
   ;;Ok, thanks! SPC m = is ok, didn't know about it, and couldn't find it because, well, py-yapf-buffer wasn't very descriptive function name. smiley
 
-  ;; (add-hook 'prog-mode-hook #'fci-mode)    ;; Indicate fill column.
-  ;; (setq fci-rule-width 8)
-  ;; (setq fci-rule-color "darkred")
+  (add-hook 'prog-mode-hook #'fci-mode)    ;; Indicate fill column.
+  (setq fci-rule-color "darkred")
+  (setq fci-rule-character ?█)
+  (setq fci-rule-width 12)
 
 
   (setq python-shell-completion-native-enable nil)
@@ -663,11 +672,3 @@ you should place your code here."
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  )
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(package-selected-packages
-   (quote
-    (helm-google google-this Monokai-theme wgrep smex ivy-hydra counsel-projectile counsel swiper ivy yapfify xterm-color ws-butler winum which-key web-mode volatile-highlights vi-tilde-fringe uuidgen use-package unfill toc-org tagedit super-save spaceline smeargle slim-mode shell-pop scss-mode sass-mode restart-emacs rainbow-delimiters pyvenv pytest pyenv-mode py-isort pug-mode popwin pip-requirements persp-mode pcre2el paradox orgit org-present org-pomodoro org-mime org-download open-junk-file neotree mwim multi-term mu4e-maildirs-extension mu4e-alert move-text mmm-mode markdown-toc magit-gitflow macrostep lua-mode lorem-ipsum live-py-mode linum-relative link-hint less-css-mode indent-guide hy-mode hungry-delete htmlize hl-todo highlight-parentheses highlight-numbers highlight-indentation helm-themes helm-swoop helm-pydoc helm-projectile helm-mode-manager helm-make helm-gitignore helm-flx helm-descbinds helm-css-scss helm-company helm-c-yasnippet helm-ag google-translate golden-ratio gnuplot gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link git-gutter-fringe git-gutter-fringe+ gh-md fuzzy flycheck-pos-tip flx-ido fill-column-indicator fancy-battery eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist evil-numbers evil-nerd-commenter evil-mu4e evil-mc evil-matchit evil-magit evil-lisp-state evil-indent-plus evil-iedit-state evil-exchange evil-escape evil-ediff evil-args evil-anzu eval-sexp-fu eshell-z eshell-prompt-extras esh-help emmet-mode elisp-slime-nav ein dumb-jump diminish diff-hl define-word cython-mode company-web company-statistics company-auctex company-anaconda column-enforce-mode color-theme-sanityinc-tomorrow clean-aindent-mode cal-china-x auto-yasnippet auto-highlight-symbol auto-compile auctex-latexmk aggressive-indent adaptive-wrap ace-window ace-link ace-jump-helm-line ac-ispell))))
