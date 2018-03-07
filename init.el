@@ -117,7 +117,7 @@ values."
    ;; with `:variables' keyword (similar to layers). Check the editing styles
    ;; section of the documentation for details on available variables.
    ;; (default 'vim)
-   dotspacemacs-editing-style 'vim
+   dotspacemacs-editing-style 'emacs
    ;; If non nil output loading progress in `*Messages*' buffer. (default nil)
    dotspacemacs-verbose-loading nil
    ;; Specify the startup banner. Default value is `official', it displays
@@ -143,7 +143,7 @@ values."
    ;; Press <SPC> T n to cycle to the next theme in the list (works great
    ;; with 2 themes variants, one dark and one light)
    dotspacemacs-themes '(
-                         ;;zenburn
+                         ;; zenburn
                          ;; dracula
                          sanityinc-tomorrow-bright
                          spacemacs-dark
@@ -151,7 +151,7 @@ values."
                          solarized-dark
                          )
    ;; If non nil the cursor color matches the state color in GUI Emacs.
-   dotspacemacs-colorize-cursor-according-to-state t
+   dotspacemacs-colorize-cursor-according-to-state nil
    ;; Default font, or prioritized list of fonts. `powerline-scale' allows to
    ;; quickly tweak the mode-line size to make separators look not too crappy.
    dotspacemacs-default-font '("Inconsolatag For Powerline"
@@ -345,12 +345,12 @@ explicitly specified that a variable should be set before a package is loaded,
 you should place your code here."
   ;; (define-key evil-normal-state-map (kbd "TAB") 'org-cycle)
 
-  ;; (setq ns-use-srgb-colorspace t)
+  (setq ns-use-srgb-colorspace t)
 
   ;; (setq inhibit-startup-screen nil)
   ;; (setq initial-buffer-choice t)
   (setq evil-toggle-key "")   ; remove default evil-toggle-key C-z, manually setup later
-  
+
   (setq powerline-default-separator nil)
   (spaceline-compile)
 
@@ -400,7 +400,6 @@ you should place your code here."
   ;;{------------------------------------------------
   ;;Keybingding For Emacs
   (setq ivy-use-virtual-buffers t)
-  (add-hook 'python-mode-hook 'yapf-mode)
 
   (global-set-key (kbd "C-w") 'backward-kill-word)
   (global-set-key (kbd "C-x C-k") 'kill-region)
@@ -408,7 +407,7 @@ you should place your code here."
   (global-set-key (kbd "C-x b") 'ivy-switch-buffer)
   (global-set-key (kbd "C-x C-b") 'ivy-switch-buffer)
   (global-set-key (kbd "C-x C-r") 'counsel-recentf)
-  
+
   ;; ;; For Helm With Emacs
   ;; (global-set-key (kbd "C-x C-f")   #'helm-find-files)
   ;; (global-set-key (kbd "C-x C-r") 'helm-recentf)
@@ -420,7 +419,7 @@ you should place your code here."
   ;; (global-set-key (kbd "C-c C-m") 'helm-M-x)
   ;; (define-key helm-map (kbd "<tab>") 'helm-execute-persistent-action)
   ;; (define-key helm-map (kbd "C-z") 'helm-select-action)
-  
+
   ;;Some For Evil Mode
   (define-key evil-ex-map "e" 'counsel-find-file)
   ;; (evil-set-initial-state 'neotree 'normal)
@@ -456,14 +455,25 @@ you should place your code here."
 
   ;; (set-face-attribute 'region nil :foreground "#FFFFFF" :background "Grey20" ) ;;#EEE8D6 F0E68C
 
-  ;; (setq evil-default-cursor (quote (t "#32cd32"))
-  ;;       evil-visual-state-cursor '("#880000" box)
-  ;;       evil-normal-state-cursor '("#32cd32" box)
-  ;;       evil-insert-state-cursor '("red" bar)
-  ;;       )
+  (setq evil-default-cursor (quote (t "#32cd32"))
+        evil-visual-state-cursor '("#880000" box)
+        evil-normal-state-cursor '("#32cd32" box)
+        evil-insert-state-cursor '("red" bar)
+        )
 
-  ;; (set-cursor-color "green")
+  (set-cursor-color "green")
   ;; (set-cursor-color "red")
+
+  ;; Make the line number gutter look cool
+  ;; (setq linum-format "%4d \u2502")
+
+  ;; Reverse colors for the border to have nicer line
+  (set-face-inverse-video-p 'vertical-border nil)
+  (set-face-background 'vertical-border (face-background 'default))
+  (set-display-table-slot standard-display-table
+                          'vertical-border
+                          (make-glyph-code ?┃))
+
 
   (setq default-font-size-pt 10)
 
@@ -643,12 +653,13 @@ you should place your code here."
   ;; Python Configuration
   ;;Ok, thanks! SPC m = is ok, didn't know about it, and couldn't find it because, well, py-yapf-buffer wasn't very descriptive function name. smiley
 
-  (add-hook 'prog-mode-hook #'fci-mode)    ;; Indicate fill column.
-  (setq fci-rule-color "darkred")
-  (setq fci-rule-character ?█)
-  (setq fci-rule-width 12)
+  ;; (add-hook 'prog-mode-hook #'fci-mode)    ;; Indicate fill column.
+  ;; (setq fci-rule-color "darkred")
+  ;; (setq fci-rule-character ?█)
+  ;; (setq fci-rule-width 8)
 
 
+  (add-hook 'python-mode-hook 'yapf-mode)
   (setq python-shell-completion-native-enable nil)
 
   (pyvenv-activate "/home/zhangtao/anaconda3/")
@@ -656,9 +667,13 @@ you should place your code here."
   (setq ein:jupyter-server-args (list "--no-browser"))
   (setq ein:use-auto-complete t)
 
-  (setq python-shell-interpreter "/home/zhangtao/anaconda3/bin/python"
-        python-shell-interpreter-args "-m IPython --simple-prompt -i"
-        )
+  ;; (setq python-shell-interpreter "/home/zhangtao/anaconda3/bin/python"
+  ;;       python-shell-interpreter-args "-m IPython --simple-prompt -i"
+  ;;       python-shell-interpreter-interactive-arg ""
+        
+  ;;       )
+  (setq python-shell-interpreter "jupyter"
+        python-shell-interpreter-args "console --simple-prompt")
 
 
   ;;-------------------------------END---------------------------------------
@@ -672,3 +687,11 @@ you should place your code here."
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  )
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(package-selected-packages
+   (quote
+    (org-bullets yapfify xterm-color ws-butler winum which-key wgrep web-mode volatile-highlights vi-tilde-fringe uuidgen use-package unfill toc-org tagedit super-save spaceline smex smeargle slim-mode shell-pop scss-mode sass-mode restart-emacs rainbow-delimiters pyvenv pytest pyenv-mode py-isort pug-mode popwin pip-requirements persp-mode pcre2el paradox orgit org-present org-pomodoro org-mime org-download open-junk-file neotree mwim multi-term mu4e-maildirs-extension mu4e-alert move-text monokai-theme mmm-mode markdown-toc magit-gitflow macrostep lua-mode lorem-ipsum live-py-mode linum-relative link-hint less-css-mode ivy-hydra indent-guide hy-mode hungry-delete htmlize hl-todo highlight-parentheses highlight-numbers highlight-indentation helm-make google-translate google-this golden-ratio gnuplot gitignore-mode gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link git-gutter-fringe git-gutter-fringe+ gh-md fuzzy flycheck-pos-tip flx-ido fill-column-indicator fancy-battery eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist evil-numbers evil-nerd-commenter evil-mu4e evil-mc evil-matchit evil-magit evil-lisp-state evil-indent-plus evil-iedit-state evil-exchange evil-escape evil-ediff evil-args evil-anzu eval-sexp-fu eshell-z eshell-prompt-extras esh-help emmet-mode elisp-slime-nav ein dumb-jump diminish diff-hl define-word cython-mode counsel-projectile company-web company-statistics company-auctex company-anaconda column-enforce-mode color-theme-sanityinc-tomorrow clean-aindent-mode cal-china-x auto-yasnippet auto-highlight-symbol auto-compile auctex-latexmk aggressive-indent adaptive-wrap ace-window ace-link ac-ispell))))

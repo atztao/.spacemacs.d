@@ -43,11 +43,13 @@
 (add-to-list 'org-latex-packages-alist
              '("" "xcolor" t))
 (add-to-list 'org-latex-packages-alist
+             '("" "unicode-math" t))
+(add-to-list 'org-latex-packages-alist
              '("" "fontspec" t))
 (add-to-list 'org-latex-packages-alist
              '("" "indentfirst" t))
-(add-to-list 'org-latex-packages-alist
-             '("" "xunicode" t))
+;; (add-to-list 'org-latex-packages-alist
+;;              '("" "xunicode" t))
 (add-to-list 'org-latex-packages-alist
              '("" "geometry"))
 (add-to-list 'org-latex-packages-alist
@@ -181,6 +183,7 @@
                '("org-beamer"
                  "\\documentclass{beamer}
 \\usepackage[SlantFont, BoldFont]{xeCJK}
+\\usefonttheme{professionalfonts}% use own font handling
 \\usetheme{Madrid}
 
 % beamer set
@@ -198,7 +201,11 @@
 
 \\setCJKmainfont{SimSun} 
 \\setCJKsansfont{Microsoft YaHei} 
-\\setCJKmonofont{FZYTK.ttf} 
+
+\\setCJKmonofont{FZYTK.ttf}
+\\setmathfont{Latin Modern Math}
+
+
 
 \\usemintedstyle{monokai}
 %如果没有它，会有一些 tex 特殊字符无法正常使用，比如连字符。
