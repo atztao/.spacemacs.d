@@ -5,7 +5,8 @@
  ;; or `spacemacs'. (default 'spacemacs)
  dotspacemacs-distribution 'spacemacs
  ;; Lazy installation of layers (i.e. layers are installed only when a file
- ;; with a supported type is opened). Possible values are `all', `unused'
+ ;; with a supported type is opene
+d). Possible values are `all', `unused'
  ;; and `nil'. `unused' will lazy install only unused layers (i.e. layers
  ;; not listed in variable `dotspacemacs-configuration-layers'), `all' will
  ;; lazy install any layer that support lazy installation even the layers
@@ -117,7 +118,7 @@ values."
    ;; with `:variables' keyword (similar to layers). Check the editing styles
    ;; section of the documentation for details on available variables.
    ;; (default 'vim)
-   dotspacemacs-editing-style 'emacs
+   dotspacemacs-editing-style 'vim
    ;; If non nil output loading progress in `*Messages*' buffer. (default nil)
    dotspacemacs-verbose-loading nil
    ;; Specify the startup banner. Default value is `official', it displays
@@ -413,7 +414,7 @@ you should place your code here."
   ;; (global-set-key (kbd "C-x C-r") 'helm-recentf)
   ;; (global-set-key (kbd "C-x b") 'helm-mini)
   ;; (global-set-key (kbd "C-x C-b") 'helm-mini)
-  ;; (global-set-key (kbd "C-r")   #'helm-swoop)
+  ;; (global-set-key (kbd "C-s")   #'helm-swoop)
   ;; ;; (global-set-key (kbd "M-x")   #'helm-M-x)
   ;; (global-set-key (kbd "C-x C-m") 'helm-M-x)
   ;; (global-set-key (kbd "C-c C-m") 'helm-M-x)
@@ -455,11 +456,11 @@ you should place your code here."
 
   ;; (set-face-attribute 'region nil :foreground "#FFFFFF" :background "Grey20" ) ;;#EEE8D6 F0E68C
 
-  (setq evil-default-cursor (quote (t "#32cd32"))
-        evil-visual-state-cursor '("#880000" box)
-        evil-normal-state-cursor '("#32cd32" box)
-        evil-insert-state-cursor '("red" bar)
-        )
+  ;; (setq evil-default-cursor (quote (t "#32cd32"))
+  ;;       evil-visual-state-cursor '("#880000" box)
+  ;;       evil-normal-state-cursor '("#32cd32" box)
+  ;;       evil-insert-state-cursor '("red" bar)
+  ;;       )
 
   (set-cursor-color "green")
   ;; (set-cursor-color "red")
@@ -489,9 +490,9 @@ you should place your code here."
   ;;   (set-fontset-font (frame-parameter nil 'font)
   ;;                     charset (font-spec :family "Microsoft Yahei" :size 16)))
 
-  (set-fontset-font "fontset-default" 'chinese-gbk "Microsoft Yahei")
+  ;; (set-fontset-font "fontset-default" 'chinese-gbk "Microsoft Yahei")
   ;; (set-fontset-font "fontset-default" 'han "WenQuanYi Micro Hei Mono")
-  ;; (set-fontset-font "fontset-default" 'han "Source Han Sans CN")
+  (set-fontset-font "fontset-default" 'han "Source Han Sans CN")
 
   ;;(add-to-list 'default-frame-alist '(height . 20))
   ;;(add-to-list 'default-frame-alist '(width . 52))
@@ -694,4 +695,4 @@ you should place your code here."
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
    (quote
-    (org-bullets yapfify xterm-color ws-butler winum which-key wgrep web-mode volatile-highlights vi-tilde-fringe uuidgen use-package unfill toc-org tagedit super-save spaceline smex smeargle slim-mode shell-pop scss-mode sass-mode restart-emacs rainbow-delimiters pyvenv pytest pyenv-mode py-isort pug-mode popwin pip-requirements persp-mode pcre2el paradox orgit org-present org-pomodoro org-mime org-download open-junk-file neotree mwim multi-term mu4e-maildirs-extension mu4e-alert move-text monokai-theme mmm-mode markdown-toc magit-gitflow macrostep lua-mode lorem-ipsum live-py-mode linum-relative link-hint less-css-mode ivy-hydra indent-guide hy-mode hungry-delete htmlize hl-todo highlight-parentheses highlight-numbers highlight-indentation helm-make google-translate google-this golden-ratio gnuplot gitignore-mode gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link git-gutter-fringe git-gutter-fringe+ gh-md fuzzy flycheck-pos-tip flx-ido fill-column-indicator fancy-battery eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist evil-numbers evil-nerd-commenter evil-mu4e evil-mc evil-matchit evil-magit evil-lisp-state evil-indent-plus evil-iedit-state evil-exchange evil-escape evil-ediff evil-args evil-anzu eval-sexp-fu eshell-z eshell-prompt-extras esh-help emmet-mode elisp-slime-nav ein dumb-jump diminish diff-hl define-word cython-mode counsel-projectile company-web company-statistics company-auctex company-anaconda column-enforce-mode color-theme-sanityinc-tomorrow clean-aindent-mode cal-china-x auto-yasnippet auto-highlight-symbol auto-compile auctex-latexmk aggressive-indent adaptive-wrap ace-window ace-link ac-ispell))))
+    (counsel swiper ivy helm-themes helm-swoop helm-pydoc helm-projectile helm-mode-manager helm-gitignore helm-flx helm-descbinds helm-css-scss helm-company helm-c-yasnippet helm-ag ace-jump-helm-line org-bullets yapfify xterm-color ws-butler winum which-key wgrep web-mode volatile-highlights vi-tilde-fringe uuidgen use-package unfill toc-org tagedit super-save spaceline smex smeargle slim-mode shell-pop scss-mode sass-mode restart-emacs rainbow-delimiters pyvenv pytest pyenv-mode py-isort pug-mode popwin pip-requirements persp-mode pcre2el paradox orgit org-present org-pomodoro org-mime org-download open-junk-file neotree mwim multi-term mu4e-maildirs-extension mu4e-alert move-text monokai-theme mmm-mode markdown-toc magit-gitflow macrostep lua-mode lorem-ipsum live-py-mode linum-relative link-hint less-css-mode ivy-hydra indent-guide hy-mode hungry-delete htmlize hl-todo highlight-parentheses highlight-numbers highlight-indentation helm-make google-translate google-this golden-ratio gnuplot gitignore-mode gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link git-gutter-fringe git-gutter-fringe+ gh-md fuzzy flycheck-pos-tip flx-ido fill-column-indicator fancy-battery eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist evil-numbers evil-nerd-commenter evil-mu4e evil-mc evil-matchit evil-magit evil-lisp-state evil-indent-plus evil-iedit-state evil-exchange evil-escape evil-ediff evil-args evil-anzu eval-sexp-fu eshell-z eshell-prompt-extras esh-help emmet-mode elisp-slime-nav ein dumb-jump diminish diff-hl define-word cython-mode counsel-projectile company-web company-statistics company-auctex company-anaconda column-enforce-mode color-theme-sanityinc-tomorrow clean-aindent-mode cal-china-x auto-yasnippet auto-highlight-symbol auto-compile auctex-latexmk aggressive-indent adaptive-wrap ace-window ace-link ac-ispell))))
