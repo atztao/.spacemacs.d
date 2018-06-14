@@ -1,15 +1,15 @@
-;-------------
-;org-mode
-;-------------
+                                        ;-------------
+                                        ;org-mode
+                                        ;-------------
 
 ;; (setq org-todo-keywords
 ;;       '((sequence "☐" "☑")))
 (setq org-file-apps
-        '((auto-mode . emacs)
-          ("\\.x?html?\\'" . "firefox %s")
-          ("\\.pdf\\'" . "zathura \"%s\"")
-          ("\\.pdf::\\([0-9]+\\)\\'" . "zathura \"%s\" -p %1")
-          ("\\.pdf.xoj" . "xournal %s")))
+      '((auto-mode . emacs)
+        ("\\.x?html?\\'" . "firefox %s")
+        ("\\.pdf\\'" . "zathura \"%s\"")
+        ("\\.pdf::\\([0-9]+\\)\\'" . "zathura \"%s\" -p %1")
+        ("\\.pdf.xoj" . "xournal %s")))
 
 
 (defun my/org-mode-hook ()
@@ -49,7 +49,7 @@
 (setq org-use-speed-commands t)
 
 (setq org-todo-state-tags-triggers
-      '(("CANCELLED" ("ARCHIVE" . t)))) 
+      '(("CANCELLED" ("ARCHIVE" . t))))
 ;;export image width
 (setq org-image-actual-width 100)
 
@@ -57,13 +57,13 @@
 (add-hook 'text-mode-hook 'turn-on-auto-fill)
 
 (add-hook 'hack-local-variables-hook (lambda () (setq
-truncate-lines nil)))
-(add-hook 'org-mode-hook   
-          (lambda () (setq truncate-lines nil)))  
+                                                 truncate-lines nil)))
+(add-hook 'org-mode-hook
+          (lambda () (setq truncate-lines nil)))
 
 (defun comment-auto-fill ()
-      (setq-local comment-auto-fill-only-comments t)
-      (auto-fill-mode 1))
+  (setq-local comment-auto-fill-only-comments t)
+  (auto-fill-mode 1))
 
 ;;Archive All Done Tas
 (setq org-archive-location (concat "archive/archive-" (format-time-string "%Y%m" (current-time)) ".org_archive::"))
@@ -77,37 +77,25 @@ truncate-lines nil)))
   (when (org-entry-is-done-p)
     (org-archive-subtree-default)))
 
-;; (add-hook 'org-mode-hook '(lambda () 
-;; (setq visual-line-fringe-indicators t) 
-;; (visual-line-mode) 
-;; (if visual-line-mode 
-;; (setq word-wrap nil)))) 
+;; (add-hook 'org-mode-hook '(lambda ()
+;; (setq visual-line-fringe-indicators t)
+;; (visual-line-mode)
+;; (if visual-line-mode
+;; (setq word-wrap nil))))
 
 ;;(add-hook 'org-mode-hook (lambda () (variable-pitch-mode t)))
 ;;org-mode display
-(setq org-fontify-done-headline t)
-;; (custom-set-faces
-;;  ;; custom-set-faces was added by Custom.
-;;  ;; If you edit it by hand, you could mess it up, so be careful.
-;;  ;; Your init file should contain only one such instance.
-;;  ;; If there is more than one, they won't work right.
-;;  '(org-agenda-done ((t (:foreground "Gray" :weight normal :strike-through t))))
-;;  ;; '(org-done ((t (:foreground "Gray" :weight normal :strike-through t))))
-;;  '(org-headline-done ((((class color) (min-colors 16) (background light)) (:foreground "Gray" :strike-through t))))
-
-;; ;;'(term ((t (:background "#ffffff" :foreground "#000000"))))
-;;  )
 
 ;;the mouse cursor from highlighting lines in the agenda
 (add-hook 'org-agenda-finalize-hook
-      (lambda () (remove-text-properties
-		  (point-min) (point-max) '(mouse-face t))))
+          (lambda () (remove-text-properties
+                      (point-min) (point-max) '(mouse-face t))))
 
 (setq org-startup-indented t)
 (setq org-hide-leading-stars t)
 (setq org-use-speed-commands t)
 
-(setq org-odd-level-only nil) 
+(setq org-odd-level-only nil)
 (setq org-insert-heading-respect-content nil)
 
 (setq org-confirm-babel-evaluate nil)
@@ -161,29 +149,30 @@ truncate-lines nil)))
 ;; (load "~/.emacs.d/elpa/outline-presentation.el")
 ;; (require 'outline-presentation)
 
-                                        
-;(setq org-default-notes-file (concat org-directory "~/Dropbox/inbox.txt"))
+
+                                        ;(setq org-default-notes-file (concat org-directory "~/Dropbox/inbox.txt"))
 ;;(define-key global-map [f12] 'org-capture)
 (define-key global-map "\C-cc" 'org-capture)
 (setq org-capture-templates
-      ;; `(("t" "Todo" entry (file+headline "~/Dropbox/Txt/todo.txt" "Inbox")
+      ;; `(("t" "Todo" entry (file+headline "~/Dropbox/Note/todo.txt" "Inbox")
       ;;    "* TODO %? ")
-      `(("t" "Todo" entry (file+headline "~/Dropbox/Txt/todo.txt" "Inbox")
-         "* TODO  %? ")
-        ("n" "Note" entry (file+headline "~/Dropbox/Txt/inbox.txt" "Note")
-         "* %U\n%? ")
-        ;; ("l" "Link" entry (file+headline "~/Dropbox/Txt/inbox.txt" "Link")
+      `(("t" "Todo" entry (file+headline "~/Dropbox/Note/todo.txt" "Inbox")
+         "* TODO %? ")
+        ("n" "Note" entry (file+headline "~/Dropbox/Note/inbox.txt" "Note")
+         "* %?\n %U \n  ")
+        ;; ("l" "Link" entry (file+headline "~/Dropbox/Note/inbox.txt" "Link")
         ;;  "* %? \n%U\n")
-        ("c" "Contact" entry (file+headline "~/Dropbox/Txt/contacts.txt" "Contact")
-         "* %?
-:PROPERTIES:
-:EMAIL: 
-:URL:
-:MOBILE:
-:LOCATION:
-:BIRTHDAY: 
-:NOTE:
-:END:")))
+        ;; ("c" "Contact" entry (file+headline "~/Dropbox/Txt/contacts.txt" "Contact")
+        ;;          "* %?
+        ;; :PROPERTIES:
+        ;; :EMAIL:
+        ;; :URL:
+        ;; :MOBILE:
+        ;; :LOCATION:
+        ;; :BIRTHDAY:
+        ;; :NOTE:
+        ;; :END:")
+        ))
 
 (global-set-key "\C-ca" 'org-agenda)
 (setq org-export-coding-system 'utf-8)
@@ -206,7 +195,7 @@ truncate-lines nil)))
 ;;                 ((org-agenda-span 'week)
 ;;                   (org-agenda-start-on-weekday 0) ;; start on Sunday
 ;;                   (org-agenda-overriding-header "Week in Review")
-;;                   (org-agenda-files 
+;;                   (org-agenda-files
 ;;                     (let ((org-agenda-files org-timeline-files))
 ;;                           (org-agenda-files nil 'ifmode)))
 ;;                   (org-agenda-start-with-log-mode t)
@@ -234,25 +223,28 @@ truncate-lines nil)))
 
 
 (setq org-publish-project-alist
-  '(("html"
-     ;; :base-directory "~/org/"
-     ;; :base-extension "org"
-     :publishing-directory "~/Dropbox/export"
-     :publishing-function org-publish-org-to-html)
-    ("pdf"
-     ;; :base-directory "~/org/"
-     ;; :base-extension "org"
-     :publishing-directory "~/Dropbox/export"
-     :publishing-function org-publish-org-to-pdf)))
+      '(("html"
+         ;; :base-directory "~/org/"
+         ;; :base-extension "org"
+         :publishing-directory "~/Dropbox/export"
+         :publishing-function org-publish-org-to-html)
+        ("pdf"
+         ;; :base-directory "~/org/"
+         ;; :base-extension "org"
+         :publishing-directory "~/Dropbox/export"
+         :publishing-function org-publish-org-to-pdf)))
 
+(add-hook 'org-mode-hook (lambda () (hl-todo-mode -1) nil))
+(setq org-fontify-done-headline t)
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(org-agenda-done ((t (:foreground "Gray" :weight normal :strike-through t))))
- '(org-done ((t (:foreground "Gray" :weight extra-bold :strike-through t))))
+ '(org-agenda-done ((t (:foreground "Grey" :weight normal :strike-through t))))
+ '(org-done ((t (:foreground "#999" :weight normal :strike-through t))))
  '(org-headline-done ((((class color) (min-colors 16) (background dark)) (:foreground "#999" :strike-through t))))
- '(org-todo ((t (:foreground "Red" :weight extra-bold :strike-through nil)))))
+ '(org-todo ((t (:foreground "Red" :weight bold :strike-through nil)))))
+
 
 (provide 'init-org)

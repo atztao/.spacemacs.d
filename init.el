@@ -5,8 +5,7 @@
  ;; or `spacemacs'. (default 'spacemacs)
  dotspacemacs-distribution 'spacemacs
  ;; Lazy installation of layers (i.e. layers are installed only when a file
- ;; with a supported type is opene
-d). Possible values are `all', `unused'
+ ;; with a supported type is opened). Possible values are `all', `unused'
  ;; and `nil'. `unused' will lazy install only unused layers (i.e. layers
  ;; not listed in variable `dotspacemacs-configuration-layers'), `all' will
  ;; lazy install any layer that support lazy installation even the layers
@@ -45,13 +44,13 @@ d). Possible values are `all', `unused'
    git
    markdown
    org
-   ;;smex
+   ;; smex
    (shell :variables
           shell-default-height 30
           shell-default-position 'bottom)
    ;;spell-checking
    syntax-checking
-   version-control
+   ;; version-control
    mu4e
    )
  ;; List of additional packages that will be installed without being
@@ -61,6 +60,7 @@ d). Possible values are `all', `unused'
  dotspacemacs-additional-packages '(
                                     google-this
                                     cal-china-x
+                                    org-ref
                                     ;; helm-google
                                     ;; company-jedi
                                     evil-mu4e
@@ -118,7 +118,7 @@ values."
    ;; with `:variables' keyword (similar to layers). Check the editing styles
    ;; section of the documentation for details on available variables.
    ;; (default 'vim)
-   dotspacemacs-editing-style 'vim
+   dotspacemacs-editing-style 'emacs
    ;; If non nil output loading progress in `*Messages*' buffer. (default nil)
    dotspacemacs-verbose-loading nil
    ;; Specify the startup banner. Default value is `official', it displays
@@ -139,7 +139,7 @@ values."
    ;; True if the home buffer should respond to resize events.
    dotspacemacs-startup-buffer-responsive t
    ;; Default major mode of the scratch buffer (default `text-mode')
-   dotspacemacs-scratch-mode 'text-mode
+   dotspacemacs-scratch-mode 'org-mode
    ;; List of themes, the first of the list is loaded when spacemacs starts.
    ;; Press <SPC> T n to cycle to the next theme in the list (works great
    ;; with 2 themes variants, one dark and one light)
@@ -147,15 +147,15 @@ values."
                          ;; zenburn
                          ;; dracula
                          sanityinc-tomorrow-bright
+                         solarized-dark
                          spacemacs-dark
                          monokai
-                         solarized-dark
                          )
    ;; If non nil the cursor color matches the state color in GUI Emacs.
    dotspacemacs-colorize-cursor-according-to-state nil
    ;; Default font, or prioritized list of fonts. `powerline-scale' allows to
    ;; quickly tweak the mode-line size to make separators look not too crappy.
-   dotspacemacs-default-font '("Inconsolatag For Powerline"
+   dotspacemacs-default-font '("Inconsolatag for Powerline"
                                :size 16
                                :weight normal
                                :width normal
@@ -346,10 +346,13 @@ explicitly specified that a variable should be set before a package is loaded,
 you should place your code here."
   ;; (define-key evil-normal-state-map (kbd "TAB") 'org-cycle)
 
-  (setq ns-use-srgb-colorspace t)
+  ;; (setq ns-use-srgb-colorspace t)
 
-  ;; (setq inhibit-startup-screen nil)
-  ;; (setq initial-buffer-choice t)
+
+  ;; (add-hook 'server-switch-hook (lambda nil ( (kill-buffer "*spacemacs*"))))
+
+  ;; (switch-to-buffer "*scratch*")
+
   (setq evil-toggle-key "")   ; remove default evil-toggle-key C-z, manually setup later
 
   (setq powerline-default-separator nil)
@@ -462,8 +465,8 @@ you should place your code here."
   ;;       evil-insert-state-cursor '("red" bar)
   ;;       )
 
-  (set-cursor-color "green")
-  ;; (set-cursor-color "red")
+  ;; (set-cursor-color "green")
+  (set-cursor-color "DarkRed")
 
   ;; Make the line number gutter look cool
   ;; (setq linum-format "%4d \u2502")
@@ -529,6 +532,7 @@ you should place your code here."
 
 
   ;;(set-face-background 'fringe "#809088")
+  (add-hook 'org-mode-hook (lambda () (hl-todo-mode -1) nil))
 
 
   ;;(setq-default major-mode 'org-mode)
@@ -592,7 +596,7 @@ you should place your code here."
   (setq calendar-holidays cal-china-x-important-holidays)
   (setq my-holidays '((holiday-fixed 2 14 "情人节") (holiday-fixed 9 10 "教师节") (holiday-float 6 0 3 "父亲节")
                       (holiday-lunar 1 1 "春节" 0) (holiday-lunar 1 15 "元宵节" 0) (holiday-solar-term "清明" "清明节") (holiday-lunar 5 5 "端午节" 0) (holiday-lunar 7 7 "七夕情人节" 0) (holiday-lunar 8 15 "中秋节" 0)
-                      (holiday-lunar 12 23 "妈妈生日" 0) (holiday-lunar 5 9 "爸爸生日" 0) (holiday-lunar 10 17 "姐姐生日" 0) (holiday-lunar 10 18 "姐夫生日" 0) (holiday-fixed 10 29 "宝宝生日") ))
+                      (holiday-lunar 12 23 "妈妈生日" 0) (holiday-lunar 5 9 "爸爸生日" 0) (holiday-lunar 10 17 "姐夫生日" 0) (holiday-lunar 10 18 "姐姐生日" 0) (holiday-fixed 10 29 "宝宝生日") ))
   (setq calendar-holidays my-holidays)
   ;;(holiday-lunar 9 17 "宝宝生日" 0)
 
@@ -671,7 +675,7 @@ you should place your code here."
   ;; (setq python-shell-interpreter "/home/zhangtao/anaconda3/bin/python"
   ;;       python-shell-interpreter-args "-m IPython --simple-prompt -i"
   ;;       python-shell-interpreter-interactive-arg ""
-        
+
   ;;       )
   (setq python-shell-interpreter "jupyter"
         python-shell-interpreter-args "console --simple-prompt")
@@ -688,6 +692,8 @@ you should place your code here."
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  )
+
+
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -695,4 +701,4 @@ you should place your code here."
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
    (quote
-    (counsel swiper ivy helm-themes helm-swoop helm-pydoc helm-projectile helm-mode-manager helm-gitignore helm-flx helm-descbinds helm-css-scss helm-company helm-c-yasnippet helm-ag ace-jump-helm-line org-bullets yapfify xterm-color ws-butler winum which-key wgrep web-mode volatile-highlights vi-tilde-fringe uuidgen use-package unfill toc-org tagedit super-save spaceline smex smeargle slim-mode shell-pop scss-mode sass-mode restart-emacs rainbow-delimiters pyvenv pytest pyenv-mode py-isort pug-mode popwin pip-requirements persp-mode pcre2el paradox orgit org-present org-pomodoro org-mime org-download open-junk-file neotree mwim multi-term mu4e-maildirs-extension mu4e-alert move-text monokai-theme mmm-mode markdown-toc magit-gitflow macrostep lua-mode lorem-ipsum live-py-mode linum-relative link-hint less-css-mode ivy-hydra indent-guide hy-mode hungry-delete htmlize hl-todo highlight-parentheses highlight-numbers highlight-indentation helm-make google-translate google-this golden-ratio gnuplot gitignore-mode gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link git-gutter-fringe git-gutter-fringe+ gh-md fuzzy flycheck-pos-tip flx-ido fill-column-indicator fancy-battery eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist evil-numbers evil-nerd-commenter evil-mu4e evil-mc evil-matchit evil-magit evil-lisp-state evil-indent-plus evil-iedit-state evil-exchange evil-escape evil-ediff evil-args evil-anzu eval-sexp-fu eshell-z eshell-prompt-extras esh-help emmet-mode elisp-slime-nav ein dumb-jump diminish diff-hl define-word cython-mode counsel-projectile company-web company-statistics company-auctex company-anaconda column-enforce-mode color-theme-sanityinc-tomorrow clean-aindent-mode cal-china-x auto-yasnippet auto-highlight-symbol auto-compile auctex-latexmk aggressive-indent adaptive-wrap ace-window ace-link ac-ispell))))
+    (yapfify xterm-color ws-butler winum which-key wgrep web-mode volatile-highlights vi-tilde-fringe uuidgen use-package unfill toc-org tagedit super-save spaceline powerline smex smeargle slim-mode shell-pop scss-mode sass-mode restart-emacs rainbow-delimiters pyvenv pytest pyenv-mode py-isort pug-mode popwin pip-requirements persp-mode pcre2el paradox spinner orgit org-ref pdf-tools key-chord helm-bibtex biblio parsebib biblio-core tablist org-present org-pomodoro org-plus-contrib org-mime org-download open-junk-file neotree mwim multi-term mu4e-maildirs-extension mu4e-alert ht alert log4e gntp move-text mmm-mode markdown-toc markdown-mode magit-gitflow macrostep lua-mode lorem-ipsum live-py-mode linum-relative link-hint less-css-mode ivy-hydra indent-guide hydra hy-mode dash-functional hungry-delete htmlize hl-todo highlight-parentheses highlight-numbers parent-mode highlight-indentation helm-make helm helm-core haml-mode google-translate google-this golden-ratio gnuplot gitignore-mode gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link git-gutter-fringe+ git-gutter-fringe fringe-helper git-gutter+ git-gutter gh-md fuzzy flycheck-pos-tip pos-tip flycheck flx-ido flx fill-column-indicator fancy-battery eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist evil-numbers evil-nerd-commenter evil-mu4e evil-mc evil-matchit evil-magit magit magit-popup git-commit ghub let-alist with-editor evil-lisp-state smartparens evil-indent-plus evil-iedit-state iedit evil-exchange evil-escape evil-ediff evil-args evil-anzu anzu evil goto-chg undo-tree eval-sexp-fu highlight eshell-z eshell-prompt-extras esh-help emmet-mode elisp-slime-nav ein skewer-mode request-deferred websocket request deferred js2-mode simple-httpd dumb-jump diminish diff-hl define-word cython-mode counsel-projectile projectile pkg-info epl counsel swiper ivy company-web web-completion-data company-statistics company-auctex company-anaconda company column-enforce-mode clean-aindent-mode cal-china-x bind-map bind-key auto-yasnippet yasnippet auto-highlight-symbol auto-compile packed auctex-latexmk auctex async anaconda-mode pythonic f dash s aggressive-indent adaptive-wrap ace-window ace-link avy ac-ispell auto-complete popup color-theme-sanityinc-tomorrow))))
