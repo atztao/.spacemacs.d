@@ -1,15 +1,15 @@
-                                        ;-------------
-                                        ;org-mode
-                                        ;-------------
+;;-------------
+;;org-mode
+;;-------------
 
 ;; (setq org-todo-keywords
 ;;       '((sequence "☐" "☑")))
-(setq org-file-apps
-      '((auto-mode . emacs)
-        ("\\.x?html?\\'" . "firefox %s")
-        ("\\.pdf\\'" . "zathura \"%s\"")
-        ("\\.pdf::\\([0-9]+\\)\\'" . "zathura \"%s\" -p %1")
-        ("\\.pdf.xoj" . "xournal %s")))
+;; (setq org-file-apps
+;;       '((auto-mode . emacs)
+;;         ("\\.x?html?\\'" . "firefox %s")
+;;         ("\\.pdf\\'" . "zathura \"%s\"")
+;;         ("\\.pdf::\\([0-9]+\\)\\'" . "zathura \"%s\" -p %1")
+;;         ("\\.pdf.xoj" . "xournal %s")))
 
 
 (defun my/org-mode-hook ()
@@ -98,7 +98,7 @@
 (setq org-odd-level-only nil)
 (setq org-insert-heading-respect-content nil)
 
-(setq org-confirm-babel-evaluate nil)
+
 
 ;;source code
 
@@ -113,6 +113,17 @@
 (org-babel-do-load-languages
  'org-babel-load-languages
  '((latex . t)))
+
+(org-babel-do-load-languages
+ 'org-babel-load-languages
+ '((ditaa . t))) ; this line activates ditaa
+
+(org-babel-do-load-languages
+ 'org-babel-load-languages
+ '((dot . t))) ; this line activates ditaa
+
+(setq org-confirm-babel-evaluate nil)
+
 
 (setq org-src-fontify-natively t)
 (setq org-src-tab-acts-natively t)
@@ -150,8 +161,8 @@
 ;; (require 'outline-presentation)
 
 
-                                        ;(setq org-default-notes-file (concat org-directory "~/Dropbox/inbox.txt"))
-;;(define-key global-map [f12] 'org-capture)
+;; (setq org-default-notes-file (concat org-directory "~/Dropbox/inbox.txt"))
+(define-key global-map [f12] 'org-capture)
 (define-key global-map "\C-cc" 'org-capture)
 (setq org-capture-templates
       ;; `(("t" "Todo" entry (file+headline "~/Dropbox/Note/todo.txt" "Inbox")
@@ -159,7 +170,7 @@
       `(("t" "Todo" entry (file+headline "~/Dropbox/Note/todo.txt" "Inbox")
          "* TODO %? ")
         ("n" "Note" entry (file+headline "~/Dropbox/Note/inbox.txt" "Note")
-         "* %?\n %U \n  ")
+         "* %?\n \n %U \n  ")
         ;; ("l" "Link" entry (file+headline "~/Dropbox/Note/inbox.txt" "Link")
         ;;  "* %? \n%U\n")
         ;; ("c" "Contact" entry (file+headline "~/Dropbox/Txt/contacts.txt" "Contact")
@@ -180,28 +191,6 @@
 (setq diary-file "~/Dropbox/Txt/diary")
 (setq org-agenda-include-diary t)
 ;;(setq org-agenda-files '("~/org"))
-
-;;org-timeline
-;; (defvar org-timeline-files nil
-;;   "The files to be included in `org-timeline-all-files'. Follows
-;;   the same rules as `org-agenda-files'")
-
-;; (setq org-timeline-files '("/home/zhangtao/Dropbox/log/org/"))
-
-;; (add-to-list 'org-agenda-custom-commands
-;;              '("R" "Week in review"
-;;                 agenda ""
-;;                 ;; agenda settings
-;;                 ((org-agenda-span 'week)
-;;                   (org-agenda-start-on-weekday 0) ;; start on Sunday
-;;                   (org-agenda-overriding-header "Week in Review")
-;;                   (org-agenda-files
-;;                     (let ((org-agenda-files org-timeline-files))
-;;                           (org-agenda-files nil 'ifmode)))
-;;                   (org-agenda-start-with-log-mode t)
-;;                   (org-agenda-log-mode-items '(clock state))
-;;                   (org-agenda-archives-mode t) ; include archive files
-;;                 )))
 
 
 ;; (require 'org-crypt)
@@ -234,17 +223,34 @@
          :publishing-directory "~/Dropbox/export"
          :publishing-function org-publish-org-to-pdf)))
 
+(setq org-use-fast-todo-selection t)
+(setq org-todo-keywords
+      '((sequence "TODO(t)" "NEXT(n)" "SOMEDAY(s)" "WAITING(w)" "|" "DONE(d)" )))
+
+(setq org-todo-keyword-faces
+      '(
+        ("TODO" .(:foreground "#999" :weight bold))
+        ("NEXT" .( :foreground "DarkRed" :weight bold))
+        ("SOMEDAY" .(:foreground "#999" :weight bold))
+        ("WAITING" .(:foreground "#999" :weight bold :strike-through nil))
+        ("DONE" .(:foreground "#999" :weight normal :strike-through t))
+        ))
+
+
 (add-hook 'org-mode-hook (lambda () (hl-todo-mode -1) nil))
+
 (setq org-fontify-done-headline t)
+
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(org-todo ((t (:foreground "DarkRed" :weight extra-bold :strike-through nil))))
  '(org-agenda-done ((t (:foreground "Grey" :weight normal :strike-through t))))
  '(org-done ((t (:foreground "#999" :weight normal :strike-through t))))
  '(org-headline-done ((((class color) (min-colors 16) (background dark)) (:foreground "#999" :strike-through t))))
- '(org-todo ((t (:foreground "Red" :weight bold :strike-through nil)))))
+ )
 
 
 (provide 'init-org)

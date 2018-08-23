@@ -30,7 +30,10 @@
    ;; Uncomment some layer names and press <SPC f e R> (Vim style) or
    ;; <M-m f e R> (Emacs style) to install them.
    ;; ----------------------------------------------------------------
-   ipython-notebook
+   (ipython-notebook :variables
+                     ein:use-auto-complete t
+                     ein:complete-on-dot t
+                     ein:completion-backend 'ein:use-company-backend)
    python
    ;; helm
    ivy
@@ -51,7 +54,7 @@
    ;;spell-checking
    syntax-checking
    ;; version-control
-   mu4e
+   ;; mu4e
    )
  ;; List of additional packages that will be installed without being
  ;; wrapped in a layer. If you need some configuration for these
@@ -59,7 +62,8 @@
  ;; configuration in `dotspacemacs/user-config'.
  dotspacemacs-additional-packages '(
                                     google-this
-                                    cal-china-x
+                                   (setq company-dabbrev-downcase 0)
+(setq company-idle-delay 0) cal-china-x
                                     org-ref
                                     ;; helm-google
                                     ;; company-jedi
@@ -73,7 +77,7 @@
                                   org-projectile
                                   ;; auto-complete
                                   ;; mu4e-maildirs-extension
-                                  org-bullets
+                                  ;; org-bullets
                                   )
  ;; Defines the behaviour of Spacemacs when installing packages.
  ;; Possible values are `used-only', `used-but-keep-unused' and `all'.
@@ -144,9 +148,10 @@ values."
    ;; Press <SPC> T n to cycle to the next theme in the list (works great
    ;; with 2 themes variants, one dark and one light)
    dotspacemacs-themes '(
-                         ;; zenburn
                          ;; dracula
+                         ;; spacemacs-light
                          sanityinc-tomorrow-bright
+                         zenburn
                          solarized-dark
                          spacemacs-dark
                          monokai
@@ -155,7 +160,7 @@ values."
    dotspacemacs-colorize-cursor-according-to-state nil
    ;; Default font, or prioritized list of fonts. `powerline-scale' allows to
    ;; quickly tweak the mode-line size to make separators look not too crappy.
-   dotspacemacs-default-font '("Inconsolatag for Powerline"
+   dotspacemacs-default-font '("Monaco For Powerline"
                                :size 16
                                :weight normal
                                :width normal
@@ -493,9 +498,9 @@ you should place your code here."
   ;;   (set-fontset-font (frame-parameter nil 'font)
   ;;                     charset (font-spec :family "Microsoft Yahei" :size 16)))
 
-  ;; (set-fontset-font "fontset-default" 'chinese-gbk "Microsoft Yahei")
+  (set-fontset-font "fontset-default" 'chinese-gbk "Microsoft Yahei")
   ;; (set-fontset-font "fontset-default" 'han "WenQuanYi Micro Hei Mono")
-  (set-fontset-font "fontset-default" 'han "Source Han Sans CN")
+  ;; (set-fontset-font "fontset-default" 'han "Source Han Sans CN")
 
   ;;(add-to-list 'default-frame-alist '(height . 20))
   ;;(add-to-list 'default-frame-alist '(width . 52))
@@ -594,7 +599,7 @@ you should place your code here."
   (setq mark-holidays-in-calendar t)
   (setq cal-china-x-important-holidays cal-china-x-chinese-holidays)
   (setq calendar-holidays cal-china-x-important-holidays)
-  (setq my-holidays '((holiday-fixed 2 14 "情人节") (holiday-fixed 9 10 "教师节") (holiday-float 6 0 3 "父亲节")
+  (setq my-holidays '((holiday-fixed 2 14 "情人节") (holiday-fixed 9 10 "教师节") (holiday-fixed 5 12 "护士节") (holiday-float 6 0 3 "父亲节") (holiday-float 5 0 2 "母亲节")
                       (holiday-lunar 1 1 "春节" 0) (holiday-lunar 1 15 "元宵节" 0) (holiday-solar-term "清明" "清明节") (holiday-lunar 5 5 "端午节" 0) (holiday-lunar 7 7 "七夕情人节" 0) (holiday-lunar 8 15 "中秋节" 0)
                       (holiday-lunar 12 23 "妈妈生日" 0) (holiday-lunar 5 9 "爸爸生日" 0) (holiday-lunar 10 17 "姐夫生日" 0) (holiday-lunar 10 18 "姐姐生日" 0) (holiday-fixed 10 29 "宝宝生日") ))
   (setq calendar-holidays my-holidays)
@@ -609,8 +614,8 @@ you should place your code here."
   (require 'init-org-pdf)
 
   ;;Mu4e
-  (require 'evil-mu4e)
-  (require 'init-email)
+  ;; (require 'evil-mu4e)
+  ;; (require 'init-email)
 
   ;;------------------------------------------------}
 
@@ -663,6 +668,8 @@ you should place your code here."
   ;; (setq fci-rule-character ?█)
   ;; (setq fci-rule-width 8)
 
+  (setq company-dabbrev-downcase 0)
+  (setq company-idle-delay 0)
 
   (add-hook 'python-mode-hook 'yapf-mode)
   (setq python-shell-completion-native-enable nil)
@@ -691,7 +698,10 @@ you should place your code here."
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- )
+ '(org-agenda-done ((t (:foreground "Grey" :weight normal :strike-through t))))
+ '(org-done ((t (:foreground "#999" :weight normal :strike-through t))))
+ '(org-headline-done ((((class color) (min-colors 16) (background dark)) (:foreground "#999" :strike-through t))))
+ '(org-todo ((t (:foreground "DarkRed" :weight extra-bold :strike-through nil)))))
 
 
 (custom-set-variables
@@ -701,4 +711,4 @@ you should place your code here."
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
    (quote
-    (yapfify xterm-color ws-butler winum which-key wgrep web-mode volatile-highlights vi-tilde-fringe uuidgen use-package unfill toc-org tagedit super-save spaceline powerline smex smeargle slim-mode shell-pop scss-mode sass-mode restart-emacs rainbow-delimiters pyvenv pytest pyenv-mode py-isort pug-mode popwin pip-requirements persp-mode pcre2el paradox spinner orgit org-ref pdf-tools key-chord helm-bibtex biblio parsebib biblio-core tablist org-present org-pomodoro org-plus-contrib org-mime org-download open-junk-file neotree mwim multi-term mu4e-maildirs-extension mu4e-alert ht alert log4e gntp move-text mmm-mode markdown-toc markdown-mode magit-gitflow macrostep lua-mode lorem-ipsum live-py-mode linum-relative link-hint less-css-mode ivy-hydra indent-guide hydra hy-mode dash-functional hungry-delete htmlize hl-todo highlight-parentheses highlight-numbers parent-mode highlight-indentation helm-make helm helm-core haml-mode google-translate google-this golden-ratio gnuplot gitignore-mode gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link git-gutter-fringe+ git-gutter-fringe fringe-helper git-gutter+ git-gutter gh-md fuzzy flycheck-pos-tip pos-tip flycheck flx-ido flx fill-column-indicator fancy-battery eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist evil-numbers evil-nerd-commenter evil-mu4e evil-mc evil-matchit evil-magit magit magit-popup git-commit ghub let-alist with-editor evil-lisp-state smartparens evil-indent-plus evil-iedit-state iedit evil-exchange evil-escape evil-ediff evil-args evil-anzu anzu evil goto-chg undo-tree eval-sexp-fu highlight eshell-z eshell-prompt-extras esh-help emmet-mode elisp-slime-nav ein skewer-mode request-deferred websocket request deferred js2-mode simple-httpd dumb-jump diminish diff-hl define-word cython-mode counsel-projectile projectile pkg-info epl counsel swiper ivy company-web web-completion-data company-statistics company-auctex company-anaconda company column-enforce-mode clean-aindent-mode cal-china-x bind-map bind-key auto-yasnippet yasnippet auto-highlight-symbol auto-compile packed auctex-latexmk auctex async anaconda-mode pythonic f dash s aggressive-indent adaptive-wrap ace-window ace-link avy ac-ispell auto-complete popup color-theme-sanityinc-tomorrow))))
+    (org-plus-contrib org-bullets yapfify xterm-color ws-butler winum which-key wgrep web-mode volatile-highlights vi-tilde-fringe uuidgen use-package unfill toc-org tagedit super-save spaceline powerline smex smeargle slim-mode shell-pop scss-mode sass-mode restart-emacs rainbow-delimiters pyvenv pytest pyenv-mode py-isort pug-mode popwin pip-requirements persp-mode pcre2el paradox spinner orgit org-ref pdf-tools key-chord helm-bibtex biblio parsebib biblio-core tablist org-present org-pomodoro org-mime org-download open-junk-file neotree mwim multi-term mu4e-maildirs-extension mu4e-alert ht alert log4e gntp move-text mmm-mode markdown-toc markdown-mode magit-gitflow macrostep lua-mode lorem-ipsum live-py-mode linum-relative link-hint less-css-mode ivy-hydra indent-guide hydra hy-mode dash-functional hungry-delete htmlize hl-todo highlight-parentheses highlight-numbers parent-mode highlight-indentation helm-make helm helm-core haml-mode google-translate google-this golden-ratio gnuplot gitignore-mode gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link git-gutter-fringe+ git-gutter-fringe fringe-helper git-gutter+ git-gutter gh-md fuzzy flycheck-pos-tip pos-tip flycheck flx-ido flx fill-column-indicator fancy-battery eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist evil-numbers evil-nerd-commenter evil-mu4e evil-mc evil-matchit evil-magit magit magit-popup git-commit ghub let-alist with-editor evil-lisp-state smartparens evil-indent-plus evil-iedit-state iedit evil-exchange evil-escape evil-ediff evil-args evil-anzu anzu evil goto-chg undo-tree eval-sexp-fu highlight eshell-z eshell-prompt-extras esh-help emmet-mode elisp-slime-nav ein skewer-mode request-deferred websocket request deferred js2-mode simple-httpd dumb-jump diminish diff-hl define-word cython-mode counsel-projectile projectile pkg-info epl counsel swiper ivy company-web web-completion-data company-statistics company-auctex company-anaconda company column-enforce-mode clean-aindent-mode cal-china-x bind-map bind-key auto-yasnippet yasnippet auto-highlight-symbol auto-compile packed auctex-latexmk auctex async anaconda-mode pythonic f dash s aggressive-indent adaptive-wrap ace-window ace-link avy ac-ispell auto-complete popup color-theme-sanityinc-tomorrow))))
