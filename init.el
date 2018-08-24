@@ -62,8 +62,7 @@
  ;; configuration in `dotspacemacs/user-config'.
  dotspacemacs-additional-packages '(
                                     google-this
-                                   (setq company-dabbrev-downcase 0)
-(setq company-idle-delay 0) cal-china-x
+                                    cal-china-x
                                     org-ref
                                     ;; helm-google
                                     ;; company-jedi
