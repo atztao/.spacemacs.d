@@ -4,12 +4,12 @@
 
 ;; (setq org-todo-keywords
 ;;       '((sequence "☐" "☑")))
-;; (setq org-file-apps
-;;       '((auto-mode . emacs)
-;;         ("\\.x?html?\\'" . "firefox %s")
-;;         ("\\.pdf\\'" . "zathura \"%s\"")
-;;         ("\\.pdf::\\([0-9]+\\)\\'" . "zathura \"%s\" -p %1")
-;;         ("\\.pdf.xoj" . "xournal %s")))
+(setq org-file-apps
+      '((auto-mode . emacs)
+        ("\\.x?html?\\'" . "firefox %s")
+        ("\\.pdf\\'" . "zathura \"%s\"")
+        ("\\.pdf::\\([0-9]+\\)\\'" . "zathura \"%s\" -p %1")
+        ("\\.pdf.xoj" . "xournal %s")))
 
 
 (defun my/org-mode-hook ()

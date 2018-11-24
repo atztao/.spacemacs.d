@@ -159,8 +159,9 @@ values."
    dotspacemacs-colorize-cursor-according-to-state nil
    ;; Default font, or prioritized list of fonts. `powerline-scale' allows to
    ;; quickly tweak the mode-line size to make separators look not too crappy.
-   dotspacemacs-default-font '("Monaco For Powerline"
-                               :size 16
+   ;; Inconsolatag For Powerline
+   dotspacemacs-default-font '("Inconsolatag For Powerline "
+                               :size 18
                                :weight normal
                                :width normal
                                :powerline-scale 1.0)
@@ -356,6 +357,9 @@ you should place your code here."
   ;; (add-hook 'server-switch-hook (lambda nil ( (kill-buffer "*spacemacs*"))))
 
   ;; (switch-to-buffer "*scratch*")
+
+  ;; https://github.com/TheBB/spaceline#turning-segments-on-and-off
+  (spaceline-toggle-hud-off)
 
   (setq evil-toggle-key "")   ; remove default evil-toggle-key C-z, manually setup later
 
