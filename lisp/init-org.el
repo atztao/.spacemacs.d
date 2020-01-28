@@ -5,6 +5,9 @@
 ;; (setq org-todo-keywords
 ;;       '((sequence "☐" "☑")))
 
+;; Solve Org source block babel expansion With Tab
+(require 'org-tempo)
+
 (setq org-file-apps
       '((auto-mode . emacs)
         ("\\.x?html?\\'" . "firefox %s")

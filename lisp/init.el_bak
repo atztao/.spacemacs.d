@@ -182,7 +182,6 @@ values."
    ;; (default "M-m")
    dotspacemacs-emacs-leader-key "M-m"
    ;; Major mode leader key is a shortcut key which is the equivalent of
-
    ;; pressing `<leader> m`. Set it to `nil` to disable it. (default ",")
    dotspacemacs-major-mode-leader-key ","
    ;; Major mode leader key accessible in `emacs state' and `insert state'.
@@ -364,9 +363,6 @@ you should place your code here."
 
   ;; (setq ns-use-srgb-colorspace t)
 
-  ;; -*- mode: org -*-
-  (add-to-list 'auto-mode-alist '("\\.txt\\'" . org-mode))
-
   ;; Trigger completion immediately.
   (setq company-idle-delay nil)
 
@@ -395,8 +391,7 @@ you should place your code here."
   ;; ;; Alternatively
   ;; (unless (display-graphic-p)
   ;;   (setq linum-relative-format (concat linum-relative-format " ")))
-
-
+  
   ;;flyspell-----------------------------------
   ;;apt install aspell
   ;; (setq-default ispell-program-name "aspell")
@@ -449,6 +444,23 @@ you should place your code here."
   (global-set-key (kbd "C-x C-b") 'ivy-switch-buffer)
   (global-set-key (kbd "C-x C-r") 'counsel-recentf)
 
+  ;; ;; For Helm With Emacs
+  ;; (global-set-key (kbd "C-x C-f")   #'helm-find-files)
+  ;; (global-set-key (kbd "C-x C-r") 'helm-recentf)
+  ;; (global-set-key (kbd "C-x b") 'helm-mini)
+  ;; (global-set-key (kbd "C-x C-b") 'helm-mini)
+  ;; (global-set-key (kbd "C-s")   #'helm-swoop)
+  ;; ;; (global-set-key (kbd "M-x")   #'helm-M-x)
+  ;; (global-set-key (kbd "C-x C-m") 'helm-M-x)
+  ;; (global-set-key (kbd "C-c C-m") 'helm-M-x)
+  ;; (define-key helm-map (kbd "<tab>") 'helm-execute-persistent-action)
+  ;; (define-key helm-map (kbd "C-z") 'helm-select-action)
+
+  ;;Some For Evil Mode
+  (define-key evil-ex-map "e" 'counsel-find-file)
+  ;; (evil-set-initial-state 'neotree 'normal)
+  (define-key evil-normal-state-map (kbd "j") 'evil-next-visual-line)
+  (define-key evil-normal-state-map (kbd "k") 'evil-previous-visual-line)
 
   ;;------------------------------------------------}
   ;;Window Title
@@ -476,9 +488,28 @@ you should place your code here."
   (set-face-attribute 'mode-line nil :box nil :height 82)
   (set-face-attribute 'mode-line-inactive nil :box nil  :height 82)
 
+  ;;Some Color Face
+  ;;{------------------------------------------------
+  (make-face-bold 'isearch)
+  (make-face-bold 'lazy-highlight)
+  ;; (set-face-foreground 'isearch "#000000")
+  ;; (set-face-background 'isearch "#ffff99")
+  ;; (set-face-foreground 'lazy-highlight "#000000")
+  ;; (set-face-background 'lazy-highlight "#ffff99")
+
+  ;; (set-face-attribute 'region nil :foreground "#FFFFFF" :background "Grey20" ) ;;#EEE8D6 F0E68C
+
+  ;; (setq evil-default-cursor (quote (t "#32cd32"))
+  ;;       evil-visual-state-cursor '("#880000" box)
+  ;;       evil-normal-state-cursor '("#32cd32" box)
+  ;;       evil-insert-state-cursor '("red" bar)
+  ;;       )
 
   ;; (set-cursor-color "green")
   (set-cursor-color "Red")
+
+  ;; Make the line number gutter look cool
+  ;; (setq linum-format "%4d \u2502")
 
   ;; Reverse colors for the border to have nicer line
   (set-face-inverse-video-p 'vertical-border nil)
@@ -531,7 +562,8 @@ you should place your code here."
   ;; (setq tramp-ssh-controlmaster-options
   ;;       "-o ControlMaster=auto -o ControlPath='tramp.%%C' -o ControlPersist=no")
 
-  
+  ;; -*- mode: org -*-
+  (add-to-list 'auto-mode-alist '("\\.txt\\'" . org-mode))
 
   ;;Browser
   (setq gnus-button-url 'browse-url-generic
@@ -539,7 +571,10 @@ you should place your code here."
         browse-url-browser-function gnus-button-url)
 
   (setq line-spacing '0.20)
-  
+  ;; (setq-default line-spacing 2)
+  ;; (setq-default line-spacing 0)
+
+
   ;;(set-face-background 'fringe "#809088")
   (add-hook 'org-mode-hook (lambda () (hl-todo-mode -1) nil))
 
@@ -584,8 +619,25 @@ you should place your code here."
   (evil-leader/set-key "o y" 'copy-to-clipboard)
   (evil-leader/set-key "o p" 'paste-from-clipboard)
 
+  ;;Setting For Vim Mode
+  ;;{------------------------------------------------
+  ;;jk Escape All The Mode
+  ;; (setq key-chord-two-keys-delay 0.5)
+  ;; (key-chord-define evil-insert-state-map "jk" 'evil-normal-state)
+  ;; (key-chord-mode 1)
+
+  (evil-escape-mode 1)
+  (setq-default evil-escape-key-sequence "jk")
+  (setq evil-escape-excluded-major-modes '(dired-mode))
+  (setq-default evil-escape-delay 0.2)
+
+  ;;-----------------------------------------------}
+  ;; org-mode-bullets
+  ;; (setq org-ellipsis " ... ")
+  ;; (setq org-bullets-bullet-list '("◉" "⚫" "○"))
+
   ;;-----------------
-  ;;Note Day
+  ;;Calendar
   ;;-----------------
   (require 'cal-china-x)
   (setq mark-holidays-in-calendar t)
@@ -596,7 +648,6 @@ you should place your code here."
                       (holiday-lunar 12 23 "妈妈生日" 0) (holiday-lunar 5 9 "爸爸生日" 0) (holiday-lunar 10 17 "姐夫生日" 0) (holiday-lunar 10 18 "姐姐生日" 0) (holiday-fixed 10 29 "宝宝生日") ))
   (setq calendar-holidays my-holidays)
   ;;(holiday-lunar 9 17 "宝宝生日" 0)
-
 
   ;;{------------------------------------------------
   ;;Import Some Init File
@@ -619,6 +670,11 @@ you should place your code here."
   (setq neo-theme (if (display-graphic-p) 'ascii))
   ;;(setq-default neo-mode-line-format nil)
 
+
+  ;;Use Shadowsocks To Google
+  ;; (setq url-gateway-method 'socks)
+  ;; (setq socks-server '("Default server" "127.0.0.1" 1080 5))
+
   ;;google-translate
   ;; (set-face-attribute 'google-translate-translation-face nil :height 1.4)
 
@@ -635,13 +691,14 @@ you should place your code here."
   ;;----------------
   ;;yasnippet - A template system for Emacs
   ;;----------------
+  
   ;; add extra snippet directories
   (setq yas-snippet-dirs (append yas-snippet-dirs
                                  '("/home/zhangtao/Dropbox/.backup/snippets")))
 
-  ;;------------------------------------------------
+  ;;------------------------------------------------}
   ;; Python Configuration
-  ;;------------------------------------------------
+  ;;Ok, thanks! SPC m = is ok, didn't know about it, and couldn't find it because, well, py-yapf-buffer wasn't very descriptive function name. smiley
 
   ;; (add-hook 'prog-mode-hook #'fci-mode)    ;; Indicate fill column.
   ;; (setq fci-rule-color "darkred")
