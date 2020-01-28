@@ -407,10 +407,6 @@ you should place your code here."
   ;;Auto Save - Backup-----------------------------------------
   (super-save-mode +1)
 
-  (setq auto-save-interval 1)
-  (setq auto-save-visited-file-name t)
-  (setq auto-save-timeout 10)
-
   ;; (setq auto-save-default nil)
   ;; (setq make-backup-files nil)
 
@@ -419,6 +415,7 @@ you should place your code here."
         backup-by-copying t               ; don't clobber symlinks
         version-control t                 ; version numbers for backup files
         delete-old-versions t             ; delete excess backp files silently
+        auto-save-visited-file-name t
         delete-by-moving-to-trash t
         kept-old-versions 6               ; oldest versions to keep when a new numbered backup is made (default: 2)
         kept-new-versions 9               ; newest versions to keep when a new numbered backup is made (default: 2)
@@ -634,15 +631,12 @@ you should place your code here."
 
   ;;----------------
   ;;yasnippet - A template system for Emacs
-  ;;----------------
   ;; add extra snippet directories
   (setq yas-snippet-dirs (append yas-snippet-dirs
                                  '("/home/zhangtao/Dropbox/.backup/snippets")))
 
   ;;------------------------------------------------
   ;; Python Configuration
-  ;;------------------------------------------------
-
   ;; (add-hook 'prog-mode-hook #'fci-mode)    ;; Indicate fill column.
   ;; (setq fci-rule-color "darkred")
   ;; (setq fci-rule-character ?█)
