@@ -4,14 +4,17 @@
 
 (require 'ox-latex) ;;sudo pip install pygmentize https://emacs-china.org/t/spacemacs-org-mode-pdf/1577/15
 ;; (require 'ox-latex-subfigure)
+(require 'org-ref)
 
 (setq org-src-fontify-natively t)
 (setq org-src-preserve-indentation t)
+;; (setq org-latex-caption-above nil)
 
 ;; (setq org-export-latex-listings t)
 ;; ;;org-mode source code setup in exporting to latex
 (add-to-list 'org-latex-packages-alist '("" "minted")) ;;pip install pygments
-(setq org-latex-listings 'minted) 
+(setq org-latex-listings 'minted)
+
 ;; (setq org-latex-minted-options
 ;;       '(("frame" "lines")
 ;; 	("linenos=false")
@@ -83,170 +86,14 @@
 (add-to-list 'org-latex-packages-alist
              '("Lenny" "fncychap" t))
 
-(add-to-list 'org-latex-classes
-             '("org-book"
-               "\\documentclass{book}
-\\usepackage[slantfont, boldfont]{xeCJK}
-\\usepackage{titlesec}
-\\usepackage{hyperref}
-\\usepackage[table]{xcolor}
-
-% chapter set
-\\usepackage{titlesec}
-            \\usepackage{hyperref}
-
-
-[NO-DEFAULT-PACKAGES]
-[PACKAGES]
-
-\\setmainfont{Times New Roman}
-\\setsansfont{Helvetica}
-\\setmonofont{Courier New}
-\\setCJKmainfont{SimSun} 
-\\setCJKsansfont{Microsoft YaHei} 
-\\setCJKmonofont{FZYTK.ttf} 
-
-%如果没有它，会有一些 tex 特殊字符无法正常使用，比如连字符。
-\\defaultfontfeatures{Mapping=tex-text}
-
-% 中文断行
-\\XeTeXlinebreaklocale \"zh\"
-\\XeTeXlinebreakskip = 0pt plus 1pt minus 0.1pt
-
-%% 代码设置
-%\\lstset{numbers=left,
-%numberstyle= \\tiny,
-%keywordstyle= \\color{ blue!70},commentstyle=\\color{red!50!green!50!blue!50},
-%frame=shadowbox,
-%breaklines=true,
-%rulesepcolor= \\color{ red!20!green!20!blue!20}
-%}
-
-[EXTRA]
-"
-                 ("\\chapter{%s}" . "\\chapter*{%s}")
-                 ("\\section{%s}" . "\\section*{%s}")
-                 ("\\subsection{%s}" . "\\subsection*{%s}")
-                 ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
-                 ("\\paragraph{%s}" . "\\paragraph*{%s}")
-                 ("\\subparagraph{%s}" . "\\subparagraph*{%s}")))
-
-  (add-to-list 'org-latex-classes
-               '("org-article"
-                 "\\documentclass{article}
-\\usepackage[slantfont, boldfont]{xeCJK}
-\\usepackage{titlesec}
-% \\usepackage[colorlinks=false]{hyperref}
-\\usepackage[hidelinks]{hyperref}
-\\usepackage[table]{xcolor}
-
-\\pagestyle{fancy}             % do not remove
-
-[NO-DEFAULT-PACKAGES]
-[PACKAGES]
-
-\\parindent 2em
-
-\\setmainfont{Times New Roman}
-\\setsansfont{Helvetica}
-\\setmonofont{Courier New}
-
-\\setCJKmainfont{SimSun} 
-\\setCJKsansfont{Microsoft YaHei} 
-\\setCJKmonofont{FZYTK.ttf} 
-
-%如果没有它，会有一些 tex 特殊字符无法正常使用，比如连字符。
-\\defaultfontfeatures{Mapping=tex-text}
-
-% 中文断行
-\\XeTeXlinebreaklocale \"zh\"
-\\XeTeXlinebreakskip = 0pt plus 1pt minus 0.1pt
-
-% 代码设置
-% \\lstset{numbers=left,
-% numberstyle= \\tiny,
-% keywordstyle= \\color{ blue!70},commentstyle=\\color{red!50!green!50!blue!50},
-% frame=shadowbox,
-% breaklines=true,
-% rulesepcolor= \\color{ red!20!green!20!blue!20}
-% }
-
-[EXTRA]
-"
-                 ("\\section{%s}" . "\\section*{%s}")
-                 ("\\subsection{%s}" . "\\subsection*{%s}")
-                 ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
-                 ("\\paragraph{%s}" . "\\paragraph*{%s}")
-                 ("\\subparagraph{%s}" . "\\subparagraph*{%s}")))
-
-  (add-to-list 'org-latex-classes
-               '("org-beamer"
-                 "\\documentclass{beamer}
-\\usepackage[SlantFont, BoldFont]{xeCJK}
-\\usefonttheme{professionalfonts}% use own font handling
-\\usetheme{Madrid}
-
-% beamer set
-\\usepackage[none]{hyphenat}
-\\usepackage[abs]{overpic}
-\\usepackage{caption}
-\\usepackage{caption}
-\\usepackage{subfigure}
-[NO-DEFAULT-PACKAGES]
-[PACKAGES]
-
-\\setmainfont{Times New Roman}
-\\setsansfont{Helvetica}
-\\setmonofont{Courier New}
-
-\\setCJKmainfont{SimSun} 
-\\setCJKsansfont{Microsoft YaHei} 
-
-\\setCJKmonofont{FZYTK.ttf}
-\\setmathfont{Latin Modern Math}
-
-
-
-\\usemintedstyle{monokai}
-%如果没有它，会有一些 tex 特殊字符无法正常使用，比如连字符。
-\\defaultfontfeatures{Mapping=tex-text}
-
-% 中文断行
-\\XeTeXlinebreaklocale \"zh\"
-\\XeTeXlinebreakskip = 0pt plus 1pt minus 0.1pt
-
-%% 代码设置
-%\\lstset{numbers=left,
-%numberstyle= \\tiny,
-%keywordstyle= \\color{ blue!70},commentstyle=\\color{red!50!green!50!blue!50},
-%frame=shadowbox,
-%breaklines=true,
-%rulesepcolor= \\color{ red!20!green!20!blue!20}
-%}
-
-[EXTRA]
-"
-                 ("\\section{%s}" . "\\section*{%s}")
-                 ("\\subsection{%s}" . "\\subsection*{%s}")
-                 ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
-                 ("\\paragraph{%s}" . "\\paragraph*{%s}")
-                 ("\\subparagraph{%s}" . "\\subparagraph*{%s}")))
-
-;; (add-hook 'org-mode-hook
-;;       (lambda () 
-;;         (add-to-list 'org-latex-classes
-;;              '("ctexart"
-;;                "\\documentclass{ctexart}"
-;;                ("\\section{%s}" . "\\section*{%s}")
-;;                ("\\subsection{%s}" . "\\subsection*{%s}")
-;;                ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
-;;                ("\\paragraph{%s}" . "\\paragraph*{%s}")
-;;                ("\\subparagraph{%s}" . "\\subparagraph*{%s}")))))
 
 (setq org-latex-pdf-process '("xelatex -shell-escape -interaction nonstopmode %f"
+                              "bibtex %b"
+                              "makeindex %b"
+                              "xelatex -shell-escape -interaction nonstopmode %f"
                               "xelatex -shell-escape -interaction nonstopmode %f"))
 
-
+(setq org-latex-caption-above nil)
 (setq org-latex-tables-booktabs t)
 (setq org-latex-table-caption-above nil)
 (setq org-export-latex-tables-centered nil)
@@ -277,7 +124,8 @@
                                 :help "Run pdflatex with output in /tmp")
                               TeX-command-list)))
 
-(setq org-latex-logfiles-extensions (quote ("lof" "lot" "tex~" "aux" "idx" "log" "out" "toc" "nav" "snm" "vrb" "dvi" "fdb_latexmk" "blg" "brf" "fls" "entoc" "ps" "spl" "bbl" "pyg")))
+;; (setq org-latex-logfiles-extensions (quote ("lof" "lot" "tex~" "aux" "idx" "log" "out" "toc" "nav" "snm" "vrb" "dvi" "fdb_latexmk" "blg" "brf" "fls" "entoc" "ps" "spl" "bbl" "pyg")))
+(setq org-latex-logfiles-extensions (quote ("lof" "lot" "tex~" "aux" "idx" "out" "toc" "nav" "snm" "vrb" "dvi" "fdb_latexmk" "blg" "brf" "fls" "entoc" "ps" "spl" "bbl" "pyg")))
 (setq org-latex-remove-logfiles t)
 
 ;; (setq org-latex-logfiles-extensions (quote ("lof" "lot" "aux" "idx" "log" "out" "toc" "nav" "snm" "vrb" "dvi" "fdb_latexmk" "blg" "brf" "fls" "entoc" "ps" "spl" "bbl" "pyg")))

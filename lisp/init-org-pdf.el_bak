@@ -1,0 +1,334 @@
+;;-------------------------------------------------------
+;;ox-latex export pdf
+;;-------------------------------------------------------
+
+(require 'ox-latex) ;;sudo pip install pygmentize https://emacs-china.org/t/spacemacs-org-mode-pdf/1577/15
+;; (require 'ox-latex-subfigure)
+(require 'org-ref)
+
+(setq org-src-fontify-natively t)
+(setq org-src-preserve-indentation t)
+;; (setq org-latex-caption-above nil)
+
+;; (setq org-export-latex-listings t)
+;; ;;org-mode source code setup in exporting to latex
+(add-to-list 'org-latex-packages-alist '("" "minted")) ;;pip install pygments
+(setq org-latex-listings 'minted) 
+;; (setq org-latex-minted-options
+;;       '(("frame" "lines")
+;; 	("linenos=false")
+;; 	;;("fontsize" "\\scriptsize")
+;; 	("fontsize" "\\footnotesize")
+;; 	("xleftmargin" "\\parindent")
+;; 	("xrightmargin" "0.5cm")
+;;         ("xleftmargin"  "0.5cm")
+;; 	))
+
+;; (setq org-latex-custom-lang-environments
+;;            '(
+;;             (emacs-lisp "common-lispcode")
+;;              ))
+;; (setq org-latex-minted-options
+;;            '(("frame" "")
+;;              ("fontsize" "\\scriptsize")
+;;              ("linenos=false" "")))
+
+(setq org-latex-minted-options
+      '(("fontsize" "\\footnotesize")("bgcolor" "black")("obeytabs" "true")))
+
+;; (add-to-list 'org-latex-listings
+;;              '("" "listings"))
+;; (add-to-list 'org-latex-packages-alist
+;;              '("" "listings" t))
+;; (add-to-list 'org-latex-listings
+;;   	     '("" "color"))
+(add-to-list 'org-latex-packages-alist
+             '("" "xcolor" t))
+(add-to-list 'org-latex-packages-alist
+             '("" "unicode-math" t))
+(add-to-list 'org-latex-packages-alist
+             '("" "fontspec" t))
+(add-to-list 'org-latex-packages-alist
+             '("" "indentfirst" t))
+;; (add-to-list 'org-latex-packages-alist
+;;              '("" "xunicode" t))
+(add-to-list 'org-latex-packages-alist
+             '("" "geometry"))
+(add-to-list 'org-latex-packages-alist
+             '("" "float"))
+(add-to-list 'org-latex-packages-alist
+             '("" "longtable"))
+(add-to-list 'org-latex-packages-alist
+             '("" "tikz"))
+(add-to-list 'org-latex-packages-alist
+             '("" "fancyhdr"))
+(add-to-list 'org-latex-packages-alist
+             '("" "textcomp"))
+(add-to-list 'org-latex-packages-alist
+             '("" "amsmath"))
+(add-to-list 'org-latex-packages-alist
+             '("" "tabularx" t))
+(add-to-list 'org-latex-packages-alist
+             '("" "booktabs" t))
+(add-to-list 'org-latex-packages-alist
+             '("" "grffile" t))
+(add-to-list 'org-latex-packages-alist
+             '("" "wrapfig" t))
+(add-to-list 'org-latex-packages-alist
+             '("normalem" "ulem" t))
+(add-to-list 'org-latex-packages-alist
+             '("" "amssymb" t))
+(add-to-list 'org-latex-packages-alist
+             '("" "capt-of" t))
+(add-to-list 'org-latex-packages-alist
+             '("figuresright" "rotating" t))
+(add-to-list 'org-latex-packages-alist
+             '("Lenny" "fncychap" t))
+
+(add-to-list 'org-latex-classes
+             '("org-book"
+               "\\documentclass{book}
+\\usepackage[slantfont, boldfont]{xeCJK}
+\\usepackage{titlesec}
+\\usepackage{hyperref}
+\\usepackage[table]{xcolor}
+
+% chapter set
+\\usepackage{titlesec}
+            \\usepackage{hyperref}
+
+
+[NO-DEFAULT-PACKAGES]
+[PACKAGES]
+
+\\setmainfont{Times New Roman}
+\\setsansfont{Helvetica}
+\\setmonofont{Courier New}
+\\setCJKmainfont{SimSun} 
+\\setCJKsansfont{Microsoft YaHei} 
+\\setCJKmonofont{FZYTK.ttf} 
+
+%如果没有它，会有一些 tex 特殊字符无法正常使用，比如连字符。
+\\defaultfontfeatures{Mapping=tex-text}
+
+% 中文断行
+\\XeTeXlinebreaklocale \"zh\"
+\\XeTeXlinebreakskip = 0pt plus 1pt minus 0.1pt
+
+%% 代码设置
+%\\lstset{numbers=left,
+%numberstyle= \\tiny,
+%keywordstyle= \\color{ blue!70},commentstyle=\\color{red!50!green!50!b\\usepackage[letterpaper,includeheadfoot,top=0.5in,bottom=0.5in,left=0.75in,right=0.75in]{geometry}
+lue!50},
+%frame=shadowbox,
+%breaklines=true,
+%rulesepcolor= \\color{ red!20!green!20!blue!20}
+%}
+
+[EXTRA]
+"
+                 ("\\chapter{%s}" . "\\chapter*{%s}")
+                 ("\\section{%s}" . "\\section*{%s}")
+                 ("\\subsection{%s}" . "\\subsection*{%s}")
+                 ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
+                 ("\\paragraph{%s}" . "\\paragraph*{%s}")
+                 ("\\subparagraph{%s}" . "\\subparagraph*{%s}")))
+
+  (add-to-list 'org-latex-classes
+               '("org-article"
+                 "\\documentclass[10pt,letterpaper]{ctexart}
+
+\\usepackage[slantfont, boldfont]{xeCJK}
+\\usepackage{titlesec}
+% \\usepackage[colorlinks=false]{hyperref}
+\\usepackage[hidelinks]{hyperref}
+\\usepackage[table]{xcolor}
+
+\\pagestyle{fancy}             % do not remove
+
+[NO-DEFAULT-PACKAGES]
+[PACKAGES]
+
+
+\\setmainfont{Times New Roman}
+\\setsansfont{Helvetica}
+\\setmonofont{Courier New}
+
+\\setCJKmainfont{SimSun} 
+\\setCJKsansfont{Microsoft YaHei} 
+% \\setCJKmonofont{FZYTK.ttf} 
+
+%如果没有它，会有一些 tex 特殊字符无法正常使用，比如连字符。
+\\defaultfontfeatures{Mapping=tex-text}
+
+% 中文断行
+\\XeTeXlinebreaklocale \"zh\"
+\\XeTeXlinebreakskip = 0pt plus 1pt minus 0.1pt
+
+% 代码设置
+% \\lstset{numbers=left,
+% numberstyle= \\tiny,
+% keywordstyle= \\color{ blue!70},commentstyle=\\color{red!50!green!50!blue!50},
+% frame=shadowbox,
+% breaklines=true,
+% rulesepcolor= \\color{ red!20!green!20!blue!20}
+% }
+
+[EXTRA]
+"
+                 ("\\section{%s}" . "\\section*{%s}")
+                 ("\\subsection{%s}" . "\\subsection*{%s}")
+                 ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
+                 ("\\paragraph{%s}" . "\\paragraph*{%s}")
+                 ("\\subparagraph{%s}" . "\\subparagraph*{%s}")))
+
+(add-to-list 'org-latex-classes
+               '("org-paper"
+                 "\\documentclass[10pt,a4paper,twoside,twocolumn]{article}
+\\usepackage[
+left=2.00cm,
+right=2.00cm,
+top=2.00cm,
+bottom=2.00cm
+]{geometry}
+
+\\usepackage[utf8]{inputenc}
+\\usepackage[T1]{fontenc}
+
+\\usepackage[hidelinks]{hyperref}
+\\usepackage[table]{xcolor}
+\\usepackage{subfigure}
+\\usepackage{abstract}
+
+%\\usepackage{fancyhdr}
+\\pagestyle{fancy}
+%\\renewcommand{\\headrulewidth}{1pt}
+%\\renewcommand{\\footrulewidth}{0.5pt}
+
+[NO-DEFAULT-PACKAGES]
+[PACKAGES]
+
+
+\\setmainfont{Times New Roman}
+\\setsansfont{Helvetica}
+\\setmonofont{Courier New}
+
+[EXTRA]
+"
+                 ("\\section{%s}" . "\\section*{%s}")
+                 ("\\subsection{%s}" . "\\subsection*{%s}")
+                 ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
+                 ("\\paragraph{%s}" . "\\paragraph*{%s}")
+                 ("\\subparagraph{%s}" . "\\subparagraph*{%s}")))
+
+  (add-to-list 'org-latex-classes
+               '("org-beamer"
+                 "\\documentclass{beamer}
+\\usepackage[SlantFont, BoldFont]{xeCJK}
+\\usefonttheme{professionalfonts}% use own font handling
+\\usetheme{Madrid}
+
+% beamer set
+\\usepackage[none]{hyphenat}
+\\usepackage[abs]{overpic}
+\\usepackage{caption}
+\\usepackage{caption}
+\\usepackage{subfigure}
+[NO-DEFAULT-PACKAGES]
+[PACKAGES]
+
+\\setmainfont{Times New Roman}
+\\setsansfont{Helvetica}
+\\setmonofont{Courier New}
+
+\\setCJKmainfont{SimSun} 
+\\setCJKsansfont{Microsoft YaHei} 
+
+\\setCJKmonofont{FZYTK.ttf}
+\\setmathfont{Latin Modern Math}
+
+
+
+\\usemintedstyle{monokai}
+%如果没有它，会有一些 tex 特殊字符无法正常使用，比如连字符。
+\\defaultfontfeatures{Mapping=tex-text}
+
+% 中文断行
+\\XeTeXlinebreaklocale \"zh\"
+\\XeTeXlinebreakskip = 0pt plus 1pt minus 0.1pt
+
+%% 代码设置
+%\\lstset{numbers=left,
+%numberstyle= \\tiny,
+%keywordstyle= \\color{ blue!70},commentstyle=\\color{red!50!green!50!blue!50},
+%frame=shadowbox,
+%breaklines=true,
+%rulesepcolor= \\color{ red!20!green!20!blue!20}
+%}
+
+[EXTRA]
+"
+                 ("\\section{%s}" . "\\section*{%s}")
+                 ("\\subsection{%s}" . "\\subsection*{%s}")
+                 ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
+                 ("\\paragraph{%s}" . "\\paragraph*{%s}")
+                 ("\\subparagraph{%s}" . "\\subparagraph*{%s}")))
+
+;; (add-hook 'org-mode-hook
+;;       (lambda () 
+;;         (add-to-list 'org-latex-classes
+;;              '("ctexart"
+;;                "\\documentclass{ctexart}"
+;;                ("\\section{%s}" . "\\section*{%s}")
+;;                ("\\subsection{%s}" . "\\subsection*{%s}")
+;;                ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
+;;                ("\\paragraph{%s}" . "\\paragraph*{%s}")
+;;                ("\\subparagraph{%s}" . "\\subparagraph*{%s}")))))
+
+(setq org-latex-pdf-process '("xelatex -shell-escape -interaction nonstopmode %f"
+                              "bibtex %b"
+                              "makeindex %b"
+                              "xelatex -shell-escape -interaction nonstopmode %f"
+                              "xelatex -shell-escape -interaction nonstopmode %f")))
+
+(setq org-latex-caption-above nil)
+(setq org-latex-tables-booktabs t)
+(setq org-latex-table-caption-above nil)
+(setq org-export-latex-tables-centered nil)
+
+;; specify the justification you want
+(plist-put org-format-latex-options :justify 'left)
+
+
+;; (setq org-latex-pdf-process
+;;       '("pdflatex -shell-escape -interaction nonstopmode -output-directory %o %f"
+;;         "pdflatex -shell-escape -interaction nonstopmode -output-directory %o %f"))
+
+(setq org-format-latex-options (plist-put org-format-latex-options :scale 2.0))
+
+
+;; (setq org-latex-inputenc-alist '(("utf8" . "utf8x")))
+;; (add-to-list 'org-latex-packages-alist '("" "unicode-math"))
+;; (setq org-preview-latex-default-process 'dvisvgm)
+;;xelatex
+
+;;(setq org-latex-create-formula-image-program 'dvipng)
+(setq org-latex-create-formula-image-program 'imagemagick)
+
+(add-hook 'LaTeX-mode-hook (lambda ()
+                             (push 
+                              '("Latex_outdir" "%`latex -auxt-directory=/tmp %(mode)%' %t" 
+                                TeX-run-TeX nil (latex-mode doctex-mode) 
+                                :help "Run pdflatex with output in /tmp")
+                              TeX-command-list)))
+
+;; (setq org-latex-logfiles-extensions (quote ("lof" "lot" "tex~" "aux" "idx" "log" "out" "toc" "nav" "snm" "vrb" "dvi" "fdb_latexmk" "blg" "brf" "fls" "entoc" "ps" "spl" "bbl" "pyg")))
+(setq org-latex-logfiles-extensions (quote ("lof" "lot" "tex~" "aux" "idx" "out" "toc" "nav" "snm" "vrb" "dvi" "fdb_latexmk" "blg" "brf" "fls" "entoc" "ps" "spl" "bbl" "pyg")))
+(setq org-latex-remove-logfiles t)
+
+;; (setq org-latex-logfiles-extensions (quote ("lof" "lot" "aux" "idx" "log" "out" "toc" "nav" "snm" "vrb" "dvi" "fdb_latexmk" "blg" "brf" "fls" "entoc" "ps" "spl" "bbl" "pyg")))
+
+;; (advice-add 'org-latex-compile :after #'delete-file)
+
+
+(provide 'init-org-pdf)

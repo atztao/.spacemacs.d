@@ -4,12 +4,16 @@
 
 ;; (setq org-todo-keywords
 ;;       '((sequence "☐" "☑")))
+
 (setq org-file-apps
       '((auto-mode . emacs)
         ("\\.x?html?\\'" . "firefox %s")
         ("\\.pdf\\'" . "zathura \"%s\"")
         ("\\.pdf::\\([0-9]+\\)\\'" . "zathura \"%s\" -p %1")
         ("\\.pdf.xoj" . "xournal %s")))
+
+(add-hook 'org-mode-hook (lambda ()
+                           (setq truncate-lines nil)))
 
 
 (defun my/org-mode-hook ()
@@ -169,8 +173,10 @@
       ;;    "* TODO %? ")
       `(("t" "Todo" entry (file+headline "~/Dropbox/Note/todo.txt" "Inbox")
          "* TODO %? ")
+        ;; ("n" "Note" entry (file+headline "~/Dropbox/Note/inbox.txt" "Note")
+        ;;  "* %?\n \n %U \n  ")
         ("n" "Note" entry (file+headline "~/Dropbox/Note/inbox.txt" "Note")
-         "* %?\n \n %U \n  ")
+         "*  %U \n \n %? ")
         ;; ("l" "Link" entry (file+headline "~/Dropbox/Note/inbox.txt" "Link")
         ;;  "* %? \n%U\n")
         ;; ("c" "Contact" entry (file+headline "~/Dropbox/Txt/contacts.txt" "Contact")
@@ -251,6 +257,5 @@
  '(org-done ((t (:foreground "#999" :weight normal :strike-through t))))
  '(org-headline-done ((((class color) (min-colors 16) (background dark)) (:foreground "#999" :strike-through t))))
  )
-
 
 (provide 'init-org)

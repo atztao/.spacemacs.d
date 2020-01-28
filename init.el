@@ -64,10 +64,14 @@
                                     google-this
                                     cal-china-x
                                     org-ref
+                                    writeroom-mode
+                                    company-tabnine
                                     ;; helm-google
                                     ;; company-jedi
                                     evil-mu4e
                                     super-save
+                                    origami
+                                    alert
                                     )
  ;; A list of packages that cannot be updaERR_SOCKET_NOT_CONNECTEDted.
  dotspacemacs-frozen-packages '()
@@ -148,10 +152,11 @@ values."
    ;; with 2 themes variants, one dark and one light)
    dotspacemacs-themes '(
                          ;; dracula
-                         ;; spacemacs-light
+                         ;; default
                          sanityinc-tomorrow-bright
-                         zenburn
                          solarized-dark
+                         ;; spacemacs-light
+                         zenburn
                          spacemacs-dark
                          monokai
                          )
@@ -160,8 +165,14 @@ values."
    ;; Default font, or prioritized list of fonts. `powerline-scale' allows to
    ;; quickly tweak the mode-line size to make separators look not too crappy.
    ;; Inconsolatag For Powerline
+   ;; dotspacemacs-default-font '("Inconsolatag For Powerline "
+   ;;                             :size 16
+   ;;                             :weight normal
+   ;;                             :width normal
+   ;;                             :powerline-scale 1.0)
+
    dotspacemacs-default-font '("Inconsolatag For Powerline "
-                               :size 18
+                               :size 16
                                :weight normal
                                :width normal
                                :powerline-scale 1.0)
@@ -329,17 +340,21 @@ before packages are loaded. If you are unsure, you should try in setting them in
 `dotspacemacs/user-config' first."
   ;;Releas
   (setq configuration-layer--elpa-archives
-        '(("melpa-cn" . "http://elpa.emacs-china.org/melpa/")
-          ("org-cn"   . "http://elpa.emacs-china.org/org/")
-          ("gnu-cn"   . "http://elpa.emacs-china.org/gnu/")))
+        '(("melpa-cn" . "http://mirrors.tuna.tsinghua.edu.cn/elpa/melpa/")
+          ("org-cn"   . "http://mirrors.tuna.tsinghua.edu.cn/elpa/org/")
+          ("gnu-cn"   . "http://mirrors.tuna.tsinghua.edu.cn/elpa/gnu/")))
+  
   ;;Develop
   (setq configuration-layer-elpa-archives
-        '(("melpa-cn" . "http://elpa.emacs-china.org/melpa/")
-          ("org-cn"   . "http://elpa.emacs-china.org/org/")
-          ("gnu-cn"   . "http://elpa.emacs-china.org/gnu/")))
+        '(("melpa-cn" . "http://mirrors.tuna.tsinghua.edu.cn/elpa/melpa/")
+          ("org-cn"   . "http://mirrors.tuna.tsinghua.edu.cn/elpa/org/")
+          ("gnu-cn"   . "http://mirrors.tuna.tsinghua.edu.cn/elpa/gnu/")))
 
   ;; https://github.com/syl20bnr/spacemacs/issues/2705
   (setq tramp-ssh-controlmaster-options "-o ControlMaster=auto -o ControlPath='tramp.%%C' -o ControlPersist=no")
+
+  ;;Solve Environment variable warnings
+  (setq exec-path-from-shell-check-startup-files nil)
   )
 
 (defun dotspacemacs/user-config ()
@@ -353,10 +368,17 @@ you should place your code here."
 
   ;; (setq ns-use-srgb-colorspace t)
 
+  ;; Trigger completion immediately.
+  (setq company-idle-delay nil)
+
+  ;; Number the candidates (use M-1, M-2 etc to select completions).
+  (setq company-show-numbers t)
 
   ;; (add-hook 'server-switch-hook (lambda nil ( (kill-buffer "*spacemacs*"))))
 
   ;; (switch-to-buffer "*scratch*")
+
+  (spacemacs/toggle-highlight-current-line-globally-off)
 
   ;; https://github.com/TheBB/spaceline#turning-segments-on-and-off
   (spaceline-toggle-hud-off)
@@ -368,6 +390,13 @@ you should place your code here."
 
   (require 'helm-bookmark)
 
+  ;; (unless (display-graphic-p)
+  ;;   (setq linum-relative-format "%3s "))
+
+  ;; ;; Alternatively
+  ;; (unless (display-graphic-p)
+  ;;   (setq linum-relative-format (concat linum-relative-format " ")))
+  
   ;;flyspell-----------------------------------
   ;;apt install aspell
   ;; (setq-default ispell-program-name "aspell")
@@ -448,6 +477,14 @@ you should place your code here."
 
   (setq x-select-enable-clipboard t)
 
+  (setq recentf-save-file (expand-file-name "recentf" "~/Dropbox/.backup/"))
+  ;;MarkDown
+
+  (custom-set-variables
+   '(markdown-command "/usr/bin/pandoc"))
+
+  ;; 自动断行
+  
 
   ;;Set Shell
   ;; (setq shell-file-name "cmdproxy");; Copyright (c) 2010-2017 Dennis Ogbe
@@ -474,7 +511,7 @@ you should place your code here."
   ;;       )
 
   ;; (set-cursor-color "green")
-  (set-cursor-color "DarkRed")
+  (set-cursor-color "Red")
 
   ;; Make the line number gutter look cool
   ;; (setq linum-format "%4d \u2502")
@@ -499,11 +536,15 @@ you should place your code here."
   ;;Chinese Fonts
   ;; (dolist (charset '(kana han symbol cjk-misc bopomofo))
   ;;   (set-fontset-font (frame-parameter nil 'font)
-  ;;                     charset (font-spec :family "Microsoft Yahei" :size 16)))
+  ;;                     charset (font-spec :family "Microsoft Yahei")))
 
-  (set-fontset-font "fontset-default" 'chinese-gbk "Microsoft Yahei")
-  ;; (set-fontset-font "fontset-default" 'han "WenQuanYi Micro Hei Mono")
-  ;; (set-fontset-font "fontset-default" 'han "Source Han Sans CN")
+  ;; (dolist (charset '(kana han symbol cjk-misc bopomofo))
+  ;;   (set-fontset-font (frame-parameter nil 'font)
+  ;;                     charset (font-spec :family "Hiragino Sans GB" :size 16)))
+
+  (dolist (charset '(kana han symbol cjk-misc bopomofo))
+    (set-fontset-font (frame-parameter nil 'font)
+                      charset (font-spec :family "WenQuanYi Micro Hei Mono" )))
 
   ;;(add-to-list 'default-frame-alist '(height . 20))
   ;;(add-to-list 'default-frame-alist '(width . 52))
@@ -542,6 +583,8 @@ you should place your code here."
   ;;(set-face-background 'fringe "#809088")
   (add-hook 'org-mode-hook (lambda () (hl-todo-mode -1) nil))
 
+
+  (delete-region (point) (line-end-position))
 
   ;;(setq-default major-mode 'org-mode)
   (eval-after-load "linum"
@@ -594,6 +637,9 @@ you should place your code here."
   (setq-default evil-escape-delay 0.2)
 
   ;;-----------------------------------------------}
+  ;; org-mode-bullets
+  ;; (setq org-ellipsis " ... ")
+  ;; (setq org-bullets-bullet-list '("◉" "⚫" "○"))
 
   ;;-----------------
   ;;Calendar
@@ -615,6 +661,8 @@ you should place your code here."
   (require 'init-latex)
   (require 'init-org)
   (require 'init-org-pdf)
+
+  (add-hook 'hack-local-variables-hook (lambda () (setq truncate-lines t)))
 
   ;;Mu4e
   ;; (require 'evil-mu4e)
@@ -648,19 +696,10 @@ you should place your code here."
   ;;----------------
   ;;yasnippet - A template system for Emacs
   ;;----------------
-
-  (setq yas-snippet-dirs "~/.spacemacs.d/snippets/")
-  ;;(setq debug-on-error t)
-
-  ;; (define-key yas-minor-mode-map (kbd "<tab>") nil)
-  ;; (define-key yas-minor-mode-map (kbd "TAB") nil)
-
-
-  ;; Bind `SPC' to `yas-expand' when snippet expansion available (it
-  ;; will still call `self-insert-command' otherwise).
-  ;; (define-key yas-minor-mode-map (kbd "SPC") yas-maybe-expand)
-  ;; ;; Bind `C-c y' to `yas-expand' ONLY.
-  ;; (define-key yas-minor-mode-map (kbd "C-c y") #'yas-expand)
+  
+  ;; add extra snippet directories
+  (setq yas-snippet-dirs (append yas-snippet-dirs
+                                 '("/home/zhangtao/Dropbox/.backup/snippets")))
 
   ;;------------------------------------------------}
   ;; Python Configuration
@@ -671,8 +710,8 @@ you should place your code here."
   ;; (setq fci-rule-character ?█)
   ;; (setq fci-rule-width 8)
 
-  (setq company-dabbrev-downcase 0)
-  (setq company-idle-delay 0)
+  (setq company-dabbrev-downcase nil)
+  (setq company-idle-delay nil)
 
   (add-hook 'python-mode-hook 'yapf-mode)
   (setq python-shell-completion-native-enable nil)
@@ -712,6 +751,41 @@ you should place your code here."
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(ansi-color-faces-vector
+   [default bold shadow italic underline bold bold-italic bold])
+ '(ansi-color-names-vector
+   ["#0a0814" "#f2241f" "#67b11d" "#b1951d" "#4f97d7" "#a31db1" "#28def0" "#b2b2b2"])
+ '(beacon-color "#d54e53")
+ '(fci-rule-color "#424242" t)
+ '(flycheck-color-mode-line-face-to-color (quote mode-line-buffer-id))
+ '(frame-background-mode (quote dark))
+ '(markdown-command "/usr/bin/pandoc")
+ '(org-agenda-files
+   (quote
+    ("~/Dropbox/WIEGHT_NET/FIND_LR/INTRO_1.org" "~/Dropbox/Note/todo_new.txt" "~/Dropbox/Note/todo.txt" "~/Dropbox/Note/inbox.txt")))
  '(package-selected-packages
    (quote
-    (org-plus-contrib org-bullets yapfify xterm-color ws-butler winum which-key wgrep web-mode volatile-highlights vi-tilde-fringe uuidgen use-package unfill toc-org tagedit super-save spaceline powerline smex smeargle slim-mode shell-pop scss-mode sass-mode restart-emacs rainbow-delimiters pyvenv pytest pyenv-mode py-isort pug-mode popwin pip-requirements persp-mode pcre2el paradox spinner orgit org-ref pdf-tools key-chord helm-bibtex biblio parsebib biblio-core tablist org-present org-pomodoro org-mime org-download open-junk-file neotree mwim multi-term mu4e-maildirs-extension mu4e-alert ht alert log4e gntp move-text mmm-mode markdown-toc markdown-mode magit-gitflow macrostep lua-mode lorem-ipsum live-py-mode linum-relative link-hint less-css-mode ivy-hydra indent-guide hydra hy-mode dash-functional hungry-delete htmlize hl-todo highlight-parentheses highlight-numbers parent-mode highlight-indentation helm-make helm helm-core haml-mode google-translate google-this golden-ratio gnuplot gitignore-mode gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link git-gutter-fringe+ git-gutter-fringe fringe-helper git-gutter+ git-gutter gh-md fuzzy flycheck-pos-tip pos-tip flycheck flx-ido flx fill-column-indicator fancy-battery eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist evil-numbers evil-nerd-commenter evil-mu4e evil-mc evil-matchit evil-magit magit magit-popup git-commit ghub let-alist with-editor evil-lisp-state smartparens evil-indent-plus evil-iedit-state iedit evil-exchange evil-escape evil-ediff evil-args evil-anzu anzu evil goto-chg undo-tree eval-sexp-fu highlight eshell-z eshell-prompt-extras esh-help emmet-mode elisp-slime-nav ein skewer-mode request-deferred websocket request deferred js2-mode simple-httpd dumb-jump diminish diff-hl define-word cython-mode counsel-projectile projectile pkg-info epl counsel swiper ivy company-web web-completion-data company-statistics company-auctex company-anaconda company column-enforce-mode clean-aindent-mode cal-china-x bind-map bind-key auto-yasnippet yasnippet auto-highlight-symbol auto-compile packed auctex-latexmk auctex async anaconda-mode pythonic f dash s aggressive-indent adaptive-wrap ace-window ace-link avy ac-ispell auto-complete popup color-theme-sanityinc-tomorrow))))
+    (company-tabnine unicode-escape names lv transient polymode writeroom-mode visual-fill-column helm-themes helm-swoop helm-pydoc helm-projectile helm-mode-manager helm-gitignore helm-flx helm-descbinds helm-css-scss helm-company helm-c-yasnippet helm-ag ace-jump-helm-line org-plus-contrib org-bullets yapfify xterm-color ws-butler winum which-key wgrep web-mode volatile-highlights vi-tilde-fringe uuidgen use-package unfill toc-org tagedit super-save spaceline powerline smex smeargle slim-mode shell-pop scss-mode sass-mode restart-emacs rainbow-delimiters pyvenv pytest pyenv-mode py-isort pug-mode popwin pip-requirements persp-mode pcre2el paradox spinner orgit org-ref pdf-tools key-chord helm-bibtex biblio parsebib biblio-core tablist org-present org-pomodoro org-mime org-download open-junk-file neotree mwim multi-term mu4e-maildirs-extension mu4e-alert ht alert log4e gntp move-text mmm-mode markdown-toc markdown-mode magit-gitflow macrostep lua-mode lorem-ipsum live-py-mode linum-relative link-hint less-css-mode ivy-hydra indent-guide hydra hy-mode dash-functional hungry-delete htmlize hl-todo highlight-parentheses highlight-numbers parent-mode highlight-indentation helm-make helm helm-core haml-mode google-translate google-this golden-ratio gnuplot gitignore-mode gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link git-gutter-fringe+ git-gutter-fringe fringe-helper git-gutter+ git-gutter gh-md fuzzy flycheck-pos-tip pos-tip flycheck flx-ido flx fill-column-indicator fancy-battery eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist evil-numbers evil-nerd-commenter evil-mu4e evil-mc evil-matchit evil-magit magit magit-popup git-commit ghub let-alist with-editor evil-lisp-state smartparens evil-indent-plus evil-iedit-state iedit evil-exchange evil-escape evil-ediff evil-args evil-anzu anzu evil goto-chg undo-tree eval-sexp-fu highlight eshell-z eshell-prompt-extras esh-help emmet-mode elisp-slime-nav ein skewer-mode request-deferred websocket request deferred js2-mode simple-httpd dumb-jump diminish diff-hl define-word cython-mode counsel-projectile projectile pkg-info epl counsel swiper ivy company-web web-completion-data company-statistics company-auctex company-anaconda company column-enforce-mode clean-aindent-mode cal-china-x bind-map bind-key auto-yasnippet yasnippet auto-highlight-symbol auto-compile packed auctex-latexmk auctex async anaconda-mode pythonic f dash s aggressive-indent adaptive-wrap ace-window ace-link avy ac-ispell auto-complete popup color-theme-sanityinc-tomorrow)))
+ '(vc-annotate-background nil)
+ '(vc-annotate-color-map
+   (quote
+    ((20 . "#d54e53")
+     (40 . "#e78c45")
+     (60 . "#e7c547")
+     (80 . "#b9ca4a")
+     (100 . "#70c0b1")
+     (120 . "#7aa6da")
+     (140 . "#c397d8")
+     (160 . "#d54e53")
+     (180 . "#e78c45")
+     (200 . "#e7c547")
+     (220 . "#b9ca4a")
+     (240 . "#70c0b1")
+     (260 . "#7aa6da")
+     (280 . "#c397d8")
+     (300 . "#d54e53")
+     (320 . "#e78c45")
+     (340 . "#e7c547")
+     (360 . "#b9ca4a"))))
+ '(vc-annotate-very-old-color nil)
+ '(window-divider-mode nil))

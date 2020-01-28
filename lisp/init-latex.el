@@ -1,5 +1,5 @@
 ;----------------------
-;auctex+XeCJK
+;Auctex With Tex
 ;----------------------
 
 ;; (TeX-global-PDF-mode t)
