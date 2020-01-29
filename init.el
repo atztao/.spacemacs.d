@@ -61,6 +61,7 @@
  ;; packages, then consider creating a layer. You can also put the
  ;; configuration in `dotspacemacs/user-config'.
  dotspacemacs-additional-packages '(
+                                    ;; org-sidebar
                                     google-this
                                     cal-china-x
                                     org-ref
@@ -495,17 +496,14 @@ you should place your code here."
 
   ;;------------------------------------------------}
   ;;Chinese Fonts
+  
   ;; (dolist (charset '(kana han symbol cjk-misc bopomofo))
   ;;   (set-fontset-font (frame-parameter nil 'font)
-  ;;                     charset (font-spec :family "Microsoft Yahei")))
-
-  ;; (dolist (charset '(kana han symbol cjk-misc bopomofo))
-  ;;   (set-fontset-font (frame-parameter nil 'font)
-  ;;                     charset (font-spec :family "Hiragino Sans GB" :size 16)))
+  ;;                     charset (font-spec :family "WenQuanYi Micro Hei Mono" )))
 
   (dolist (charset '(kana han symbol cjk-misc bopomofo))
     (set-fontset-font (frame-parameter nil 'font)
-                      charset (font-spec :family "WenQuanYi Micro Hei Mono" )))
+                      charset (font-spec :family "PingFang SC")))
 
   ;;(add-to-list 'default-frame-alist '(height . 20))
   ;;(add-to-list 'default-frame-alist '(width . 52))
@@ -607,7 +605,8 @@ you should place your code here."
 
   ;;Mu4e
   ;; (require 'evil-mu4e)
-  ;; (require 'init-email)
+  (require 'init-email)
+  
 
   ;;------------------------------------------------}
 
@@ -697,7 +696,7 @@ you should place your code here."
     ("~/Dropbox/WIEGHT_NET/FIND_LR/INTRO_1.org" "~/Dropbox/Note/todo_new.txt" "~/Dropbox/Note/todo.txt" "~/Dropbox/Note/inbox.txt")))
  '(package-selected-packages
    (quote
-    (company-tabnine unicode-escape names lv transient polymode writeroom-mode visual-fill-column helm-themes helm-swoop helm-pydoc helm-projectile helm-mode-manager helm-gitignore helm-flx helm-descbinds helm-css-scss helm-company helm-c-yasnippet helm-ag ace-jump-helm-line org-plus-contrib org-bullets yapfify xterm-color ws-butler winum which-key wgrep web-mode volatile-highlights vi-tilde-fringe uuidgen use-package unfill toc-org tagedit super-save spaceline powerline smex smeargle slim-mode shell-pop scss-mode sass-mode restart-emacs rainbow-delimiters pyvenv pytest pyenv-mode py-isort pug-mode popwin pip-requirements persp-mode pcre2el paradox spinner orgit org-ref pdf-tools key-chord helm-bibtex biblio parsebib biblio-core tablist org-present org-pomodoro org-mime org-download open-junk-file neotree mwim multi-term mu4e-maildirs-extension mu4e-alert ht alert log4e gntp move-text mmm-mode markdown-toc markdown-mode magit-gitflow macrostep lua-mode lorem-ipsum live-py-mode linum-relative link-hint less-css-mode ivy-hydra indent-guide hydra hy-mode dash-functional hungry-delete htmlize hl-todo highlight-parentheses highlight-numbers parent-mode highlight-indentation helm-make helm helm-core haml-mode google-translate google-this golden-ratio gnuplot gitignore-mode gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link git-gutter-fringe+ git-gutter-fringe fringe-helper git-gutter+ git-gutter gh-md fuzzy flycheck-pos-tip pos-tip flycheck flx-ido flx fill-column-indicator fancy-battery eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist evil-numbers evil-nerd-commenter evil-mu4e evil-mc evil-matchit evil-magit magit magit-popup git-commit ghub let-alist with-editor evil-lisp-state smartparens evil-indent-plus evil-iedit-state iedit evil-exchange evil-escape evil-ediff evil-args evil-anzu anzu evil goto-chg undo-tree eval-sexp-fu highlight eshell-z eshell-prompt-extras esh-help emmet-mode elisp-slime-nav ein skewer-mode request-deferred websocket request deferred js2-mode simple-httpd dumb-jump diminish diff-hl define-word cython-mode counsel-projectile projectile pkg-info epl counsel swiper ivy company-web web-completion-data company-statistics company-auctex company-anaconda company column-enforce-mode clean-aindent-mode cal-china-x bind-map bind-key auto-yasnippet yasnippet auto-highlight-symbol auto-compile packed auctex-latexmk auctex async anaconda-mode pythonic f dash s aggressive-indent adaptive-wrap ace-window ace-link avy ac-ispell auto-complete popup color-theme-sanityinc-tomorrow)))
+    (org-sidebar org-ql peg ov org-super-agenda ts company-tabnine unicode-escape names lv transient polymode writeroom-mode visual-fill-column helm-themes helm-swoop helm-pydoc helm-projectile helm-mode-manager helm-gitignore helm-flx helm-descbinds helm-css-scss helm-company helm-c-yasnippet helm-ag ace-jump-helm-line org-plus-contrib org-bullets yapfify xterm-color ws-butler winum which-key wgrep web-mode volatile-highlights vi-tilde-fringe uuidgen use-package unfill toc-org tagedit super-save spaceline powerline smex smeargle slim-mode shell-pop scss-mode sass-mode restart-emacs rainbow-delimiters pyvenv pytest pyenv-mode py-isort pug-mode popwin pip-requirements persp-mode pcre2el paradox spinner orgit org-ref pdf-tools key-chord helm-bibtex biblio parsebib biblio-core tablist org-present org-pomodoro org-mime org-download open-junk-file neotree mwim multi-term mu4e-maildirs-extension mu4e-alert ht alert log4e gntp move-text mmm-mode markdown-toc markdown-mode magit-gitflow macrostep lua-mode lorem-ipsum live-py-mode linum-relative link-hint less-css-mode ivy-hydra indent-guide hydra hy-mode dash-functional hungry-delete htmlize hl-todo highlight-parentheses highlight-numbers parent-mode highlight-indentation helm-make helm helm-core haml-mode google-translate google-this golden-ratio gnuplot gitignore-mode gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link git-gutter-fringe+ git-gutter-fringe fringe-helper git-gutter+ git-gutter gh-md fuzzy flycheck-pos-tip pos-tip flycheck flx-ido flx fill-column-indicator fancy-battery eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist evil-numbers evil-nerd-commenter evil-mu4e evil-mc evil-matchit evil-magit magit magit-popup git-commit ghub let-alist with-editor evil-lisp-state smartparens evil-indent-plus evil-iedit-state iedit evil-exchange evil-escape evil-ediff evil-args evil-anzu anzu evil goto-chg undo-tree eval-sexp-fu highlight eshell-z eshell-prompt-extras esh-help emmet-mode elisp-slime-nav ein skewer-mode request-deferred websocket request deferred js2-mode simple-httpd dumb-jump diminish diff-hl define-word cython-mode counsel-projectile projectile pkg-info epl counsel swiper ivy company-web web-completion-data company-statistics company-auctex company-anaconda company column-enforce-mode clean-aindent-mode cal-china-x bind-map bind-key auto-yasnippet yasnippet auto-highlight-symbol auto-compile packed auctex-latexmk auctex async anaconda-mode pythonic f dash s aggressive-indent adaptive-wrap ace-window ace-link avy ac-ispell auto-complete popup color-theme-sanityinc-tomorrow)))
  '(vc-annotate-background nil)
  '(vc-annotate-color-map
    (quote
