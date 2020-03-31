@@ -24,6 +24,7 @@
  ;; List of configuration layers to load.
  dotspacemacs-configuration-layers
  '(
+   javascript
    lua
    ;; ----------------------------------------------------------------
    ;; Example of useful layers you may want to use right away.
@@ -74,6 +75,9 @@
                                     super-save
                                     origami
                                     alert
+                                    darkroom
+                                    diminish
+                                    emojify
                                     )
  ;; A list of packages that cannot be updaERR_SOCKET_NOT_CONNECTEDted.
  dotspacemacs-frozen-packages '()
@@ -82,7 +86,7 @@
                                   org-projectile
                                   ;; auto-complete
                                   ;; mu4e-maildirs-extension
-                                  ;; org-bullets
+                                  org-bullets
                                   )
  ;; Defines the behaviour of Spacemacs when installing packages.
  ;; Possible values are `used-only', `used-but-keep-unused' and `all'.
@@ -158,7 +162,6 @@ values."
                          sanityinc-tomorrow-bright
                          solarized-dark
                          ;; spacemacs-light
-                         zenburn
                          spacemacs-dark
                          monokai
                          )
@@ -368,6 +371,14 @@ you should place your code here."
 
   ;; -*- mode: org -*-
   (add-to-list 'auto-mode-alist '("\\.txt\\'" . org-mode))
+  (setq org-latex-table-caption-above t) ;;Table Caption About Latex
+
+  ;;解决放大时行号的问题
+  (when (version<= "26.0.50" emacs-version )
+    (global-display-line-numbers-mode))
+  (setq display-line-numbers 'relative)
+  (add-hook 'find-file-hook
+            '(lambda () (setq display-line-numbers 'relative)))
 
   ;; Trigger completion immediately.
   (setq company-idle-delay nil)
@@ -407,7 +418,10 @@ you should place your code here."
   (save-place-mode 1)
 
   ;;Auto Save - Backup-----------------------------------------
-  (super-save-mode +1)
+  ;; (super-save-mode +1)
+  ;; (setq super-save-auto-save-when-idle t)
+
+  
 
   ;; (setq auto-save-default nil)
   ;; (setq make-backup-files nil)
@@ -422,7 +436,7 @@ you should place your code here."
         kept-old-versions 6               ; oldest versions to keep when a new numbered backup is made (default: 2)
         kept-new-versions 9               ; newest versions to keep when a new numbered backup is made (default: 2)
         auto-save-default t               ; auto-save every buffer that visits a file
-        auto-save-timeout 7              ; number of seconds idle time before auto-save (default: 30)
+        auto-save-timeout 2              ; number of seconds idle time before auto-save (default: 30)
         auto-save-interval 200            ; number of keystrokes between auto-saves (default: 300)
         )
 
@@ -480,8 +494,11 @@ you should place your code here."
    '(markdown-command "/usr/bin/pandoc"))
 
   ;; 自动断行
-  
 
+  ;;在mode line隐藏mode显示
+  (diminish 'super-save-mode)
+
+  
   ;;Set Shell
   ;; (setq shell-file-name "cmdproxy");; Copyright (c) 2010-2017 Dennis Ogbe
   (setq shell-file-name "/bin/zsh")
@@ -512,13 +529,14 @@ you should place your code here."
   ;;------------------------------------------------}
   ;;Chinese Fonts
   
-  ;; (dolist (charset '(kana han symbol cjk-misc bopomofo))
-  ;;   (set-fontset-font (frame-parameter nil 'font)
-  ;;                     charset (font-spec :family "WenQuanYi Micro Hei Mono" )))
 
   (dolist (charset '(kana han symbol cjk-misc bopomofo))
     (set-fontset-font (frame-parameter nil 'font)
-                      charset (font-spec :family "PingFang SC")))
+                      charset (font-spec :family "Hiragino Sans GB")))
+
+  ;; (dolist (charset '(kana han symbol cjk-misc bopomofo))
+  ;;   (set-fontset-font (frame-parameter nil 'font)
+  ;;                     charset (font-spec :family "FZYouSongS")))
 
   ;;(add-to-list 'default-frame-alist '(height . 20))
   ;;(add-to-list 'default-frame-alist '(width . 52))
@@ -541,7 +559,8 @@ you should place your code here."
   ;; (setq tramp-ssh-controlmaster-options
   ;;       "-o ControlMaster=auto -o ControlPath='tramp.%%C' -o ControlPersist=no")
 
-  
+  ;;emojify
+  (add-hook 'after-init-hook #'global-emojify-mode)
 
   ;;Browser
   (setq gnus-button-url 'browse-url-generic
@@ -634,7 +653,9 @@ you should place your code here."
   ;; (set-face-attribute 'google-translate-translation-face nil :height 1.4)
 
   (eval-after-load 'google-translate-core
-    '(setq google-translate-base-url "http://translate.google.cn/translate_a/single"
+    '(setq google-translate-base-url "http://translate.g
+oogle.cn/translate_a/single"
+
            google-translate-listen-url "http://translate.google.cn/translate_tts"))
   (eval-after-load 'google-translate-tk
     '(setq google-translate--tkk-url "http://translate.google.cn/"))
@@ -708,10 +729,10 @@ you should place your code here."
  '(markdown-command "/usr/bin/pandoc")
  '(org-agenda-files
    (quote
-    ("~/Dropbox/WIEGHT_NET/FIND_LR/INTRO_0.org" "~/Dropbox/WIEGHT_NET/FIND_LR/INTRO_1.org" "~/Dropbox/Note/todo_new.txt" "~/Dropbox/Note/todo.txt" "~/Dropbox/Note/inbox.txt")))
+    ("~/Dropbox/WIEGHT_NET/FIND_LR/INTRO_0.org" "~/Dropbox/WIEGHT_NET/WEIGHT_NET/weightnet.org" "~/Dropbox/WIEGHT_NET/FIND_LR/INTRO_1.org" "~/Dropbox/Note/todo_new.txt" "~/Dropbox/Note/todo.txt" "~/Dropbox/Note/inbox.txt")))
  '(package-selected-packages
    (quote
-    (web-beautify livid-mode json-mode json-snatcher json-reformat js2-refactor multiple-cursors js-doc org-sidebar org-ql peg ov org-super-agenda ts company-tabnine unicode-escape names lv transient polymode writeroom-mode visual-fill-column helm-themes helm-swoop helm-pydoc helm-projectile helm-mode-manager helm-gitignore helm-flx helm-descbinds helm-css-scss helm-company helm-c-yasnippet helm-ag ace-jump-helm-line org-plus-contrib org-bullets yapfify xterm-color ws-butler winum which-key wgrep web-mode volatile-highlights vi-tilde-fringe uuidgen use-package unfill toc-org tagedit super-save spaceline powerline smex smeargle slim-mode shell-pop scss-mode sass-mode restart-emacs rainbow-delimiters pyvenv pytest pyenv-mode py-isort pug-mode popwin pip-requirements persp-mode pcre2el paradox spinner orgit org-ref pdf-tools key-chord helm-bibtex biblio parsebib biblio-core tablist org-present org-pomodoro org-mime org-download open-junk-file neotree mwim multi-term mu4e-maildirs-extension mu4e-alert ht alert log4e gntp move-text mmm-mode markdown-toc markdown-mode magit-gitflow macrostep lua-mode lorem-ipsum live-py-mode linum-relative link-hint less-css-mode ivy-hydra indent-guide hydra hy-mode dash-functional hungry-delete htmlize hl-todo highlight-parentheses highlight-numbers parent-mode highlight-indentation helm-make helm helm-core haml-mode google-translate google-this golden-ratio gnuplot gitignore-mode gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link git-gutter-fringe+ git-gutter-fringe fringe-helper git-gutter+ git-gutter gh-md fuzzy flycheck-pos-tip pos-tip flycheck flx-ido flx fill-column-indicator fancy-battery eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist evil-numbers evil-nerd-commenter evil-mu4e evil-mc evil-matchit evil-magit magit magit-popup git-commit ghub let-alist with-editor evil-lisp-state smartparens evil-indent-plus evil-iedit-state iedit evil-exchange evil-escape evil-ediff evil-args evil-anzu anzu evil goto-chg undo-tree eval-sexp-fu highlight eshell-z eshell-prompt-extras esh-help emmet-mode elisp-slime-nav ein skewer-mode request-deferred websocket request deferred js2-mode simple-httpd dumb-jump diminish diff-hl define-word cython-mode counsel-projectile projectile pkg-info epl counsel swiper ivy company-web web-completion-data company-statistics company-auctex company-anaconda company column-enforce-mode clean-aindent-mode cal-china-x bind-map bind-key auto-yasnippet yasnippet auto-highlight-symbol auto-compile packed auctex-latexmk auctex async anaconda-mode pythonic f dash s aggressive-indent adaptive-wrap ace-window ace-link avy ac-ispell auto-complete popup color-theme-sanityinc-tomorrow)))
+    (color-theme-sanityinc-solarized emojify company-tern tern coffee-mode darkroom web-beautify livid-mode json-mode json-snatcher json-reformat js2-refactor multiple-cursors js-doc org-sidebar org-ql peg ov org-super-agenda ts company-tabnine unicode-escape names lv transient polymode writeroom-mode visual-fill-column helm-themes helm-swoop helm-pydoc helm-projectile helm-mode-manager helm-gitignore helm-flx helm-descbinds helm-css-scss helm-company helm-c-yasnippet helm-ag ace-jump-helm-line org-plus-contrib org-bullets yapfify xterm-color ws-butler winum which-key wgrep web-mode volatile-highlights vi-tilde-fringe uuidgen use-package unfill toc-org tagedit super-save spaceline powerline smex smeargle slim-mode shell-pop scss-mode sass-mode restart-emacs rainbow-delimiters pyvenv pytest pyenv-mode py-isort pug-mode popwin pip-requirements persp-mode pcre2el paradox spinner orgit org-ref pdf-tools key-chord helm-bibtex biblio parsebib biblio-core tablist org-present org-pomodoro org-mime org-download open-junk-file neotree mwim multi-term mu4e-maildirs-extension mu4e-alert ht alert log4e gntp move-text mmm-mode markdown-toc markdown-mode magit-gitflow macrostep lua-mode lorem-ipsum live-py-mode linum-relative link-hint less-css-mode ivy-hydra indent-guide hydra hy-mode dash-functional hungry-delete htmlize hl-todo highlight-parentheses highlight-numbers parent-mode highlight-indentation helm-make helm helm-core haml-mode google-translate google-this golden-ratio gnuplot gitignore-mode gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link git-gutter-fringe+ git-gutter-fringe fringe-helper git-gutter+ git-gutter gh-md fuzzy flycheck-pos-tip pos-tip flycheck flx-ido flx fill-column-indicator fancy-battery eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist evil-numbers evil-nerd-commenter evil-mu4e evil-mc evil-matchit evil-magit magit magit-popup git-commit ghub let-alist with-editor evil-lisp-state smartparens evil-indent-plus evil-iedit-state iedit evil-exchange evil-escape evil-ediff evil-args evil-anzu anzu evil goto-chg undo-tree eval-sexp-fu highlight eshell-z eshell-prompt-extras esh-help emmet-mode elisp-slime-nav ein skewer-mode request-deferred websocket request deferred js2-mode simple-httpd dumb-jump diminish diff-hl define-word cython-mode counsel-projectile projectile pkg-info epl counsel swiper ivy company-web web-completion-data company-statistics company-auctex company-anaconda company column-enforce-mode clean-aindent-mode cal-china-x bind-map bind-key auto-yasnippet yasnippet auto-highlight-symbol auto-compile packed auctex-latexmk auctex async anaconda-mode pythonic f dash s aggressive-indent adaptive-wrap ace-window ace-link avy ac-ispell auto-complete popup color-theme-sanityinc-tomorrow)))
  '(vc-annotate-background nil)
  '(vc-annotate-color-map
    (quote

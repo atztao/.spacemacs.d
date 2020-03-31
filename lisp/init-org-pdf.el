@@ -8,12 +8,15 @@
 
 (setq org-src-fontify-natively t)
 (setq org-src-preserve-indentation t)
-;; (setq org-latex-caption-above nil)
+;; (setq org-latex-caption-above 1)
+(setq org-latex-tables-booktabs t)
+(setq org-latex-table-caption-above t)
+;; (setq org-export-latex-tables-centered nil)
 
 ;; (setq org-export-latex-listings t)
 ;; ;;org-mode source code setup in exporting to latex
-(add-to-list 'org-latex-packages-alist '("" "minted")) ;;pip install pygments
-(setq org-latex-listings 'minted)
+;; (add-to-list 'org-latex-packages-alist '("" "minted")) ;;pip install pygments
+;; (setq org-latex-listings 'minted)
 
 ;; (setq org-latex-minted-options
 ;;       '(("frame" "lines")
@@ -48,10 +51,6 @@
                               "xelatex -shell-escape -interaction nonstopmode %f"
                               "xelatex -shell-escape -interaction nonstopmode %f"))
 
-(setq org-latex-caption-above nil)
-(setq org-latex-tables-booktabs t)
-(setq org-latex-table-caption-above nil)
-(setq org-export-latex-tables-centered nil)
 
 ;; specify the justification you want
 (plist-put org-format-latex-options :justify 'left)
