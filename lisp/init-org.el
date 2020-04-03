@@ -177,7 +177,7 @@
       `(("t" "Todo" entry (file+headline "~/Dropbox/Note/todo.txt" "Inbox")
          "* TODO %? ")
         ("n" "Note" entry (file+headline "~/Dropbox/Note/inbox.txt" "Note")
-         "* %?\n \n %U \n  ")
+         "* %? \n \n %U \n  ")
         ("l" "Log" entry (file+headline "~/Dropbox/Note/inbox.txt" "Log")
          "*  %U \n \n %? ")
         ;; ("l" "Link" entry (file+headline "~/Dropbox/Note/inbox.txt" "Link")
@@ -209,9 +209,9 @@
 ;; (setq org-crypt-key nil)
 
 ;; use org-bullets-mode for utf8 symbols as org bullets
-;;(require 'org-bullets)
+;; (require 'org-bullets)
 ;; (setq org-ellipsis "+")
-;;(setq org-bullets-bullet-LIST '("•"))
+;; (setq org-bullets-bullet-LIST '("•"))
 
 
 ;; ;; make available "org-bullet-face" such that I can control the font size individually
@@ -233,8 +233,8 @@
          :publishing-function org-publish-org-to-pdf)))
 
 (setq org-use-fast-todo-selection t)
-(setq org-todo-keywords
-      '((sequence "TODO(t)" "NEXT(n)" "SOMEDAY(s)" "WAITING(w)" "|" "DONE(d)" )))
+;; (setq org-todo-keywords
+;;       '((sequence "TODO(t)" "NEXT(n)" "SOMEDAY(s)" "WAITING(w)" "|" "DONE(d)" )))
 
 (setq org-todo-keyword-faces
       '(
