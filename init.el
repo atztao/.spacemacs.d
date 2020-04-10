@@ -36,8 +36,8 @@
                      ein:complete-on-dot t
                      ein:completion-backend 'ein:use-company-backend)
    python
-   helm
-   ;; ivy
+   ;; helm
+   ivy
    pdf-tools
    html
    latex
@@ -77,8 +77,12 @@
                                     ;; helm-google
                                     ;; company-jedi
                                     evil-mu4e
+                                    ;; org-superstar
                                     super-save
+                                    real-auto-save
+                                    ivy-rich
                                     origami
+                                    evil-find-char-pinyin
                                     alert
                                     darkroom
                                     diminish
@@ -92,6 +96,7 @@
                                   ;; auto-complete
                                   ;; mu4e-maildirs-extension
                                   org-bullets
+                                  ;; ivy
                                   )
  ;; Defines the behaviour of Spacemacs when installing packages.
  ;; Possible values are `used-only', `used-but-keep-unused' and `all'.
@@ -344,17 +349,18 @@ executes.
  This function is mostly useful for variables that need to be set
 before packages are loaded. If you are unsure, you should try in setting them in
 `dotspacemacs/user-config' first."
-  ;;Releas
+
+  ;;Release
   (setq configuration-layer--elpa-archives
         '(("melpa-cn" . "http://mirrors.tuna.tsinghua.edu.cn/elpa/melpa/")
           ("org-cn"   . "http://mirrors.tuna.tsinghua.edu.cn/elpa/org/")
           ("gnu-cn"   . "http://mirrors.tuna.tsinghua.edu.cn/elpa/gnu/")))
   
   ;;Develop
-  (setq configuration-layer-elpa-archives
-        '(("melpa-cn" . "http://mirrors.tuna.tsinghua.edu.cn/elpa/melpa/")
-          ("org-cn"   . "http://mirrors.tuna.tsinghua.edu.cn/elpa/org/")
-          ("gnu-cn"   . "http://mirrors.tuna.tsinghua.edu.cn/elpa/gnu/")))
+  ;;(setq configuration-layer-elpa-archives
+  ;;      '(("melpa-cn" . "http://mirrors.tuna.tsinghua.edu.cn/elpa/melpa/")
+  ;;        ("org-cn"   . "http://mirrors.tuna.tsinghua.edu.cn/elpa/org/")
+  ;;        ("gnu-cn"   . "http://mirrors.tuna.tsinghua.edu.cn/elpa/gnu/")))
 
   ;; https://github.com/syl20bnr/spacemacs/issues/2705
   (setq tramp-ssh-controlmaster-options "-o ControlMaster=auto -o ControlPath='tramp.%%C' -o ControlPersist=no")
@@ -376,6 +382,7 @@ you should place your code here."
 
   (setq-default evil-escape-key-sequence "jk")
   (setq-default evil-escape-delay 0.2)
+  (evil-find-char-pinyin-mode +1)
 
   
   ;; -*- mode: org -*-
@@ -420,6 +427,10 @@ you should place your code here."
 
 
   ;;emacs with fcitx　cute-jumper/fcitx.el
+  (setq fcitx-active-evil-states '(insert emacs hybrid))
+
+  (fcitx-isearch-turn-on)
+  (setq fcitx-use-dbus t)
 
   (fcitx-prefix-keys-add "C-x")
   (fcitx-prefix-keys-add "C-s")
@@ -441,6 +452,7 @@ you should place your code here."
 
 
 
+  (setq real-auto-save-interval 1) ;; in seconds
 
 
   ;; (setq auto-save-default nil)
@@ -471,13 +483,38 @@ you should place your code here."
       )
     )
 
+
   (add-hook 'evil-insert-state-exit-hook 'my-save-if-bufferfilename)
 
   ;;{------------------------------------------------
   ;;Keybingding For Emacs
-  (setq ivy-use-virtual-buffers t)
+  (setq recentf-save-file (expand-file-name "recentf" "~/Dropbox/.backup/"))
+  (setq recentf-auto-cleanup 'never)
 
-  
+  ;; 1 More friendly interface for ivy
+
+  (require 'ivy-rich)
+  (ivy-rich-mode 1)
+  (setcdr (assq t ivy-format-functions-alist) #'ivy-format-function-line)
+  (setq ivy-rich-display-transformers-list
+        '(ivy-switch-buffer
+          (:columns
+           ((ivy-rich-switch-buffer-icon (:width 2))
+            (ivy-rich-candidate (:width 30))
+            (ivy-rich-switch-buffer-size (:width 7))
+            (ivy-rich-switch-buffer-indicators (:width 4 :face error :align right))
+            (ivy-rich-switch-buffer-major-mode (:width 12 :face warning))
+            (ivy-rich-switch-buffer-project (:width 15 :face success))
+            (ivy-rich-switch-buffer-path (:width (lambda (x) (ivy-rich-switch-buffer-shorten-path x (ivy-rich-minibuffer-width 0.3))))))
+           :predicate
+           (lambda (cand) (get-buffer cand)))))
+  ;; add ‘recentf-mode’ and bookmarks to ‘ivy-switch-buffer’.
+  (setq ivy-use-virtual-buffers t)
+  (setq ivy-virtual-abbreviate 'full)
+  ;; number of result lines to display
+  (setq ivy-height 20)
+
+
   (global-set-key (kbd "C-w") 'backward-kill-word)
   (global-set-key (kbd "C-x C-k") 'kill-region)
   (global-set-key (kbd "C-c C-k") 'kill-region)
@@ -491,18 +528,22 @@ you should place your code here."
   ;; (setq helm-swoop-use-fuzzy-match t)
   ;; (setq helm-multi-swoop-edit-save t)
 
-
+  ;; (setq helm-mini-default-sources '(helm-source-buffers-list
+  ;;                                   helm-source-recentf
+  ;;                                   helm-source-bookmarks
+  ;;                                   helm-source-buffer-not-found))
+  
   ;;helm command history
-  (global-set-key (kbd "C-x C-f")   #'helm-find-files)
-  (global-set-key (kbd "C-x C-r") 'helm-recentf)
-  (global-set-key (kbd "C-x b") 'helm-mini)
-  (global-set-key (kbd "C-x C-b") 'helm-mini)
-  (global-set-key (kbd "C-s")   #'helm-swoop)
-  ;; (global-set-key (kbd "M-x")   #'helm-M-x)
-  (global-set-key (kbd "C-x C-m") 'helm-M-x)
-  (global-set-key (kbd "C-c C-m") 'helm-M-x)
-  (define-key helm-map (kbd "<tab>") 'helm-execute-persistent-action)
-  (define-key helm-map (kbd "C-z") 'helm-select-action)
+  ;; (global-set-key (kbd "C-x C-f")   #'helm-find-files)
+  ;; (global-set-key (kbd "C-x C-r") 'helm-recentf)
+  ;; (global-set-key (kbd "C-x b") 'helm-mini)
+  ;; (global-set-key (kbd "C-x C-b") 'helm-mini)
+  ;; (global-set-key (kbd "C-s")   #'helm-swoop)
+  ;; ;; (global-set-key (kbd "M-x")   #'helm-M-x)
+  ;; (global-set-key (kbd "C-x C-m") 'helm-M-x)
+  ;; (global-set-key (kbd "C-c C-m") 'helm-M-x)
+  ;; (define-key helm-map (kbd "<tab>") 'helm-execute-persistent-action)
+  ;; (define-key helm-map (kbd "C-z") 'helm-select-action)
 
   
 
@@ -516,7 +557,7 @@ you should place your code here."
 
   (setq x-select-enable-clipboard t)
 
-  (setq recentf-save-file (expand-file-name "recentf" "~/Dropbox/.backup/"))
+  
   ;;MarkDown
 
   (custom-set-variables
@@ -563,13 +604,13 @@ you should place your code here."
   ;;Chinese Fonts
   
 
-  ;; (dolist (charset '(kana han symbol cjk-misc bopomofo))
-  ;;   (set-fontset-font (frame-parameter nil 'font)
-  ;;                     charset (font-spec :family "Hiragino Sans GB")))
-
   (dolist (charset '(kana han symbol cjk-misc bopomofo))
     (set-fontset-font (frame-parameter nil 'font)
-                      charset (font-spec :family "WenQuanYi Micro Hei")))
+                      charset (font-spec :family "Hiragino Sans GB")))
+
+  ;; (dolist (charset '(kana han symbol cjk-misc bopomofo))
+  ;;   (set-fontset-font (frame-parameter nil 'font)
+  ;;                     charset (font-spec :family "WenQuanYi Micro Hei")))
 
   ;;(add-to-list 'default-frame-alist '(height . 20))
   ;;(add-to-list 'default-frame-alist '(width . 52))
@@ -660,6 +701,7 @@ you should place your code here."
   ;;(holiday-lunar 9 17 "宝宝生日" 0)
 
 
+  
   ;;{------------------------------------------------
   ;;Import Some Init File
   ;;Org-Mode
@@ -667,6 +709,11 @@ you should place your code here."
   (require 'init-latex)
   (require 'init-org)
   (require 'init-org-pdf)
+
+  ;; This is usually the default, but keep in mind it must be nil
+  ;; (setq org-hide-leading-stars t)
+  ;; This line is necessary.
+  ;; (setq org-superstar-leading-bullet ?\s)
 
   (add-hook 'hack-local-variables-hook (lambda () (setq truncate-lines t)))
 
@@ -748,7 +795,9 @@ oogle.cn/translate_a/single"
  '(org-agenda-done ((t (:foreground "Grey" :weight normal :strike-through t))))
  '(org-done ((t (:foreground "#999" :weight normal :strike-through t))))
  '(org-headline-done ((((class color) (min-colors 16) (background dark)) (:foreground "#999" :strike-through t))))
+ '(org-level-1 ((t (:foreground "DarkRed" :weight extra-bold :strike-through nil))))
  '(org-todo ((t (:foreground "DarkRed" :weight extra-bold :strike-through nil)))))
+ 
 
 
 (custom-set-variables
@@ -759,10 +808,10 @@ oogle.cn/translate_a/single"
  '(markdown-command "/usr/bin/pandoc")
  '(org-agenda-files
    (quote
-    ("~/Dropbox/WIEGHT_NET/FIND_LR/INTRO_0.org" "~/Dropbox/WIEGHT_NET/WEIGHT_NET/weightnet.org" "~/Dropbox/WIEGHT_NET/FIND_LR/INTRO_1.org" "~/Dropbox/Note/todo_new.txt" "~/Dropbox/Note/todo.txt" "~/Dropbox/Note/inbox.txt")))
+    ("~/Dropbox/FIND_LR/FINDLR2/FIND_LR.org" "~/Dropbox/WIEGHT_NET/FIND_LR/INTRO_0.org" "~/Dropbox/WIEGHT_NET/WEIGHT_NET/weightnet.org" "~/Dropbox/WIEGHT_NET/FIND_LR/INTRO_1.org" "~/Dropbox/Note/todo_new.txt" "~/Dropbox/Note/todo.txt" "~/Dropbox/Note/inbox.txt")))
  '(package-selected-packages
    (quote
-    (vdiff pinyin-search pinyinlib fcitx flucui-theme pyim pyim-basedict xr color-theme-sanityinc-solarized emojify company-tern tern coffee-mode darkroom web-beautify livid-mode json-mode json-snatcher json-reformat js2-refactor multiple-cursors js-doc org-sidebar org-ql peg ov org-super-agenda ts company-tabnine unicode-escape names lv transient polymode writeroom-mode visual-fill-column helm-themes helm-swoop helm-pydoc helm-projectile helm-mode-manager helm-gitignore helm-flx helm-descbinds helm-css-scss helm-company helm-c-yasnippet helm-ag ace-jump-helm-line org-plus-contrib org-bullets yapfify xterm-color ws-butler winum which-key wgrep web-mode volatile-highlights vi-tilde-fringe uuidgen use-package unfill toc-org tagedit super-save spaceline powerline smex smeargle slim-mode shell-pop scss-mode sass-mode restart-emacs rainbow-delimiters pyvenv pytest pyenv-mode py-isort pug-mode popwin pip-requirements persp-mode pcre2el paradox spinner orgit org-ref pdf-tools key-chord helm-bibtex biblio parsebib biblio-core tablist org-present org-pomodoro org-mime org-download open-junk-file neotree mwim multi-term mu4e-maildirs-extension mu4e-alert ht alert log4e gntp move-text mmm-mode markdown-toc markdown-mode magit-gitflow macrostep lua-mode lorem-ipsum live-py-mode linum-relative link-hint less-css-mode ivy-hydra indent-guide hydra hy-mode dash-functional hungry-delete htmlize hl-todo highlight-parentheses highlight-numbers parent-mode highlight-indentation helm-make helm helm-core haml-mode google-translate google-this golden-ratio gnuplot gitignore-mode gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link git-gutter-fringe+ git-gutter-fringe fringe-helper git-gutter+ git-gutter gh-md fuzzy flycheck-pos-tip pos-tip flycheck flx-ido flx fill-column-indicator fancy-battery eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist evil-numbers evil-nerd-commenter evil-mu4e evil-mc evil-matchit evil-magit magit magit-popup git-commit ghub let-alist with-editor evil-lisp-state smartparens evil-indent-plus evil-iedit-state iedit evil-exchange evil-escape evil-ediff evil-args evil-anzu anzu evil goto-chg undo-tree eval-sexp-fu highlight eshell-z eshell-prompt-extras esh-help emmet-mode elisp-slime-nav ein skewer-mode request-deferred websocket request deferred js2-mode simple-httpd dumb-jump diminish diff-hl define-word cython-mode counsel-projectile projectile pkg-info epl counsel swiper ivy company-web web-completion-data company-statistics company-auctex company-anaconda company column-enforce-mode clean-aindent-mode cal-china-x bind-map bind-key auto-yasnippet yasnippet auto-highlight-symbol auto-compile packed auctex-latexmk auctex async anaconda-mode pythonic f dash s aggressive-indent adaptive-wrap ace-window ace-link avy ac-ispell auto-complete popup color-theme-sanityinc-tomorrow)))
+    (ivy-rich real-auto-save org-superstar evil-find-char-pinyin vdiff pinyin-search pinyinlib fcitx flucui-theme pyim pyim-basedict xr color-theme-sanityinc-solarized emojify company-tern tern coffee-mode darkroom web-beautify livid-mode json-mode json-snatcher json-reformat js2-refactor multiple-cursors js-doc org-sidebar org-ql peg ov org-super-agenda ts company-tabnine unicode-escape names lv transient polymode writeroom-mode visual-fill-column helm-themes helm-swoop helm-pydoc helm-projectile helm-mode-manager helm-gitignore helm-flx helm-descbinds helm-css-scss helm-company helm-c-yasnippet helm-ag ace-jump-helm-line org-plus-contrib org-bullets yapfify xterm-color ws-butler winum which-key wgrep web-mode volatile-highlights vi-tilde-fringe uuidgen use-package unfill toc-org tagedit super-save spaceline powerline smex smeargle slim-mode shell-pop scss-mode sass-mode restart-emacs rainbow-delimiters pyvenv pytest pyenv-mode py-isort pug-mode popwin pip-requirements persp-mode pcre2el paradox spinner orgit org-ref pdf-tools key-chord helm-bibtex biblio parsebib biblio-core tablist org-present org-pomodoro org-mime org-download open-junk-file neotree mwim multi-term mu4e-maildirs-extension mu4e-alert ht alert log4e gntp move-text mmm-mode markdown-toc markdown-mode magit-gitflow macrostep lua-mode lorem-ipsum live-py-mode linum-relative link-hint less-css-mode ivy-hydra indent-guide hydra hy-mode dash-functional hungry-delete htmlize hl-todo highlight-parentheses highlight-numbers parent-mode highlight-indentation helm-make helm helm-core haml-mode google-translate google-this golden-ratio gnuplot gitignore-mode gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link git-gutter-fringe+ git-gutter-fringe fringe-helper git-gutter+ git-gutter gh-md fuzzy flycheck-pos-tip pos-tip flycheck flx-ido flx fill-column-indicator fancy-battery eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist evil-numbers evil-nerd-commenter evil-mu4e evil-mc evil-matchit evil-magit magit magit-popup git-commit ghub let-alist with-editor evil-lisp-state smartparens evil-indent-plus evil-iedit-state iedit evil-exchange evil-escape evil-ediff evil-args evil-anzu anzu evil goto-chg undo-tree eval-sexp-fu highlight eshell-z eshell-prompt-extras esh-help emmet-mode elisp-slime-nav ein skewer-mode request-deferred websocket request deferred js2-mode simple-httpd dumb-jump diminish diff-hl define-word cython-mode counsel-projectile projectile pkg-info epl counsel swiper ivy company-web web-completion-data company-statistics company-auctex company-anaconda company column-enforce-mode clean-aindent-mode cal-china-x bind-map bind-key auto-yasnippet yasnippet auto-highlight-symbol auto-compile packed auctex-latexmk auctex async anaconda-mode pythonic f dash s aggressive-indent adaptive-wrap ace-window ace-link avy ac-ispell auto-complete popup color-theme-sanityinc-tomorrow)))
  '(send-mail-function (quote smtpmail-send-it))
  '(vc-annotate-background nil)
  '(vc-annotate-color-map

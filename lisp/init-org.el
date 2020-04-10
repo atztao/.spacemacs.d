@@ -248,6 +248,20 @@
 
 (add-hook 'org-mode-hook (lambda () (hl-todo-mode -1) nil))
 
+
+(defun chunyang-org-mode-hide-stars ()
+  (font-lock-add-keywords
+   nil
+   '(("^\\*+ "
+      (0
+       (prog1 nil
+         (put-text-property (match-beginning 0) (match-end 0)
+                            'face (list :foreground
+                                        (face-attribute
+                                         'default :background)))))))))
+
+(add-hook 'org-mode-hook #'chunyang-org-mode-hide-stars)
+
 (setq org-fontify-done-headline t)
 
 (custom-set-faces
