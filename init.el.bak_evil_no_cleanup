@@ -36,8 +36,8 @@
                      ein:complete-on-dot t
                      ein:completion-backend 'ein:use-company-backend)
    python
-   ;; helm
-   ivy
+   helm
+   ;; ivy
    pdf-tools
    html
    latex
@@ -183,9 +183,9 @@ values."
    
    dotspacemacs-default-font '("Monaco For Powerline"
                                :size 16
+                               :embolden t
                                :weight normal
                                :width normal
-                               ;; :embolden t
                                :powerline-scale 1.0)
    ;; The leader key
    dotspacemacs-leader-key "SPC"
@@ -381,7 +381,12 @@ you should place your code here."
 
   (setq ns-use-srgb-colorspace t)
 
-    ;; -*- mode: org -*-
+  (setq-default evil-escape-key-sequence "jk")
+  (setq-default evil-escape-delay 0.2)
+  (evil-find-char-pinyin-mode +1)
+
+  
+  ;; -*- mode: org -*-
   (add-to-list 'auto-mode-alist '("\\.txt\\'" . org-mode))
   (setq org-latex-table-caption-above t) ;;Table Caption About Latex
 
@@ -408,6 +413,8 @@ you should place your code here."
   ;; https://github.com/TheBB/spaceline#turning-segments-on-and-off
   (spaceline-toggle-hud-off)
 
+  (setq evil-toggle-key "")   ; remove default evil-toggle-key C-z, manually setup later
+
   (setq powerline-default-separator nil)
   (spaceline-compile)
 
@@ -431,6 +438,8 @@ you should place your code here."
   (fcitx-prefix-keys-add "C-s")
   (fcitx-prefix-keys-add "C-c")
   (fcitx-prefix-keys-turn-on)
+
+
 
   ;;flyspell-----------------------------------
   ;;apt install aspell
@@ -473,6 +482,8 @@ you should place your code here."
       (message "no file is associated to this buffer: do nothing")
       )
     )
+
+
   (add-hook 'evil-insert-state-exit-hook 'my-save-if-bufferfilename)
 
   ;;{------------------------------------------------
@@ -485,34 +496,60 @@ you should place your code here."
   (global-set-key (kbd "C-c C-k") 'kill-region)
   ;; 1 More friendly interface for ivy
 
-  (require 'ivy-rich)
-  (ivy-rich-mode 1)
-  (setcdr (assq t ivy-format-functions-alist) #'ivy-format-function-line)
-  (setq ivy-rich-display-transformers-list
-        '(ivy-switch-buffer
-          (:columns
-           ((ivy-rich-switch-buffer-icon (:width 2))
-            (ivy-rich-candidate (:width 30))
-            (ivy-rich-switch-buffer-size (:width 7))
-            (ivy-rich-switch-buffer-indicators (:width 4 :face error :align right))
-            (ivy-rich-switch-buffer-major-mode (:width 12 :face warning))
-            (ivy-rich-switch-buffer-project (:width 15 :face success))
-            (ivy-rich-switch-buffer-path (:width (lambda (x) (ivy-rich-switch-buffer-shorten-path x (ivy-rich-minibuffer-width 0.3))))))
-           :predicate
-           (lambda (cand) (get-buffer cand)))))
-  ;; add ‘recentf-mode’ and bookmarks to ‘ivy-switch-buffer’.
-  (setq ivy-use-virtual-buffers t)
-  (setq ivy-virtual-abbreviate 'full)
-  ;; number of result lines to display
-  (setq ivy-height 20)
+  ;; (require 'ivy-rich)
+  ;; (ivy-rich-mode 1)
+  ;; (setcdr (assq t ivy-format-functions-alist) #'ivy-format-function-line)
+  ;; (setq ivy-rich-display-transformers-list
+  ;;       '(ivy-switch-buffer
+  ;;         (:columns
+  ;;          ((ivy-rich-switch-buffer-icon (:width 2))
+  ;;           (ivy-rich-candidate (:width 30))
+  ;;           (ivy-rich-switch-buffer-size (:width 7))
+  ;;           (ivy-rich-switch-buffer-indicators (:width 4 :face error :align right))
+  ;;           (ivy-rich-switch-buffer-major-mode (:width 12 :face warning))
+  ;;           (ivy-rich-switch-buffer-project (:width 15 :face success))
+  ;;           (ivy-rich-switch-buffer-path (:width (lambda (x) (ivy-rich-switch-buffer-shorten-path x (ivy-rich-minibuffer-width 0.3))))))
+  ;;          :predicate
+  ;;          (lambda (cand) (get-buffer cand)))))
+  ;; ;; add ‘recentf-mode’ and bookmarks to ‘ivy-switch-buffer’.
+  ;; (setq ivy-use-virtual-buffers t)
+  ;; (setq ivy-virtual-abbreviate 'full)
+  ;; ;; number of result lines to display
+  ;; (setq ivy-height 20)
 
 
   
-  (global-set-key (kbd "C-x b") 'ivy-switch-buffer)
-  (global-set-key (kbd "C-x C-b") 'ivy-switch-buffer)
-  (global-set-key (kbd "C-x C-r") 'counsel-recentf)
+  ;; (global-set-key (kbd "C-x b") 'ivy-switch-buffer)
+  ;; (global-set-key (kbd "C-x C-b") 'ivy-switch-buffer)
+  ;; (global-set-key (kbd "C-x C-r") 'counsel-recentf)
 
+  ;; For Helm With Emacs
+  (setq helm-swoop-use-fuzzy-match t)
+  (setq helm-multi-swoop-edit-save t)
+
+  (setq helm-mini-default-sources '(helm-source-buffers-list
+                                    helm-source-recentf
+                                    helm-source-bookmarks
+                                    helm-source-buffer-not-found))
   
+  ;;helm command history
+  (global-set-key (kbd "M-i") 'helm-swoop)
+  (global-set-key (kbd "M-I") 'helm-swoop-back-to-last-point)
+  (global-set-key (kbd "C-c M-i") 'helm-multi-swoop)
+  (global-set-key (kbd "C-x M-i") 'helm-multi-swoop-all)
+
+
+  (global-set-key (kbd "C-x C-f")   #'helm-find-files)
+  (global-set-key (kbd "C-x C-r") 'helm-recentf)
+  (global-set-key (kbd "C-x b") 'helm-mini)
+  (global-set-key (kbd "C-x C-b") 'helm-mini)
+  ;; (global-set-key (kbd "C-s")   #'helm-swoop)
+  (global-set-key (kbd "M-x")   #'helm-M-x)
+  (global-set-key (kbd "C-x C-m") 'helm-M-x)
+  (global-set-key (kbd "C-c C-m") 'helm-M-x)
+  (define-key helm-map (kbd "<tab>") 'helm-execute-persistent-action)
+  (define-key helm-map (kbd "C-z") 'helm-select-action)
+
   ;; (global-set-key (kbd "C-s") 'isearch-forward-pinyin)
   (set-face-attribute 'lazy-highlight nil :foreground "#FFFF00" :background "black")
   (set-face-attribute 'isearch nil :foreground "red" :background "black" :weight 'bold)
@@ -559,6 +596,7 @@ you should place your code here."
 
 
   (setq default-font-size-pt 10)
+
   (set-frame-parameter nil 'alpha '(98 . 100))
 
   ;; (set-background-color "#000000")
@@ -566,7 +604,8 @@ you should place your code here."
   
 
   ;; ;; ;;(set-background-color "ivory")
-  ;; (set-foreground-color "#32cd32")
+  ;; (set-
+  foreground-color "#32cd32")
   
 
   ;;------------------------------------------------}
@@ -575,11 +614,7 @@ you should place your code here."
 
   (dolist (charset '(kana han symbol cjk-misc bopomofo))
     (set-fontset-font (frame-parameter nil 'font)
-                      charset (font-spec :family "Hiragino Sans GB"
-                                         )))
-  ;; (dolist (charset '(kana han symbol cjk-misc bopomofo))
-  ;;   (set-fontset-font (frame-parameter nil 'font)
-  ;;                     charset (font-spec :family "Hiragino Sans GB" :embolden t)))
+                      charset (font-spec :family "Hiragino Sans GB" :embolden t)))
 
   ;; (dolist (charset '(kana han symbol cjk-misc bopomofo))
   ;;   (set-fontset-font (frame-parameter nil 'font)
@@ -630,7 +665,36 @@ you should place your code here."
 
   ;;-----------------------------------------------}
   ;;Copy To System Clipboard apt install xel
-    
+  (defun copy-to-clipboard ()
+    "Copies selection to x-clipboard."
+    (interactive)
+    (if (display-graphic-p)
+        (progn
+          (message "Yanked region to x-clipboard!")
+          (call-interactively 'clipboard-kill-ring-save)
+          )
+      (if (region-active-p)
+          (progn
+            (shell-command-on-region (region-beginning) (region-end) "xsel --clipboard --input")
+            (message "Yanked region to clipboard!")
+            (deactivate-mark))
+        (message "No region active; can't yank to clipboard!")))
+    )
+
+  (defun paste-from-clipboard ()
+    "Pastes from x-clipboard."
+    (interactive)
+    (if (display-graphic-p)
+        (progn
+          (clipboard-yank)
+          (message "graphics active")
+          )
+      (insert (shell-command-to-string "xsel --clipboard --output"))
+      )
+    )
+  (evil-leader/set-key "o y" 'copy-to-clipboard)
+  (evil-leader/set-key "o p" 'paste-from-clipboard)
+
   ;;-----------------
   ;;Note Day
   ;;-----------------

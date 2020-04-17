@@ -1,0 +1,26 @@
+;; For Helm With Emacs
+  ;; (setq helm-swoop-use-fuzzy-match t)
+  ;; (setq helm-multi-swoop-edit-save t)
+
+  ;; (setq helm-mini-default-sources '(helm-source-buffers-list
+  ;;                                   helm-source-recentf
+  ;;                                   helm-source-bookmarks
+  ;;                                   helm-source-buffer-not-found))
+  
+  ;; ;;helm command history
+  ;; ;; (global-set-key (kbd "M-i") 'helm-swoop)
+  ;; ;; (global-set-key (kbd "M-I") 'helm-swoop-back-to-last-point)
+  ;; ;; (global-set-key (kbd "C-c M-i") 'helm-multi-swoop)
+  ;; ;; (global-set-key (kbd "C-x M-i") 'helm-multi-swoop-all)
+
+
+  ;; (global-set-key (kbd "C-x C-f")   #'helm-find-files)
+  ;; (global-set-key (kbd "C-x C-r") 'helm-recentf)
+  ;; (global-set-key (kbd "C-x b") 'helm-mini)
+  ;; (global-set-key (kbd "C-x C-b") 'helm-mini)
+  ;; (global-set-key (kbd "C-s")   #'helm-swoop)
+  ;; (global-set-key (kbd "M-x")   #'helm-M-x)
+  ;; (global-set-key (kbd "C-x C-m") 'helm-M-x)
+  ;; (global-set-key (kbd "C-c C-m") 'helm-M-x)
+  ;; (define-key helm-map (kbd "<tab>") 'helm-execute-persistent-action)
+  ;; (define-key helm-map (kbd "C-z") 'helm-select-action)
