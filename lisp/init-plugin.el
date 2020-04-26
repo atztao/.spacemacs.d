@@ -1,3 +1,8 @@
+;;flyspell-----------------------------------
+;;apt install aspell
+;; (setq-default ispell-program-name "aspell")
+;; (ispell-change-dictionary "american" t)
+
 ;;relative-number------------------------
 
 ;;rainbow-delimiters---------------------

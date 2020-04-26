@@ -24,7 +24,7 @@
  ;; List of configuration layers to load.
  dotspacemacs-configuration-layers
  '(
-   javascript
+   ;; javascript
    lua
    ;; ----------------------------------------------------------------
    ;; Example of useful layers you may want to use right away.
@@ -36,8 +36,8 @@
                      ein:complete-on-dot t
                      ein:completion-backend 'ein:use-company-backend)
    python
-   helm
-   ;; ivy
+   ;; helm
+   ivy
    pdf-tools
    html
    latex
@@ -45,6 +45,8 @@
    (auto-completion
     :variables
     auto-completion-enable-snippets-in-popup t)
+   (python :variables python-enable-yapf-format-on-save t)
+
    emacs-lisp
    git
    markdown
@@ -158,7 +160,7 @@ values."
    ;; List sizes may be nil, in which case
    ;; `spacemacs-buffer-startup-lists-length' takes effect.
    dotspacemacs-startup-lists '((recents . 5)
-                                (projects . 7))
+                                (projects . 5))
    ;; True if the home buffer should respond to resize events.
    dotspacemacs-startup-buffer-responsive t
    ;; Default major mode of the scratch buffer (default `text-mode')
@@ -180,11 +182,11 @@ values."
    ;; Default font, or prioritized list of fonts. `powerline-scale' allows to
    ;; quickly tweak the mode-line size to make separators look not too crappy.
    ;; Inconsolatag For Powerline
-   
-   dotspacemacs-default-font '("Monaco For Powerline"
+
+   dotspacemacs-default-font '("Source Code Pro For Powerline"
                                :size 16
-                               :embolden t
-                               :weight normal
+                               ;; :embolden t
+                               :weight medium
                                :width normal
                                :powerline-scale 1.0)
    ;; The leader key
@@ -309,7 +311,7 @@ values."
    ;;                       text-mode
    ;;   :size-limit-kb 1000)
    ;; (default nil)
-   dotspacemacs-line-numbers nil
+   dotspacemacs-line-numbers relative
    ;; Code folding method. Possible values are `evil' and `origami'.
    ;; (default 'evil)
    dotspacemacs-folding-method 'evil
@@ -356,7 +358,7 @@ before packages are loaded. If you are unsure, you should try in setting them in
         '(("melpa-cn" . "http://mirrors.tuna.tsinghua.edu.cn/elpa/melpa/")
           ("org-cn"   . "http://mirrors.tuna.tsinghua.edu.cn/elpa/org/")
           ("gnu-cn"   . "http://mirrors.tuna.tsinghua.edu.cn/elpa/gnu/")))
-  
+
   ;;Develop
   ;;(setq configuration-layer-elpa-archives
   ;;      '(("melpa-cn" . "http://mirrors.tuna.tsinghua.edu.cn/elpa/melpa/")
@@ -377,35 +379,40 @@ layers configuration.
 This is the place where most of your configurations should be done. Unless it is
 explicitly specified that a variable should be set before a package is loaded,
 you should place your code here."
-  ;; (define-key evil-normal-state-map (kbd "TAB") 'org-cycle)
 
-  (setq ns-use-srgb-colorspace t)
+  ;;{------------------------------------------------
+  ;;Load Init Config File
+  (push "~/.spacemacs.d/lisp" load-path)
 
-  (setq-default evil-escape-key-sequence "jk")
-  (setq-default evil-escape-delay 0.2)
-  (evil-find-char-pinyin-mode +1)
+  ;;Set Shell
+  ;; (setq shell-file-name "cmdproxy");; Copyright (c) 2010-2017 Dennis Ogbe
+  (setq shell-file-name "/bin/zsh")
 
-  
-  ;; -*- mode: org -*-
+  ;;Set Default Home Dir
+  ;;(setq default-directory "C:/Users/zhangtao/Dropbox/")
+  ;;(cd "~/emacs/home/")
+  (setq default-directory "~/Dropbox/")
+  ;; (setq default-directory "c:/Users/张宏")
+
+  ;; (setq ns-use-srgb-colorspace t) ;;Maybe this for macos
+
+  ;; txt file with org mode 
   (add-to-list 'auto-mode-alist '("\\.txt\\'" . org-mode))
-  (setq org-latex-table-caption-above t) ;;Table Caption About Latex
 
-  ;;解决行号显示时的放大时行号的问题
+  ;;解决行号显示时的放大时行号的问题以及相对行号
   (when (version<= "26.0.50" emacs-version )
     (global-display-line-numbers-mode))
   (setq display-line-numbers 'relative)
   (add-hook 'find-file-hook
             '(lambda () (setq display-line-numbers 'relative)))
 
-
   ;; Trigger completion immediately.
   (setq company-idle-delay nil)
-
   ;; Number the candidates (use M-1, M-2 etc to select completions).
   (setq company-show-numbers t)
 
+  ;; This line delete spacemacs buffer, switch to scratch
   ;; (add-hook 'server-switch-hook (lambda nil ( (kill-buffer "*spacemacs*"))))
-
   ;; (switch-to-buffer "*scratch*")
 
   (spacemacs/toggle-highlight-current-line-globally-off)
@@ -413,12 +420,9 @@ you should place your code here."
   ;; https://github.com/TheBB/spaceline#turning-segments-on-and-off
   (spaceline-toggle-hud-off)
 
-  (setq evil-toggle-key "")   ; remove default evil-toggle-key C-z, manually setup later
 
   (setq powerline-default-separator nil)
   (spaceline-compile)
-
-  (require 'helm-bookmark)
 
   ;; (unless (display-graphic-p)
   ;;   (setq linum-relative-format "%3s "))
@@ -427,190 +431,65 @@ you should place your code here."
   ;; (unless (display-graphic-p)
   ;;   (setq linum-relative-format (concat linum-relative-format " ")))
 
-
-  ;;emacs with fcitx　cute-jumper/fcitx.el
-  (setq fcitx-active-evil-states '(insert emacs hybrid))
-
-  (fcitx-isearch-turn-on)
-  (setq fcitx-use-dbus t)
-
-  (fcitx-prefix-keys-add "C-x")
-  (fcitx-prefix-keys-add "C-s")
-  (fcitx-prefix-keys-add "C-c")
-  (fcitx-prefix-keys-turn-on)
-
-
-
-  ;;flyspell-----------------------------------
-  ;;apt install aspell
-  ;; (setq-default ispell-program-name "aspell")
-  ;; (ispell-change-dictionary "american" t)
-
-  (save-place-mode 1)
-
-  ;;Auto Save - Backup-----------------------------------------
-  (super-save-mode +1)
-  ;; (setq super-save-auto-save-when-idle t)
-
-
-
-  (setq real-auto-save-interval 1) ;; in seconds
-
-
-  ;; (setq auto-save-default nil)
-  ;; (setq make-backup-files nil)
-
-  (setq backup-directory-alist '(("" . "~/.backup")))
-  (setq make-backup-files t               ; backup of a file the first time it is saved.
-        backup-by-copying t               ; don't clobber symlinks
-        version-control t                 ; version numbers for backup files
-        delete-old-versions t             ; delete excess backp files silently
-        auto-save-visited-file-name t
-        delete-by-moving-to-trash t
-        kept-old-versions 30               ; oldest versions to keep when a new numbered backup is made (default: 2)
-        kept-new-versions 20               ; newest versions to keep when a new numbered backup is made (default: 2)
-        auto-save-default t               ; auto-save every buffer that visits a file
-        auto-save-timeout 1               ; number of seconds idle time before auto-save (default: 30)
-        auto-save-interval 200            ; number of keystrokes between auto-saves (default: 300)
-        )
-
-  (defun my-save-if-bufferfilename ()
-    (if (buffer-file-name)
-        (progn
-          (save-buffer)
-          )
-      (message "no file is associated to this buffer: do nothing")
-      )
-    )
-
-
-  (add-hook 'evil-insert-state-exit-hook 'my-save-if-bufferfilename)
-
-  ;;{------------------------------------------------
-  ;;Keybingding For Emacs
-  (setq recentf-save-file (expand-file-name "recentf" "~/Dropbox/.backup/"))
-  (setq recentf-auto-cleanup 'never)
-
-  (global-set-key (kbd "C-w") 'backward-kill-word)
-  (global-set-key (kbd "C-x C-k") 'kill-region)
-  (global-set-key (kbd "C-c C-k") 'kill-region)
-  ;; 1 More friendly interface for ivy
-
-  ;; (require 'ivy-rich)
-  ;; (ivy-rich-mode 1)
-  ;; (setcdr (assq t ivy-format-functions-alist) #'ivy-format-function-line)
-  ;; (setq ivy-rich-display-transformers-list
-  ;;       '(ivy-switch-buffer
-  ;;         (:columns
-  ;;          ((ivy-rich-switch-buffer-icon (:width 2))
-  ;;           (ivy-rich-candidate (:width 30))
-  ;;           (ivy-rich-switch-buffer-size (:width 7))
-  ;;           (ivy-rich-switch-buffer-indicators (:width 4 :face error :align right))
-  ;;           (ivy-rich-switch-buffer-major-mode (:width 12 :face warning))
-  ;;           (ivy-rich-switch-buffer-project (:width 15 :face success))
-  ;;           (ivy-rich-switch-buffer-path (:width (lambda (x) (ivy-rich-switch-buffer-shorten-path x (ivy-rich-minibuffer-width 0.3))))))
-  ;;          :predicate
-  ;;          (lambda (cand) (get-buffer cand)))))
-  ;; ;; add ‘recentf-mode’ and bookmarks to ‘ivy-switch-buffer’.
-  ;; (setq ivy-use-virtual-buffers t)
-  ;; (setq ivy-virtual-abbreviate 'full)
-  ;; ;; number of result lines to display
-  ;; (setq ivy-height 20)
-
-
   
-  ;; (global-set-key (kbd "C-x b") 'ivy-switch-buffer)
-  ;; (global-set-key (kbd "C-x C-b") 'ivy-switch-buffer)
-  ;; (global-set-key (kbd "C-x C-r") 'counsel-recentf)
-
-  ;; For Helm With Emacs
-  (setq helm-swoop-use-fuzzy-match t)
-  (setq helm-multi-swoop-edit-save t)
-
-  (setq helm-mini-default-sources '(helm-source-buffers-list
-                                    helm-source-recentf
-                                    helm-source-bookmarks
-                                    helm-source-buffer-not-found))
-  
-  ;;helm command history
-  (global-set-key (kbd "M-i") 'helm-swoop)
-  (global-set-key (kbd "M-I") 'helm-swoop-back-to-last-point)
-  (global-set-key (kbd "C-c M-i") 'helm-multi-swoop)
-  (global-set-key (kbd "C-x M-i") 'helm-multi-swoop-all)
-
-
-  (global-set-key (kbd "C-x C-f")   #'helm-find-files)
-  (global-set-key (kbd "C-x C-r") 'helm-recentf)
-  (global-set-key (kbd "C-x b") 'helm-mini)
-  (global-set-key (kbd "C-x C-b") 'helm-mini)
-  ;; (global-set-key (kbd "C-s")   #'helm-swoop)
-  (global-set-key (kbd "M-x")   #'helm-M-x)
-  (global-set-key (kbd "C-x C-m") 'helm-M-x)
-  (global-set-key (kbd "C-c C-m") 'helm-M-x)
-  (define-key helm-map (kbd "<tab>") 'helm-execute-persistent-action)
-  (define-key helm-map (kbd "C-z") 'helm-select-action)
-
-  ;; (global-set-key (kbd "C-s") 'isearch-forward-pinyin)
-  (set-face-attribute 'lazy-highlight nil :foreground "#FFFF00" :background "black")
-  (set-face-attribute 'isearch nil :foreground "red" :background "black" :weight 'bold)
+  ;; (setq projectile-project-search-path '("~/Dropbox/" "~/Documents/"))
   ;;------------------------------------------------}
+
+  (setq recentf-save-file (expand-file-name "recentf" "~/Dropbox/.backup/"))
   ;;Window Title
+  ;; (setq frame-title-format
+  ;;       (list
+  ;;        ;;'(:eval (projectile-project-name))
+  ;;        "(●—●) I'm Here @ "
+  ;;        '(buffer-file-name "%f" (dired-directory dired-directory "%b"))))
+
   (setq frame-title-format
         (list
          ;;'(:eval (projectile-project-name))
-         "(●—●) I'm Here @ "
+         "I'm @ "
          '(buffer-file-name "%f" (dired-directory dired-directory "%b"))))
 
-  (setq x-select-enable-clipboard t)
 
+  (setq x-select-enable-clipboard t)
   
   ;;MarkDown
-
   (custom-set-variables
    '(markdown-command "/usr/bin/pandoc"))
 
   ;; 自动断行
 
+
+  ;; (set-cursor-color "green")
+  (set-cursor-color "#32cd32")
+  ;; (set-cursor-color "Red")
+
+  ;; (set-background-color "#000000")
+  ;; (set-face-attribute 'region nil :background "#FFFFF0" :foreground "#000000")
+  ;; ;; ;;(set-background-color "ivory")
+  ;; (set-foreground-color "#32cd32")
+
+  ;; Window Size
+  ;; (set-frame-parameter nil 'alpha '(98 . 100)) ;;透明度
+
+  ;;(add-to-list 'default-frame-alist '(height . 20)) ;;启动窗口大小
+  ;;(add-to-list 'default-frame-alist '(width . 52))
+
+  (set-face-attribute 'mode-line nil :box nil :height 82) ;; Mode line 高度
+  (set-face-attribute 'mode-line-inactive nil :box nil  :height 82)
+
   ;;在mode line隐藏mode显示
   (diminish 'super-save-mode)
 
-  
-  ;;Set Shell
-  ;; (setq shell-file-name "cmdproxy");; Copyright (c) 2010-2017 Dennis Ogbe
-  (setq shell-file-name "/bin/zsh")
-
-  (set-face-attribute 'mode-line nil :box nil :height 82)
-  (set-face-attribute 'mode-line-inactive nil :box nil  :height 82)
-
-
-  ;; (set-cursor-color "green")
-  ;; (set-cursor-color "#32cd32") 
-  (set-cursor-color "Red")
-
-  ;; Reverse colors for the border to have nicer line
+  ;; Reverse colors for the border to have nicer line split border for window
   (set-face-inverse-video-p 'vertical-border nil)
   (set-face-background 'vertical-border (face-background 'default))
   (set-display-table-slot standard-display-table
                           'vertical-border
                           (make-glyph-code ?┃))
 
-
-  (setq default-font-size-pt 10)
-
-  (set-frame-parameter nil 'alpha '(98 . 100))
-
-  ;; (set-background-color "#000000")
-  ;; (set-face-attribute 'region nil :background "#FFFFF0" :foreground "#000000")
-  
-
-  ;; ;; ;;(set-background-color "ivory")
-  ;; (set-
-  foreground-color "#32cd32")
-  
-
   ;;------------------------------------------------}
   ;;Chinese Fonts
-  
+  (setq default-font-size-pt 10)
 
   (dolist (charset '(kana han symbol cjk-misc bopomofo))
     (set-fontset-font (frame-parameter nil 'font)
@@ -620,21 +499,10 @@ you should place your code here."
   ;;   (set-fontset-font (frame-parameter nil 'font)
   ;;                     charset (font-spec :family "WenQuanYi Micro Hei")))
 
-  ;;(add-to-list 'default-frame-alist '(height . 20))
-  ;;(add-to-list 'default-frame-alist '(width . 52))
-
-
-  ;;Set Default Home Dir
-  ;;(setq default-directory "C:/Users/zhangtao/Dropbox/")
-  ;;(cd "~/emacs/home/")
-
-  (setq default-directory "~/Dropbox/")
-  ;; (setq default-directory "c:/Users/张宏")
 
   ;;Fill Mode
   (add-hook 'text-mode-hook 'auto-fill-mode)
   (setq-default fill-column 80)
-
   sentence-end "\\([。！？]\\|……\\|[.?!][]\"')}]*\\($\\|[ \t]\\)\\)[ \t\n]*"
   sentence-end-double-space nil         ;;设置 sentence-end 可以识别中文标点。不用在 fill 时在句号后插入两个空格。
 
@@ -650,11 +518,9 @@ you should place your code here."
         browse-url-browser-function gnus-button-url)
 
   (setq line-spacing '0.20)
-  
+
   ;;(set-face-background 'fringe "#809088")
   (add-hook 'org-mode-hook (lambda () (hl-todo-mode -1) nil))
-
-
   (delete-region (point) (line-end-position))
 
   ;;(setq-default major-mode 'org-mode)
@@ -662,135 +528,32 @@ you should place your code here."
     '(set-face-attribute 'linum nil :height 100))
 
   (set-display-table-slot standard-display-table 'wrap ?\ )
-
-  ;;-----------------------------------------------}
-  ;;Copy To System Clipboard apt install xel
-  (defun copy-to-clipboard ()
-    "Copies selection to x-clipboard."
-    (interactive)
-    (if (display-graphic-p)
-        (progn
-          (message "Yanked region to x-clipboard!")
-          (call-interactively 'clipboard-kill-ring-save)
-          )
-      (if (region-active-p)
-          (progn
-            (shell-command-on-region (region-beginning) (region-end) "xsel --clipboard --input")
-            (message "Yanked region to clipboard!")
-            (deactivate-mark))
-        (message "No region active; can't yank to clipboard!")))
-    )
-
-  (defun paste-from-clipboard ()
-    "Pastes from x-clipboard."
-    (interactive)
-    (if (display-graphic-p)
-        (progn
-          (clipboard-yank)
-          (message "graphics active")
-          )
-      (insert (shell-command-to-string "xsel --clipboard --output"))
-      )
-    )
-  (evil-leader/set-key "o y" 'copy-to-clipboard)
-  (evil-leader/set-key "o p" 'paste-from-clipboard)
-
-  ;;-----------------
-  ;;Note Day
-  ;;-----------------
-  (require 'cal-china-x)
-  (setq mark-holidays-in-calendar t)
-  (setq cal-china-x-important-holidays cal-china-x-chinese-holidays)
-  (setq calendar-holidays cal-china-x-important-holidays)
-  (setq my-holidays '((holiday-fixed 2 14 "情人节") (holiday-fixed 9 10 "教师节") (holiday-fixed 5 12 "护士节") (holiday-float 6 0 3 "父亲节") (holiday-float 5 0 2 "母亲节")
-                      (holiday-lunar 1 1 "春节" 0) (holiday-lunar 1 15 "元宵节" 0) (holiday-solar-term "清明" "清明节") (holiday-lunar 5 5 "端午节" 0) (holiday-lunar 7 7 "七夕情人节" 0) (holiday-lunar 8 15 "中秋节" 0)
-                      (holiday-lunar 12 23 "妈妈生日" 0) (holiday-lunar 5 9 "爸爸生日" 0) (holiday-lunar 10 17 "姐夫生日" 0) (holiday-lunar 10 18 "姐姐生日" 0) (holiday-fixed 10 29 "宝宝生日") ))
-  (setq calendar-holidays my-holidays)
-  ;;(holiday-lunar 9 17 "宝宝生日" 0)
-
-
-  
-  ;;{------------------------------------------------
-  ;;Import Some Init File
-  ;;Org-Mode
-  (push "~/.spacemacs.d/lisp" load-path)
-  (require 'init-latex)
-  (require 'init-org)
-  (require 'init-org-pdf)
-
-  ;; This is usually the default, but keep in mind it must be nil
-  ;; (setq org-hide-leading-stars t)
-  ;; This line is necessary.
-  ;; (setq org-superstar-leading-bullet ?\s)
-
   (add-hook 'hack-local-variables-hook (lambda () (setq truncate-lines t)))
 
-  ;;Mu4e
-  ;; (require 'evil-mu4e)
-  (require 'init-email)
   
-  ;;Pyim
+  ;;Org-Mode
+  
+  (require 'init-face)
+  (require 'init-emacs)
+  (require 'init-evil)
+  (require 'init-save)
+  (require 'init-ivy)
 
-  ;; (setq default-input-method "pyim")
-  ;; (global-set-key (kbd "C-\\") 'toggle-input-method)
-  ;; (setq pyim-default-scheme 'quanpin)
+  (require 'init-org)
+  (require 'init-latex)
+  (require 'init-org-pdf)
+  (require 'init-day)
 
-  ;;------------------------------------------------}
-
-  (global-set-key [f8] 'neotree-toggle)
-  (setq-default neo-smart-open t)
-  (setq neo-theme (if (display-graphic-p) 'ascii))
-  ;;(setq-default neo-mode-line-format nil)
-
-  ;;google-translate
-  ;; (set-face-attribute 'google-translate-translation-face nil :height 1.4)
-
-  (eval-after-load 'google-translate-core
-    '(setq google-translate-base-url "http://translate.g
-oogle.cn/translate_a/single"
-
-           google-translate-listen-url "http://translate.google.cn/translate_tts"))
-  (eval-after-load 'google-translate-tk
-    '(setq google-translate--tkk-url "http://translate.google.cn/"))
-
-  (setq-default google-translate-default-source-language "en")
-  (setq-default google-translate-default-target-language "zh-CN")
+  (require 'init-email)
 
 
   ;;----------------
-  ;;yasnippet - A template system for Emacs
-  ;; add extra snippet directories
+  ;;yasnippet - A template system for Emacs and add extra snippet directories
   (setq yas-snippet-dirs (append yas-snippet-dirs
                                  '("/home/zhangtao/Dropbox/.backup/snippets")))
 
-  ;;------------------------------------------------
-  ;; Python Configuration
-  ;; (add-hook 'prog-mode-hook #'fci-mode)    ;; Indicate fill column.
-  ;; (setq fci-rule-color "darkred")
-  ;; (setq fci-rule-character ?█)
-  ;; (setq fci-rule-width 8)
-
-  (setq company-dabbrev-downcase nil)
-  (setq company-idle-delay nil)
-
-  (add-hook 'python-mode-hook 'yapf-mode)
-  (setq python-shell-completion-native-enable nil)
-
-  (pyvenv-activate "/home/zhangtao/anaconda3/")
-  (setq ein:jupyter-default-server-command "~/anaconda3/bin/jupyter")
-  (setq ein:jupyter-server-args (list "--no-browser"))
-  (setq ein:use-auto-complete t)
-
-  ;; (setq python-shell-interpreter "/home/zhangtao/anaconda3/bin/python"
-  ;;       python-shell-interpreter-args "-m IPython --simple-prompt -i"
-  ;;       python-shell-interpreter-interactive-arg ""
-
-  ;;       )
-  (setq python-shell-interpreter "jupyter"
-        python-shell-interpreter-args "console --simple-prompt")
-
-
-  ;;-------------------------------END---------------------------------------
+  (require 'init-python)
+    ;;-------------------------------end---------------------------------------
   )
 
 ;; Do not write anything past this comment. This is where Emacs will
@@ -805,7 +568,7 @@ oogle.cn/translate_a/single"
  '(org-headline-done ((((class color) (min-colors 16) (background dark)) (:foreground "#999" :strike-through t))))
  '(org-level-1 ((t (:foreground "DarkRed" :weight extra-bold :strike-through nil))))
  '(org-todo ((t (:foreground "DarkRed" :weight extra-bold :strike-through nil)))))
- 
+
 
 
 (custom-set-variables

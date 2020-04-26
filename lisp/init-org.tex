@@ -1,8 +1,41 @@
+% Created 2020-04-26 日 11:32
+% Intended LaTeX compiler: pdflatex
+\documentclass[presentation]{beamer}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{graphicx}
+\usepackage{grffile}
+\usepackage{longtable}
+\usepackage{wrapfig}
+\usepackage{rotating}
+\usepackage[normalem]{ulem}
+\usepackage{amsmath}
+\usepackage{textcomp}
+\usepackage{amssymb}
+\usepackage{capt-of}
+\usepackage{hyperref}
+\usetheme{default}
+\author{zhangtao}
+\date{\today}
+\title{}
+\hypersetup{
+ pdfauthor={zhangtao},
+ pdftitle={},
+ pdfkeywords={},
+ pdfsubject={},
+ pdfcreator={Emacs 26.3 (Org mode 9.3.6)}, 
+ pdflang={English}}
+\begin{document}
+
+\begin{frame}{Outline}
+\tableofcontents
+\end{frame}
+
 ;;-------------
 ;;org-mode
 ;;-------------
 
-;; (set-face-background 'fringe "#809088")
+;; (set-face-background 'fringe "\#809088")
 ;; (add-hook 'org-mode-hook (lambda () (hl-todo-mode -1) nil))
 ;; (delete-region (point) (line-end-position))
 
@@ -21,10 +54,10 @@
 
 (setq org-file-apps
       '((auto-mode . emacs)
-        ("\\.x?html?\\'" . "firefox %s")
-        ("\\.pdf\\'" . "zathura \"%s\"")
-        ("\\.pdf::\\([0-9]+\\)\\'" . "zathura \"%s\" -p %1")
-        ("\\.pdf.xoj" . "xournal %s")))
+        ("$\backslash$\.x?html?$\backslash$\'" . "firefox \%s")
+        ("$\backslash$\.pdf$\backslash$\'" . "zathura $\backslash$"\%s$\backslash$"")
+        ("$\backslash$\.pdf::$\backslash$\([0-9]+\\)$\backslash$\'" . "zathura $\backslash$"\%s$\backslash$" -p \%1")
+        ("$\backslash$\.pdf.xoj" . "xournal \%s")))
 
 (add-hook 'org-mode-hook (lambda ()
                            (setq truncate-lines nil)))
@@ -50,7 +83,7 @@
 
 ;;(org-entry-get nil "ITEM")
 
-;; (add-to-list 'load-path "~/.emacs.d/elpa/org-20170515" )
+;; (add-to-list 'load-path "\textasciitilde{}/.emacs.d/elpa/org-20170515" )
 ;; (require 'org)
 (setq org-list-description-max-indent 5)
 (setq org-adapt-indentation nil)
@@ -84,11 +117,11 @@
   (auto-fill-mode 1))
 
 ;;Archive All Done Tas
-(setq org-archive-location (concat "archive/archive-" (format-time-string "%Y%m" (current-time)) ".org_archive::"))
+(setq org-archive-location (concat "archive/archive-" (format-time-string "\%Y\%m" (current-time)) ".org\textsubscript{archive}::"))
 
 (defun my-org-archive-done-tasks ()
   (interactive)
-  (org-map-entries 'org-archive-subtree "/DONE" '~/Dropbox/Txt/archive/done.txt))
+  (org-map-entries 'org-archive-subtree "/DONE" '\textasciitilde{}/Dropbox/Txt/archive/done.txt))
 
 (defun channing/archive-when-done ()
   "Archive current entry if it is marked as DONE (see `org-done-keywords')."
@@ -163,37 +196,37 @@
 ;;              '("*" (:foreground "red")
 ;;                ))
 ;; (setq org-emphasis-alist
-;;       (cons '("*" '(:emphasis t :foreground "yellow"))
-;;             (delete* "*" org-emphasis-alist :key 'car :test 'equal)))
+;;       (cons '("\alert{" '(:emphasis t :foreground "yellow"))
+;;             (delete} "*" org-emphasis-alist :key 'car :test 'equal)))
 (setq org-hide-emphasis-markers t)
 
 ;;org-capture
 
 ;;org-capture-extension
 
-;; (load "~/.emacs.d/elpa/org-contacts.el")
+;; (load "\textasciitilde{}/.emacs.d/elpa/org-contacts.el")
 ;; (require 'org-contacts)
 
-;; (load "~/.emacs.d/elpa/outline-presentation.el")
+;; (load "\textasciitilde{}/.emacs.d/elpa/outline-presentation.el")
 ;; (require 'outline-presentation)
 
 
-;; (setq org-default-notes-file (concat org-directory "~/Dropbox/inbox.txt"))
+;; (setq org-default-notes-file (concat org-directory "\textasciitilde{}/Dropbox/inbox.txt"))
 (define-key global-map [f12] 'org-capture)
 (define-key global-map "\C-cc" 'org-capture)
 (setq org-capture-templates
-      ;; `(("t" "Todo" entry (file+headline "~/Dropbox/Note/todo.txt" "Inbox")
-      ;;    "* TODO %? ")
-      `(("t" "Todo" entry (file+headline "~/Dropbox/Note/todo.txt" "Inbox")
-         "* TODO %? ")
-        ("n" "Note" entry (file+headline "~/Dropbox/Note/inbox.txt" "Note")
-         "* %? \n \n %U \n  ")
-        ("l" "Log" entry (file+headline "~/Dropbox/Note/inbox.txt" "Log")
-         "*  %U \n \n %? ")
-        ;; ("l" "Link" entry (file+headline "~/Dropbox/Note/inbox.txt" "Link")
-        ;;  "* %? \n%U\n")
-        ;; ("c" "Contact" entry (file+headline "~/Dropbox/Txt/contacts.txt" "Contact")
-        ;;          "* %?
+      ;; `(("t" "Todo" entry (file+headline "\textasciitilde{}/Dropbox/Note/todo.txt" "Inbox")
+      ;;    "* TODO \%? ")
+      `(("t" "Todo" entry (file+headline "\textasciitilde{}/Dropbox/Note/todo.txt" "Inbox")
+         "* TODO \%? ")
+        ("n" "Note" entry (file+headline "\textasciitilde{}/Dropbox/Note/inbox.txt" "Note")
+         "* \%? \n \n \%U \n  ")
+        ("l" "Log" entry (file+headline "\textasciitilde{}/Dropbox/Note/inbox.txt" "Log")
+         "*  \%U \n \n \%? ")
+        ;; ("l" "Link" entry (file+headline "\textasciitilde{}/Dropbox/Note/inbox.txt" "Link")
+        ;;  "* \%? \n\%U\n")
+        ;; ("c" "Contact" entry (file+headline "\textasciitilde{}/Dropbox/Txt/contacts.txt" "Contact")
+        ;;          "* \%?
         ;; :PROPERTIES:
         ;; :EMAIL:
         ;; :URL:
@@ -207,9 +240,9 @@
 (global-set-key "\C-ca" 'org-agenda)
 (setq org-export-coding-system 'utf-8)
 (setq org-agenda-convert-date 'Chinese)
-(setq diary-file "~/Dropbox/Txt/diary")
+(setq diary-file "\textasciitilde{}/Dropbox/Txt/diary")
 (setq org-agenda-include-diary t)
-;;(setq org-agenda-files '("~/org"))
+;;(setq org-agenda-files '("\textasciitilde{}/org"))
 
 
 ;; (require 'org-crypt)
@@ -232,14 +265,14 @@
 
 (setq org-publish-project-alist
       '(("html"
-         ;; :base-directory "~/org/"
+         ;; :base-directory "\textasciitilde{}/org/"
          ;; :base-extension "org"
-         :publishing-directory "~/Dropbox/export"
+         :publishing-directory "\textasciitilde{}/Dropbox/export"
          :publishing-function org-publish-org-to-html)
         ("pdf"
-         ;; :base-directory "~/org/"
+         ;; :base-directory "\textasciitilde{}/org/"
          ;; :base-extension "org"
-         :publishing-directory "~/Dropbox/export"
+         :publishing-directory "\textasciitilde{}/Dropbox/export"
          :publishing-function org-publish-org-to-pdf)))
 
 (setq org-use-fast-todo-selection t)
@@ -248,11 +281,11 @@
 
 (setq org-todo-keyword-faces
       '(
-        ("TODO" .(:foreground "#999" :weight bold))
+        ("TODO" .(:foreground "\#999" :weight bold))
         ("NEXT" .( :foreground "DarkRed" :weight bold))
-        ("SOMEDAY" .(:foreground "#999" :weight bold))
-        ("WAITING" .(:foreground "#999" :weight bold :strike-through nil))
-        ("DONE" .(:foreground "#999" :weight normal :strike-through t))
+        ("SOMEDAY" .(:foreground "\#999" :weight bold))
+        ("WAITING" .(:foreground "\#999" :weight bold :strike-through nil))
+        ("DONE" .(:foreground "\#999" :weight normal :strike-through t))
         ))
 
 
@@ -262,7 +295,7 @@
 ;; (defun chunyang-org-mode-hide-stars ()
 ;;   (font-lock-add-keywords
 ;;    nil
-;;    '(("^\\*+ "
+;;    '(("\^{}$\backslash$\*+ "
 ;;       (0
 ;;        (prog1 nil
 ;;          (put-text-property (match-beginning 0) (match-end 0)
@@ -270,7 +303,7 @@
 ;;                                         (face-attribute
 ;;                                          'default :background)))))))))
 
-;; (add-hook 'org-mode-hook #'chunyang-org-mode-hide-stars)
+;; (add-hook 'org-mode-hook \#'chunyang-org-mode-hide-stars)
 
 (setq org-fontify-done-headline t)
 
@@ -281,8 +314,9 @@
  ;; If there is more than one, they won't work right.
  '(org-todo ((t (:foreground "DarkRed" :weight extra-bold :strike-through nil))))
  '(org-agenda-done ((t (:foreground "Grey" :weight normal :strike-through t))))
- '(org-done ((t (:foreground "#999" :weight normal :strike-through t))))
- '(org-headline-done ((((class color) (min-colors 16) (background dark)) (:foreground "#999" :strike-through t))))
+ '(org-done ((t (:foreground "\#999" :weight normal :strike-through t))))
+ '(org-headline-done ((((class color) (min-colors 16) (background dark)) (:foreground "\#999" :strike-through t))))
  )
 
 (provide 'init-org)
+\end{document}
