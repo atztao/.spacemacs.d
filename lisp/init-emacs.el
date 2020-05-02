@@ -10,4 +10,16 @@
 
 (add-hook 'lisp-mode-hook '(lambda ()
                              (local-set-key (kbd "RET") 'newline-and-indent)))
+
+;;emacs with fcitx　cute-jumper/fcitx.el
+(setq fcitx-active-evil-states '(insert emacs hybrid))
+
+(fcitx-isearch-turn-on)
+(setq fcitx-use-dbus t)
+
+(fcitx-prefix-keys-add "C-x")
+(fcitx-prefix-keys-add "C-s")
+(fcitx-prefix-keys-add "C-c")
+(fcitx-prefix-keys-turn-on)
+
 (provide 'init-emacs)

@@ -68,6 +68,7 @@
  dotspacemacs-additional-packages '(
                                     ;; org-sidebar
                                     pinyin-search
+                                    
                                     vdiff
                                     google-this
                                     notmuch
@@ -99,6 +100,7 @@
                                   org-projectile
                                   ;; auto-complete
                                   ;; mu4e-maildirs-extension
+                                  evil-search-highlight-persist
                                   org-bullets
                                   ;; ivy
                                   )
@@ -145,7 +147,7 @@ values."
    ;; with `:variables' keyword (similar to layers). Check the editing styles
    ;; section of the documentation for details on available variables.
    ;; (default 'vim)
-   dotspacemacs-editing-style 'emacs
+   dotspacemacs-editing-style 'vim
    ;; If non nil output loading progress in `*Messages*' buffer. (default nil)
    dotspacemacs-verbose-loading nil
    ;; Specify the startup banner. Default value is `official', it displays
@@ -186,7 +188,7 @@ values."
    ;; Inconsolatag For Powerline
 
    dotspacemacs-default-font '("Monaco for Powerline"
-                               :size 16
+                               :size 14
                                ;; :embolden t
                                :weight normal
                                :width normal
@@ -382,6 +384,11 @@ This is the place where most of your configurations should be done. Unless it is
 explicitly specified that a variable should be set before a package is loaded,
 you should place your code here."
 
+  ;; (set-face-attribute 'default nil 
+  ;;                     :family "Monaco" 
+  ;;                     :height 120  
+  ;;                     :weight 'bold
+  ;;                     :width 'normal)
   ;;{------------------------------------------------
   ;;Load Init Config File
   (push "~/.spacemacs.d/lisp" load-path)
@@ -420,7 +427,7 @@ you should place your code here."
   (require 'init-emacs)
   (require 'init-save)
   (require 'init-ivy)
-  ;; (require 'init-evil)
+  (require 'init-evil)
   ;;------------------------------------------------}
   (require 'init-org)
   (require 'init-latex)
@@ -460,28 +467,6 @@ you should place your code here."
     ("~/Dropbox/Note/todo_new.txt" "~/Dropbox/Note/todo.txt" "~/Dropbox/Note/inbox.txt")))
  '(package-selected-packages
    (quote
-    (helm-smex ivy-rich real-auto-save org-superstar evil-find-char-pinyin vdiff pinyin-search pinyinlib fcitx flucui-theme pyim pyim-basedict xr color-theme-sanityinc-solarized emojify company-tern tern coffee-mode darkroom web-beautify livid-mode json-mode json-snatcher json-reformat js2-refactor multiple-cursors js-doc org-sidebar org-ql peg ov org-super-agenda ts company-tabnine unicode-escape names lv transient polymode writeroom-mode visual-fill-column helm-themes helm-swoop helm-pydoc helm-projectile helm-mode-manager helm-gitignore helm-flx helm-descbinds helm-css-scss helm-company helm-c-yasnippet helm-ag ace-jump-helm-line org-plus-contrib org-bullets yapfify xterm-color ws-butler winum which-key wgrep web-mode volatile-highlights vi-tilde-fringe uuidgen use-package unfill toc-org tagedit super-save spaceline powerline smex smeargle slim-mode shell-pop scss-mode sass-mode restart-emacs rainbow-delimiters pyvenv pytest pyenv-mode py-isort pug-mode popwin pip-requirements persp-mode pcre2el paradox spinner orgit org-ref pdf-tools key-chord helm-bibtex biblio parsebib biblio-core tablist org-present org-pomodoro org-mime org-download open-junk-file neotree mwim multi-term mu4e-maildirs-extension mu4e-alert ht alert log4e gntp move-text mmm-mode markdown-toc markdown-mode magit-gitflow macrostep lua-mode lorem-ipsum live-py-mode linum-relative link-hint less-css-mode ivy-hydra indent-guide hydra hy-mode dash-functional hungry-delete htmlize hl-todo highlight-parentheses highlight-numbers parent-mode highlight-indentation helm-make helm helm-core haml-mode google-translate google-this golden-ratio gnuplot gitignore-mode gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link git-gutter-fringe+ git-gutter-fringe fringe-helper git-gutter+ git-gutter gh-md fuzzy flycheck-pos-tip pos-tip flycheck flx-ido flx fill-column-indicator fancy-battery eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist evil-numbers evil-nerd-commenter evil-mu4e evil-mc evil-matchit evil-magit magit magit-popup git-commit ghub let-alist with-editor evil-lisp-state smartparens evil-indent-plus evil-iedit-state iedit evil-exchange evil-escape evil-ediff evil-args evil-anzu anzu evil goto-chg undo-tree eval-sexp-fu highlight eshell-z eshell-prompt-extras esh-help emmet-mode elisp-slime-nav ein skewer-mode request-deferred websocket request deferred js2-mode simple-httpd dumb-jump diminish diff-hl define-word cython-mode counsel-projectile projectile pkg-info epl counsel swiper ivy company-web web-completion-data company-statistics company-auctex company-anaconda company column-enforce-mode clean-aindent-mode cal-china-x bind-map bind-key auto-yasnippet yasnippet auto-highlight-symbol auto-compile packed auctex-latexmk auctex async anaconda-mode pythonic f dash s aggressive-indent adaptive-wrap ace-window ace-link avy ac-ispell auto-complete popup color-theme-sanityinc-tomorrow)))
- '(send-mail-function (quote smtpmail-send-it))
- '(vc-annotate-background nil)
- '(vc-annotate-color-map
-   (quote
-    ((20 . "#d54e53")
-     (40 . "#e78c45")
-     (60 . "#e7c547")
-     (80 . "#b9ca4a")
-     (100 . "#70c0b1")
-     (120 . "#7aa6da")
-     (140 . "#c397d8")
-     (160 . "#d54e53")
-     (180 . "#e78c45")
-     (200 . "#e7c547")
-     (220 . "#b9ca4a")
-     (240 . "#70c0b1")
-     (260 . "#7aa6da")
-     (280 . "#c397d8")
-     (300 . "#d54e53")
-     (320 . "#e78c45")
-     (340 . "#e7c547")
-     (360 . "#b9ca4a"))))
- '(vc-annotate-very-old-color nil)
+    (unicode-fonts ucs-utils font-utils persistent-soft list-utils pcache helm-smex ivy-rich real-auto-save org-superstar evil-find-char-pinyin vdiff pinyin-search pinyinlib fcitx flucui-theme pyim pyim-basedict xr color-theme-sanityinc-solarized emojify company-tern tern coffee-mode darkroom web-beautify livid-mode json-mode json-snatcher json-reformat js2-refactor multiple-cursors js-doc org-sidebar org-ql peg ov org-super-agenda ts company-tabnine unicode-escape names lv transient polymode writeroom-mode visual-fill-column helm-themes helm-swoop helm-pydoc helm-projectile helm-mode-manager helm-gitignore helm-flx helm-descbinds helm-css-scss helm-company helm-c-yasnippet helm-ag ace-jump-helm-line org-plus-contrib org-bullets yapfify xterm-color ws-butler winum which-key wgrep web-mode volatile-highlights vi-tilde-fringe uuidgen use-package unfill toc-org tagedit super-save spaceline powerline smex smeargle slim-mode shell-pop scss-mode sass-mode restart-emacs rainbow-delimiters pyvenv pytest pyenv-mode py-isort pug-mode popwin pip-requirements persp-mode pcre2el paradox spinner orgit org-ref pdf-tools key-chord helm-bibtex biblio parsebib biblio-core tablist org-present org-pomodoro org-mime org-download open-junk-file neotree mwim multi-term mu4e-maildirs-extension mu4e-alert ht alert log4e gntp move-text mmm-mode markdown-toc markdown-mode magit-gitflow macrostep lua-mode lorem-ipsum live-py-mode linum-relative link-hint less-css-mode ivy-hydra indent-guide hydra hy-mode dash-functional hungry-delete htmlize hl-todo highlight-parentheses highlight-numbers parent-mode highlight-indentation helm-make helm helm-core haml-mode google-translate google-this golden-ratio gnuplot gitignore-mode gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link git-gutter-fringe+ git-gutter-fringe fringe-helper git-gutter+ git-gutter gh-md fuzzy flycheck-pos-tip pos-tip flycheck flx-ido flx fill-column-indicator fancy-battery eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist evil-numbers evil-nerd-commenter evil-mu4e evil-mc evil-matchit evil-magit magit magit-popup git-commit ghub let-alist with-editor evil-lisp-state smartparens evil-indent-plus evil-iedit-state iedit evil-exchange evil-escape evil-ediff evil-args evil-anzu anzu evil goto-chg undo-tree eval-sexp-fu highlight eshell-z eshell-prompt-extras esh-help emmet-mode elisp-slime-nav ein skewer-mode request-deferred websocket request deferred js2-mode simple-httpd dumb-jump diminish diff-hl define-word cython-mode counsel-projectile projectile pkg-info epl counsel swiper ivy company-web web-completion-data company-statistics company-auctex company-anaconda company column-enforce-mode clean-aindent-mode cal-china-x bind-map bind-key auto-yasnippet yasnippet auto-highlight-symbol auto-compile packed auctex-latexmk auctex async anaconda-mode pythonic f dash s aggressive-indent adaptive-wrap ace-window ace-link avy ac-ispell auto-complete popup color-theme-sanityinc-tomorrow)))
+ '(send-mail-function (quote mailclient-send-it))
  '(window-divider-mode nil))

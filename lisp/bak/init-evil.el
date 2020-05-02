@@ -2,8 +2,14 @@
 (setq evil-want-C-i-jump nil)   ; don't bind [tab] to evil-jump-forward
 (setq evil-shift-width 2)
 
-;;fix C-k kill history in ivy buffer
+
+(define-key ivy-switch-buffer-map (kbd "C-M-k") 'ivy-switch-buffer-kill)
 (define-key ivy-switch-buffer-map (kbd "C-k") 'ivy-previous-line) 
+
+;; (add-to-list 'evil-emacs-state-modes 'markdown-mode)
+;;(add-to-list 'evil-emacs-state-modes 'magit-mode)
+;;(add-to-list 'evil-emacs-state-modes 'org-mode)
+;; (add-to-list 'evil-emacs-state-modes 'el-get-package-menu-mode)
 
 ;; remove default evil-toggle-key C-z, manually setup later
 (setq evil-toggle-key "")
@@ -74,6 +80,12 @@
 (define-key global-map (kbd "RET") 'newline-and-indent)
 (setq evil-move-cursor-back nil)
 
+(require 'evil-surround)
+(global-evil-surround-mode 1)
+
+(require 'evil-matchit)
+(global-evil-matchit-mode)
+
 ;; (require 'key-chord)
 ;; (key-chord-define evil-insert-state-map  "jk" 'evil-normal-state)
 ;; (key-chord-define evil-normal-state-map "jk" 'evil-force-normal-state)
@@ -127,6 +139,17 @@
 (define-and-bind-text-object "r" "\{\{" "\}\}")
 ;; }}
 
+;; (require 'evil-mu4e)
+;; (define-key ivy-minibuffer-map (kbd "C-k") 'ivy-previous-line) 
+;; (define-key ivy-minibuffer-map (kbd "C-j") 'ivy-next-line) 
+;; (loop for (mode . state) in '((el-get-package-menu-mode . emacs)
+;;                               (dired-mode . emacs)
+;;                               (wdired-mode . normal))
+;;       do (evil-set-initial-state mode state))
+
+;; (require 'helm-smex)
+;; (global-set-key (kbd "M-x") #'helm-smex)
+;; (global-set-key (kbd "M-X") #'helm-smex-major-mode-commands)
 (evil-ex-define-cmd "e" 'counsel-find-file)
 (evil-ex-define-cmd "b" 'ivy-switch-buffer)
 
